@@ -11,10 +11,10 @@ ext {
     dependencies = [
             gson          : 'com.google.code.gson:gson:2.8.6',
             okhttp        : 'com.squareup.okhttp3:okhttp:4.2.2',
-            basecomponent : 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.0',
-            bakerhttp     : 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.0',
-            baker_asr     : 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.0',
-            baker_long_asr: 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.0'
+            basecomponent : 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.2',
+            bakerhttp     : 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.2',
+            baker_asr     : 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.2',
+            baker_long_asr: 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.2'
 
 //            bakerhttp     : project(path: ':bakerhttp'),
 //            basecomponent : project(path: ':bakerbasecomponent'),
