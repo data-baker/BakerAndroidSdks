@@ -33,16 +33,17 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':bakerasr')
-    implementation project(path: ':bakerbasecomponent')
-    implementation project(path: ':bakerhttp')
-    implementation project(path: ':bakerlongtimeasr')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation rootProject.ext.dependencies.gson
+    implementation rootProject.ext.dependencies.basecomponent
+    implementation rootProject.ext.dependencies.okhttp
+    implementation rootProject.ext.dependencies.bakerhttp
+    implementation rootProject.ext.dependencies.baker_asr
+    implementation rootProject.ext.dependencies.baker_long_asr
+
     implementation 'pub.devrel:easypermissions:1.3.0'
     implementation 'com.blankj:utilcodex:1.29.0'
 }

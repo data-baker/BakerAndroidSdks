@@ -1,16 +1,14 @@
 apply plugin: 'com.android.library'
 
-def mVersion = "2.0.0"
-
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 2
-        versionName "${mVersion}"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -33,7 +31,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    api 'com.google.code.gson:gson:2.8.6'
+    implementation rootProject.ext.dependencies.gson
 }
 
 //task to delete the old jar
@@ -46,63 +44,3 @@ task exportJar(type: Copy) {
 }
 
 exportJar.dependsOn(build)
-
-
-//TODO 下面是复杂的方式上传jCenter,自定义可配置的比较多,下面四个tast生成必要的四个文件（build/libs）然后依次上传至Bintray上，需要自己建立仓库、项目
-// 定义pom文件参数
-def groupIdDefined = "com.baker.sdk.basecomponent"
-def artifactIdDefined = "bakerbasecomponent"
-def versionDefined = "${mVersion}"
-
-//task to delete the old jar
-task exportAar(type: Copy, dependsOn: build) {
-    from('build/outputs/aar/')
-    into('build/libs')
-    include('bakerbasecomponent-release.aar')
-    ///Rename the jar
-    rename('bakerbasecomponent-release.aar', "${artifactIdDefined}-${versionDefined}.aar")
-}
-
-exportAar.dependsOn(build)
-
-// 生成Java源码文件
-task sourcesJar(type: Jar, dependsOn: exportAar) {
-    from android.sourceSets.main.java.srcDirs
-    baseName = "${artifactIdDefined}-${versionDefined}"
-    classifier = 'sources'
-}
-
-// 生成Javadoc文件
-task javadoc(type: Javadoc, dependsOn: sourcesJar) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    baseName = "${artifactIdDefined}-${versionDefined}"
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-// 生成pom文件
-apply plugin: 'maven'
-
-task createPom(type: Jar, dependsOn: javadocJar) {
-    doLast {
-        pom {
-            project {
-                groupId "${groupIdDefined}"
-                artifactId "${artifactIdDefined}"
-                version "${versionDefined}"
-                packaging "aar"
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-            }
-        }.writeTo("$libsDir/${artifactIdDefined}-${versionDefined}.pom")
-    }
-}

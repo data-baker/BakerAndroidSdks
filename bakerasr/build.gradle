@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "2.0"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -32,14 +32,17 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation project(path: ':bakerbasecomponent')
-    implementation project(path: ':bakerhttp')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation rootProject.ext.dependencies.gson
+    implementation rootProject.ext.dependencies.basecomponent
+    implementation rootProject.ext.dependencies.okhttp
+    implementation rootProject.ext.dependencies.bakerhttp
+
+//    implementation project(path: ':bakerbasecomponent')
+//    implementation project(path: ':bakerhttp')
 //    implementation 'com.baker.sdk.basecomponent:bakerbasecomponent:1.0.2'
 //    implementation 'com.baker.sdk.http:bakerhttp:1.0.3'
 }
