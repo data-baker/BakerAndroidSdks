@@ -133,8 +133,8 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         }
     }
 
-    long time = 0;
-    boolean showLog = true;
+//    long time = 0;
+//    boolean showLog = true;
 
     private void startRecord() {
         if (longTimeAsr != null) {
@@ -150,8 +150,8 @@ public class LongAsrMicActivity extends BakerBaseActivity {
             }
             longTimeAsr.setDomain(domain);
             //*********************************结束设置参数****************************
-            time = System.currentTimeMillis();
-            showLog = true;
+//            time = System.currentTimeMillis();
+//            showLog = true;
             longTimeAsr.startAsr();
         }
     }
@@ -176,7 +176,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
 
         @Override
         public void onVolume(int i) {
-            Log.e("onVolume", "音量: " + i);
+//            Log.e("onVolume", "音量: " + i);
             Message message = Message.obtain();
             message.what = 2;
             message.obj = i;
@@ -185,11 +185,11 @@ public class LongAsrMicActivity extends BakerBaseActivity {
 
         @Override
         public void onRecording(String result, boolean sentenceEnd, boolean endFlag) {
-            Log.e(TAG, "result = " + result + ", isLast = " + sentenceEnd);
-            if (showLog) {
-                Log.e("waste_time", "总耗时: " + (System.currentTimeMillis() - time));
-                showLog = false;
-            }
+//            Log.e(TAG, "result = " + result + ", isLast = " + sentenceEnd);
+//            if (showLog) {
+//                Log.e("waste_time", "总耗时: " + (System.currentTimeMillis() - time));
+//                showLog = false;
+//            }
             Message message = Message.obtain();
             message.what = 3;
             message.obj = stringBuilder.toString() + result;
