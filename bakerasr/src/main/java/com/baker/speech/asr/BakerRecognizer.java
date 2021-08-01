@@ -14,11 +14,9 @@ import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
 
 import com.baker.sdk.basecomponent.BakerBaseConstants;
-import com.baker.sdk.basecomponent.BakerSdkBaseComponent;
 import com.baker.sdk.basecomponent.util.GsonConverter;
 import com.baker.sdk.basecomponent.util.Util;
 import com.baker.sdk.http.BakerTokenManager;
-import com.baker.sdk.http.BuildConfig;
 import com.baker.speech.asr.base.BakerAsrConstants;
 import com.baker.speech.asr.base.BakerRecognizerCallback;
 import com.baker.speech.asr.bean.BakerException;
@@ -27,8 +25,6 @@ import com.baker.speech.asr.event.EventManager;
 import com.baker.speech.asr.event.EventManagerMessagePool;
 import com.baker.speech.asr.event.EventManagerMultiMic;
 import com.baker.speech.asr.event.EventManagerMultiNet;
-
-import static com.baker.speech.asr.BakerPrivateConstants.dataQueue;
 
 /**
  * @author hsj55

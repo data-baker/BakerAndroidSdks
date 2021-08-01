@@ -1,7 +1,6 @@
 package com.baker.sdk.longtime.asr.base;
 
 import android.Manifest;
-import android.app.IntentService;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
@@ -15,11 +14,10 @@ import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
 
 import com.baker.sdk.basecomponent.BakerBaseConstants;
-import com.baker.sdk.basecomponent.BakerSdkBaseComponent;
 import com.baker.sdk.basecomponent.util.GsonConverter;
 import com.baker.sdk.basecomponent.util.Util;
 import com.baker.sdk.http.BakerTokenManager;
-import com.baker.sdk.http.BuildConfig;
+import com.baker.sdk.http.CallbackListener;
 import com.baker.sdk.longtime.asr.bean.LongTimeAsrError;
 import com.baker.sdk.longtime.asr.bean.LongTimeAsrParams;
 import com.baker.sdk.longtime.asr.bean.LongTimeAsrResponse;
@@ -122,7 +120,17 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
         BakerPrivateConstants.clientSecret = secret;
 
         //调用授权
-        BakerTokenManager.getInstance().authentication(clientId, secret, null);
+        BakerTokenManager.getInstance().authentication(clientId, secret, new CallbackListener<String>(){
+            @Override
+            public void onSuccess(String response) {
+                BakerPrivateConstants.token = response;
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     @Override

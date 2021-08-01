@@ -61,7 +61,6 @@ public class EventManagerMultiNet implements EventManager {
     public void send(String name, byte[] data, String params) {
         switch (name) {
             case "net.start":
-                time = System.currentTimeMillis();
                 if (!TextUtils.isEmpty(params)) {
                     LongTimeAsrParams asrParams = GsonConverter.fromJson(params, LongTimeAsrParams.class);
                     audioFormat = asrParams.getAudio_format();
@@ -77,6 +76,9 @@ public class EventManagerMultiNet implements EventManager {
                         webSocketClient = new WebSocketClient(baseUrl);
                     }
                 }
+//                time_connect = System.currentTimeMillis();
+//                show = true;
+//                first = true;
                 webSocketClient.start(listener);
                 mIdx.set(-1);
                 isLast = false;
@@ -93,7 +95,11 @@ public class EventManagerMultiNet implements EventManager {
         }
     }
 
-    private long time;
+//    private long time_connect;
+//    private long time_send;
+//    private boolean show = true;
+//    private boolean first = true;
+//    private long time_last;
 
     private void send() {
         try {
@@ -107,20 +113,22 @@ public class EventManagerMultiNet implements EventManager {
             longTimeAsrParams.setAdd_pct(addPct);
             longTimeAsrParams.setDomain(domain);
             if (data == null || data.length < bufferSizeForUpload) {
-                Log.d("hsj", "Req_idx = -1 服务器");
+//                Log.d("hsj", "Req_idx = -1 服务器");
                 longTimeAsrParams.setReq_idx(mIdx.get() * -1);
                 isLast = true;
+//                time_last = System.currentTimeMillis();
             } else {
-                Log.d("hsj", "data.length = " + data.length);
+//                Log.d("hsj", "data.length = " + data.length);
                 longTimeAsrParams.setReq_idx(mIdx.get());
             }
-            Log.d("hsj", "上传id:" + longTimeAsrParams.getReq_idx());
+//            Log.d("hsj", "上传id:" + longTimeAsrParams.getReq_idx());
             if (webSocketClient != null) {
                 String token;
                 if (!TextUtils.isEmpty(webSocketUrl)) {
                     token = "default";
                 } else {
-                    token = BakerHttpConstants.getAuthorInfoByClientId(BakerPrivateConstants.clientId).getAccessToken();
+//                    token = BakerHttpConstants.getAuthorInfoByClientId(BakerPrivateConstants.clientId).getAccessToken();
+                    token = BakerPrivateConstants.token;
                     if (TextUtils.isEmpty(token)) {
                         onFault(BakerLongTimeAsrConstants.ERROR_CODE_INIT_FAILED_TOKEN_FAULT, "The token of long time asr sdk is null.");
                         return;
@@ -131,6 +139,10 @@ public class EventManagerMultiNet implements EventManager {
                 String params = GsonConverter.toJson(baseParams);
 //                Log.d("hsj","上传id：" + longTimeAsrParams.getReq_idx() + ", 已运行：" + (System.currentTimeMillis() - time));
                 if (webSocketClient.getWebSocket() != null) {
+//                    if (first) {
+//                        time_send = System.currentTimeMillis();
+//                        first = false;
+//                    }
                     webSocketClient.getWebSocket().send(params);
                 }
             }
@@ -144,23 +156,12 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             //1=sdk麦克风录音 2=接收字节流
+//            Log.d("waste_time", "webSocket连接耗时：" + (System.currentTimeMillis() - time_connect));
             if (type == 1) {
                 EventManagerMessagePool.offer(mOwner, "net.start-called-1");
             } else if (type == 2) {
                 EventManagerMessagePool.offer(mOwner, "net.start-called-2");
             }
-        }
-
-        @Override
-        public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
-            super.onClosed(webSocket, code, reason);
-            HLogger.d("onClosed, reason = " + reason);
-        }
-
-        @Override
-        public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
-            super.onClosing(webSocket, code, reason);
-            HLogger.d("onClosing, reason = " + reason);
         }
 
         @Override
@@ -175,12 +176,19 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
             super.onMessage(webSocket, text);
-            Log.d("hsj", "onMessage, text = " + text);
+//            if (show){
+//                Log.d("waste_time", "发送首包后，首次返回耗时：" + (System.currentTimeMillis() - time_send));
+//                show = false;
+//            }
+//            Log.d("hsj", "onMessage, text = " + text);
             HLogger.d("onMessage, text = " + text);
             if (!TextUtils.isEmpty(text)) {
                 LongTimeAsrResponse response = GsonConverter.fromJson(text, LongTimeAsrResponse.class);
                 if (response != null) {
                     if (response.getCode() == 90000 || response.getCode() == 0) {
+//                        if (response.getEnd_flag() == 1){
+//                            Log.d("waste_time", "尾包耗时：" + (System.currentTimeMillis() - time_last));
+//                        }
                         EventManagerMessagePool.offer(mOwner, "asr.partial", text);
 //                        if (!isLast) {
 //                            EventManagerMessagePool.offer(mOwner, "asr.partial", stringBuilder.toString() + response.getAsr_text());
