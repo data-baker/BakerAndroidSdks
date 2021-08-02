@@ -105,6 +105,9 @@ public class EventManagerMultiNet implements EventManager {
         try {
             mIdx.addAndGet(1);
             byte[] data = BakerPrivateConstants.dataQueue.poll(300, TimeUnit.MILLISECONDS);
+            if (data == null) {
+                data = new byte[]{0, 0};
+            }
             longTimeAsrParams.setAudio_data(Base64.encodeToString(data, Base64.NO_WRAP));
             if (type == 2) {
                 longTimeAsrParams.setAudio_format(audioFormat);

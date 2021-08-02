@@ -398,5 +398,9 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
             net.release();
             net = null;
         }
+
+        mContext = null;
+        mCallBack = null;
+        BakerTokenManager.getInstance().release();
     }
 }

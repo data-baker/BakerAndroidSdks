@@ -36,10 +36,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.3'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.3'
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
-//    implementation project(path: ":bakerbasecomponent")
-//    implementation project(path: ":bakerhttp")
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.3'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.3'
+    implementation project(path: ":bakerbasecomponent")
+    implementation project(path: ":bakerhttp")
 }

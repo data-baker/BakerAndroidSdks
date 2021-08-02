@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -187,9 +186,12 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         public void onRecording(String result, boolean sentenceEnd, boolean endFlag) {
 //            Log.e(TAG, "result = " + result + ", isLast = " + sentenceEnd);
 //            if (showLog) {
-//                Log.e("waste_time", "总耗时: " + (System.currentTimeMillis() - time));
+//                long w = System.currentTimeMillis() - time;
+//                Log.e("waste_time", "总耗时: " + w);
+//                WriteText.writeLogs("总耗时: " + w);
 //                showLog = false;
 //            }
+
             Message message = Message.obtain();
             message.what = 3;
             message.obj = stringBuilder.toString() + result;

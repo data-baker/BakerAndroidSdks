@@ -84,4 +84,8 @@ public class BakerTokenManager {
             }
         });
     }
+
+    public void release(){
+        listener = null;
+    }
 }
