@@ -3,4 +3,5 @@ include ':bakerasr'
 include ':bakerlongtimeasr'
 include ':bakerhttp'
 include ':bakerbasecomponent'
+include ':synthesizer'
 rootProject.name = "BakerAndroidSdks"

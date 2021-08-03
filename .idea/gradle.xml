@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/bakerbasecomponent" />
             <option value="$PROJECT_DIR$/bakerhttp" />
             <option value="$PROJECT_DIR$/bakerlongtimeasr" />
+            <option value="$PROJECT_DIR$/synthesizer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

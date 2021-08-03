@@ -24,4 +24,12 @@
         android:text="长语音识别"
         android:textSize="18sp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:onClick="tts"
+        android:text="声音合成（在线流式）"
+        android:textSize="18sp"/>
+
 </LinearLayout>

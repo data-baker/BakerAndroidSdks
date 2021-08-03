@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.baker.sdk.demo.base.Constants;
+import com.baker.sdk.demo.tts.TtsActivity;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!EasyPermissions.hasPermissions(this, permissions)){
+        if (!EasyPermissions.hasPermissions(this, permissions)) {
             EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, permissions);
         }
     }
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, permissions);
         }
     }
+
+    public void tts(View view) {
+        toAnOtherActivity("tts_online");
+    }
+
     public void longTimeAsr(View view) {
         if (EasyPermissions.hasPermissions(this, permissions)) {
             //已经打开权限
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
-    private void toAnOtherActivity(String type){
+    private void toAnOtherActivity(String type) {
         Intent intent = new Intent(MainActivity.this, AuthorizationActivity.class);
         intent.putExtra(Constants.EXPERIENCE_TYPE, type);
         startActivity(intent);
