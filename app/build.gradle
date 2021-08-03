@@ -62,15 +62,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.4'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.4'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.4'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.4'
-    implementation project(path: ':synthesizer')
-    implementation project(path: ":bakerbasecomponent")
-    implementation project(path: ":bakerhttp")
-    implementation project(path: ":bakerasr")
-    implementation project(path: ":bakerlongtimeasr")
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.5'
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.5'
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.5'
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.5'
+    implementation 'com.github.data-baker.BakerAndroidSdks:synthesizer:2.0.5'
+//    implementation project(path: ':synthesizer')
+//    implementation project(path: ":bakerbasecomponent")
+//    implementation project(path: ":bakerhttp")
+//    implementation project(path: ":bakerasr")
+//    implementation project(path: ":bakerlongtimeasr")
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
 
