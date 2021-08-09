@@ -17,6 +17,7 @@ import com.baker.sdk.basecomponent.BakerBaseConstants;
 import com.baker.sdk.basecomponent.util.GsonConverter;
 import com.baker.sdk.basecomponent.util.Util;
 import com.baker.sdk.http.BakerTokenManager;
+import com.baker.sdk.http.CallbackListener;
 import com.baker.speech.asr.base.BakerAsrConstants;
 import com.baker.speech.asr.base.BakerRecognizerCallback;
 import com.baker.speech.asr.bean.BakerException;
@@ -102,7 +103,17 @@ public class BakerRecognizer implements EventManager {
         BakerPrivateConstants.clientSecret = secret;
 
         //调用授权
-        BakerTokenManager.getInstance().authentication(clientId, secret, null);
+        BakerTokenManager.getInstance().authentication(clientId, secret, new CallbackListener<String>(){
+            @Override
+            public void onSuccess(String response) {
+                BakerPrivateConstants.token = response;
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     public void setDomain(String domain) {

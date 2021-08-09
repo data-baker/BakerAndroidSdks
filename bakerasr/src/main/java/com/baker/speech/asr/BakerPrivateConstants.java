@@ -17,4 +17,6 @@ public class BakerPrivateConstants {
 
     public static String clientId = "";
     public static String clientSecret = "";
+
+    public static String token = "";
 }

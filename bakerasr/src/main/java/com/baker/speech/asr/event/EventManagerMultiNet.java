@@ -60,7 +60,7 @@ public class EventManagerMultiNet implements EventManager {
         switch (name) {
             case "net.start":
                 if (BakerPrivateConstants.baseUrl.equals(url)) {
-                    mTtsToken = BakerHttpConstants.getAuthorInfoByClientId(BakerPrivateConstants.clientId).getAccessToken();
+                    mTtsToken = BakerPrivateConstants.token;
                 } else {
                     mTtsToken = "default";
                 }
