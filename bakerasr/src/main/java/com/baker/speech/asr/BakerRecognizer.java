@@ -10,6 +10,7 @@ import android.os.Build;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -41,6 +42,7 @@ public class BakerRecognizer implements EventManager {
     private AudioManager mAudioManager;
     private TelephonyManager mTelephonyManager;
     private AudioFocusRequest mFocusRequest;
+    private BakerTokenManager tokenManager;
 
     private String domain = "common";
 
@@ -62,9 +64,15 @@ public class BakerRecognizer implements EventManager {
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
     }
-    public void initSdk(Context context, String clientId, String secret, BakerRecognizerCallback callBack){
+
+    public void initSdk(Context context, String clientId, String secret, BakerRecognizerCallback callBack) {
         initSdk(context, clientId, secret, callBack, false);
     }
+
+    public void initSdk(Context context, String clientId, String secret) {
+        initSdk(context, clientId, secret, null, false);
+    }
+
     public void initSdk(Context context, String clientId, String secret, BakerRecognizerCallback callBack, boolean isDebug) {
         mContext = context;
         mCallBack = callBack;
@@ -103,7 +111,8 @@ public class BakerRecognizer implements EventManager {
         BakerPrivateConstants.clientSecret = secret;
 
         //调用授权
-        BakerTokenManager.getInstance().authentication(clientId, secret, new CallbackListener<String>(){
+        tokenManager = new BakerTokenManager();
+        tokenManager.authentication(clientId, secret, new CallbackListener<String>() {
             @Override
             public void onSuccess(String response) {
                 BakerPrivateConstants.token = response;
@@ -111,7 +120,8 @@ public class BakerRecognizer implements EventManager {
 
             @Override
             public void onFailure(Exception e) {
-
+                Log.e("BakerRecognizer", "baker asr sdk init token error, " + e.getMessage());
+                e.printStackTrace();
             }
         });
     }
@@ -124,6 +134,10 @@ public class BakerRecognizer implements EventManager {
         if (!TextUtils.isEmpty(url)) {
             this.url = url;
         }
+    }
+
+    public void setCallBack(BakerRecognizerCallback callBack) {
+        this.mCallBack = callBack;
     }
 
     public void startAsr() {
@@ -309,6 +323,13 @@ public class BakerRecognizer implements EventManager {
         if (net != null) {
             net.release();
             net = null;
+        }
+
+        mContext = null;
+        mCallBack = null;
+        if (tokenManager != null) {
+            tokenManager.release();
+            tokenManager = null;
         }
     }
 }

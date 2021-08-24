@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/bakerhttp" />
             <option value="$PROJECT_DIR$/bakerlongtimeasr" />
             <option value="$PROJECT_DIR$/synthesizer" />
+            <option value="$PROJECT_DIR$/voiceconvert" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

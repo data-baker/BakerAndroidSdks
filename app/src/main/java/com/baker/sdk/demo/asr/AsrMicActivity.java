@@ -110,8 +110,7 @@ public class AsrMicActivity extends BakerBaseActivity {
         });
 
         bakerRecognizer = new BakerRecognizer();
-        bakerRecognizer.initSdk(AsrMicActivity.this, sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_ID)
-                , sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_SECRET), bakerRecognizerCallback);
+        bakerRecognizer.initSdk(AsrMicActivity.this, bakerRecognizerCallback);
     }
 
     private void toast(String content) {
@@ -185,6 +184,7 @@ public class AsrMicActivity extends BakerBaseActivity {
     };
 
     private void setParams() {
+        bakerRecognizer.setUrl("ws://10.10.50.21:9002");
         String text = spinner.getText().toString().trim();
         if (!TextUtils.isEmpty(text)) {
             domain = text;

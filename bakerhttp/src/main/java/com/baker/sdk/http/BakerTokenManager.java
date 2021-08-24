@@ -17,17 +17,6 @@ public class BakerTokenManager {
     private CallbackListener listener;
     private String mClientId, mClientSecret;
 
-    private BakerTokenManager() {
-    }
-
-    private static class InnerClass {
-        private final static BakerTokenManager INSTANCE = new BakerTokenManager();
-    }
-
-    public static BakerTokenManager getInstance() {
-        return InnerClass.INSTANCE;
-    }
-
     public synchronized void authentication(String clientId, String secret, CallbackListener callbackListener) {
         listener = callbackListener;
         mClientId = clientId;

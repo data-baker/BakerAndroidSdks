@@ -9,6 +9,7 @@ import com.baker.sdk.basecomponent.util.HLogger;
 import com.baker.sdk.basecomponent.writelog.WriteLog;
 import com.baker.sdk.http.BakerHttpConstants;
 import com.baker.sdk.http.BakerTokenManager;
+import com.baker.sdk.http.CallbackListener;
 import com.baker.sdk.http.WebSocketClient;
 import com.baker.speech.asr.BakerPrivateConstants;
 import com.baker.speech.asr.base.BakerAsrConstants;
@@ -65,7 +66,7 @@ public class EventManagerMultiNet implements EventManager {
                     mTtsToken = "default";
                 }
                 if (TextUtils.isEmpty(mTtsToken)) {
-                    onFault(BakerAsrConstants.ERROR_CODE_INIT_FAILED_TOKEN_FAULT, "The token of long time asr sdk is null.");
+                    onFault(BakerAsrConstants.ERROR_CODE_INIT_FAILED_TOKEN_FAULT, "The token of asr sdk is null.");
                     return;
                 }
 
@@ -204,7 +205,18 @@ public class EventManagerMultiNet implements EventManager {
                                     + response.getMessage() + ", trace_id = " + response.getTrace_id()
                                     + ", sid = " + response.getSid());
                             //调用授权
-                            BakerTokenManager.getInstance().authentication(BakerPrivateConstants.clientId, BakerPrivateConstants.clientSecret, null);
+                            new BakerTokenManager().authentication(BakerPrivateConstants.clientId, BakerPrivateConstants.clientSecret, new CallbackListener<String>() {
+                                @Override
+                                public void onSuccess(String response) {
+                                    BakerPrivateConstants.token = response;
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("BakerRecognizer", "baker asr sdk init token error, " + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
                             webSocket.close(1001, null);
                         } else {
                             onFault(String.valueOf(response.getCode()), "errorMsg = "

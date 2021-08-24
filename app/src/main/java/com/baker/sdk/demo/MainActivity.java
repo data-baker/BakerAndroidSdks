@@ -56,6 +56,20 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
+    public void voiceConvert(View view) {
+        if (EasyPermissions.hasPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO})) {
+            //已经打开权限
+            toAnOtherActivity("voice_convert");
+        } else {
+            //没有打开相关权限、申请权限
+            EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, new String[]{Manifest.permission.RECORD_AUDIO});
+        }
+    }
+
+    public void voiceEngrave(View view) {
+
+    }
+
     private void toAnOtherActivity(String type) {
         Intent intent = new Intent(MainActivity.this, AuthorizationActivity.class);
         intent.putExtra(Constants.EXPERIENCE_TYPE, type);

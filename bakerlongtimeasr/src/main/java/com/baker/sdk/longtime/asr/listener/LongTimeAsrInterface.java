@@ -10,6 +10,8 @@ public interface LongTimeAsrInterface {
     void isDebug(boolean d);
     void initSdk(Context context, LongTimeAsrCallBack callBack);
     void initSdk(Context context, String clientId, String secret, LongTimeAsrCallBack callBack);
+    void initSdk(Context context, String clientId, String secret);
+    void setCallBack(LongTimeAsrCallBack callBack);
     void setAudioFormat(String format);
     void setSampleRate(int rate);
     void setAddPct(boolean addPct);

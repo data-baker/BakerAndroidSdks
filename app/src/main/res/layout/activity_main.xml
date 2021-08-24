@@ -10,26 +10,41 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:onClick="tts"
+        android:text="声音合成（在线流式）"
+        android:textSize="18sp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
         android:onClick="asr"
         android:text="一句话识别"
         android:textSize="18sp" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
         android:onClick="longTimeAsr"
         android:text="长语音识别"
         android:textSize="18sp"/>
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
-        android:onClick="tts"
-        android:text="声音合成（在线流式）"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:onClick="voiceConvert"
+        android:text="声音转换"
         android:textSize="18sp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="20dp"
+        android:onClick="voiceEngrave"
+        android:text="声音复刻"
+        android:textSize="18sp"/>
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.baker.sdk.demo.asr.AsrActivity;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
+import com.baker.sdk.demo.convert.VoiceConvertActivity;
 import com.baker.sdk.demo.longasr.LongAsrActivity;
 import com.baker.sdk.demo.tts.TtsActivity;
 import com.baker.sdk.http.BakerTokenManager;
@@ -69,6 +70,16 @@ public class AuthorizationActivity extends BakerBaseActivity {
                         etClientSecret.setText(sharedPreferencesGet(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET));
                     }
                     break;
+                case "voice_convert":
+                    //声音转换 获取token
+                    setTitle("声音转换");
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID))) {
+                        etClientId.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID));
+                    }
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET))) {
+                        etClientSecret.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET));
+                    }
+                    break;
                 default:
                     break;
             }
@@ -85,7 +96,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
             Toast.makeText(this, "请输入ClientId", Toast.LENGTH_SHORT).show();
             return;
         }
-        BakerTokenManager.getInstance().authentication(etClientId.getText().toString().trim(), etClientSecret.getText().toString().trim(), new CallbackListener() {
+        new BakerTokenManager().authentication(etClientId.getText().toString().trim(), etClientSecret.getText().toString().trim(), new CallbackListener() {
             @Override
             public void onSuccess(Object response) {
                 storageParameter();
@@ -123,6 +134,11 @@ public class AuthorizationActivity extends BakerBaseActivity {
                 sharedPreferencesCommit(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET, clientSecret);
                 mIntent.setClass(AuthorizationActivity.this, LongAsrActivity.class);
                 break;
+            case "voice_convert":
+                sharedPreferencesCommit(Constants.VOICE_CONVERT_CLIENT_ID, clientId);
+                sharedPreferencesCommit(Constants.VOICE_CONVERT_CLIENT_SECRET, clientSecret);
+                mIntent.setClass(AuthorizationActivity.this, VoiceConvertActivity.class);
+                break;
             default:
                 break;
         }
@@ -147,6 +163,10 @@ public class AuthorizationActivity extends BakerBaseActivity {
             case "long_time_asr_online":
                 sharedPreferencesRemove(Constants.LONG_TIME_ASR_ONLINE_CLIENT_ID);
                 sharedPreferencesRemove(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET);
+                break;
+            case "voice_convert":
+                sharedPreferencesRemove(Constants.VOICE_CONVERT_CLIENT_ID);
+                sharedPreferencesRemove(Constants.VOICE_CONVERT_CLIENT_SECRET);
                 break;
         }
     }

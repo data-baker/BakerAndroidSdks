@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baker.sdk.basecomponent.writelog.WriteLog;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.R;
@@ -132,7 +133,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         }
     }
 
-//    long time = 0;
+    //    long time = 0;
 //    boolean showLog = true;
 
     private void startRecord() {
@@ -196,6 +197,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
             message.what = 3;
             message.obj = stringBuilder.toString() + result;
             handler.sendMessage(message);
+
             if (sentenceEnd) {
                 stringBuilder.append(result);
             }

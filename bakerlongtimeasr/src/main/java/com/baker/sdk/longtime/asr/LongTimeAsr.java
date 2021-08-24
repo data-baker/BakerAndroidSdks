@@ -33,6 +33,16 @@ public class LongTimeAsr implements LongTimeAsrInterface {
     }
 
     @Override
+    public void initSdk(Context context, String clientId, String secret) {
+        impl.initSdk(context, clientId, secret);
+    }
+
+    @Override
+    public void setCallBack(LongTimeAsrCallBack callBack) {
+        impl.setCallBack(callBack);
+    }
+
+    @Override
     public void setAudioFormat(String format) {
         impl.setAudioFormat(format);
     }

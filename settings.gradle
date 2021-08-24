@@ -4,4 +4,5 @@ include ':bakerlongtimeasr'
 include ':bakerhttp'
 include ':bakerbasecomponent'
 include ':synthesizer'
+include ':voiceconvert'
 rootProject.name = "BakerAndroidSdks"

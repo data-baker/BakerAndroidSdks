@@ -10,6 +10,7 @@ import android.os.Build;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -44,6 +45,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
     private AudioManager mAudioManager;
     private TelephonyManager mTelephonyManager;
     private AudioFocusRequest mFocusRequest;
+    private BakerTokenManager tokenManager;
 
     private int sampleRate = 16000;
     private boolean addPct = true;
@@ -120,7 +122,8 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
         BakerPrivateConstants.clientSecret = secret;
 
         //调用授权
-        BakerTokenManager.getInstance().authentication(clientId, secret, new CallbackListener<String>(){
+        tokenManager = new BakerTokenManager();
+        tokenManager.authentication(clientId, secret, new CallbackListener<String>() {
             @Override
             public void onSuccess(String response) {
                 BakerPrivateConstants.token = response;
@@ -128,9 +131,20 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
 
             @Override
             public void onFailure(Exception e) {
-
+                Log.e("LongTimeAsrImpl", "baker long time asr sdk init token error, " + e.getMessage());
+                e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void initSdk(Context context, String clientId, String secret) {
+        initSdk(context, clientId, secret, null);
+    }
+
+    @Override
+    public void setCallBack(LongTimeAsrCallBack callBack) {
+        this.mCallBack = callBack;
     }
 
     @Override
@@ -401,6 +415,9 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
 
         mContext = null;
         mCallBack = null;
-        BakerTokenManager.getInstance().release();
+        if (tokenManager != null) {
+            tokenManager.release();
+            tokenManager = null;
+        }
     }
 }
