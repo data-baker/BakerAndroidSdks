@@ -13,6 +13,8 @@ import com.baker.sdk.demo.asr.AsrActivity;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.convert.VoiceConvertActivity;
+import com.baker.sdk.demo.convert.VoiceConvertFromFileActivity;
+import com.baker.sdk.demo.convert.VoiceConvertFromMicActivity;
 import com.baker.sdk.demo.longasr.LongAsrActivity;
 import com.baker.sdk.demo.tts.TtsActivity;
 import com.baker.sdk.http.BakerTokenManager;

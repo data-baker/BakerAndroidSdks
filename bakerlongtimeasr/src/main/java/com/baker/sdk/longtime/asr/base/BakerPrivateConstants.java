@@ -1,6 +1,12 @@
 package com.baker.sdk.longtime.asr.base;
 
+import android.media.AudioFormat;
+import android.media.MediaRecorder;
+
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author hsj55
@@ -21,4 +27,7 @@ public class BakerPrivateConstants {
     public static String clientSecret = "";
 
     public static String token = "";
+
+
+
 }

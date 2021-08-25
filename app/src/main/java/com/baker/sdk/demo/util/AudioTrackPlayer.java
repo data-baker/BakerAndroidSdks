@@ -72,6 +72,10 @@ public class AudioTrackPlayer {
         }
     }
 
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
     public void stop() {
 //        playing = false;
         audioTrack.pause();

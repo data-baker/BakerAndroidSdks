@@ -19,4 +19,6 @@ public class Constants {
      * 读文件异常
      */
     public static final String ERROR_READ_FILE = ERROR_CODE_PREFIX + "00003";
+
+    public static final int bufferSizeForUpload = 5120;
 }
