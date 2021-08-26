@@ -6,8 +6,6 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -20,9 +18,7 @@ import com.baker.sdk.http.WebSocketClient;
 import com.databaker.voiceconvert.bean.AudioReq;
 import com.databaker.voiceconvert.bean.AudioResp;
 import com.databaker.voiceconvert.callback.AuthCallback;
-import com.databaker.voiceconvert.callback.SpeechCallback;
 import com.databaker.voiceconvert.callback.VoiceConvertCallBack;
-import com.databaker.voiceconvert.callback.WebSocketOpenCallback;
 import com.databaker.voiceconvert.util.ArrayUtils;
 import com.google.gson.Gson;
 
