@@ -1,7 +1,5 @@
 package com.baker.sdk.demo.convert;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.util.AudioTrackPlayer;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.databaker.voiceconvert.VoiceConvertManager;
 import com.databaker.voiceconvert.callback.AuthCallback;
 import com.databaker.voiceconvert.callback.VoiceConvertCallBack;
@@ -27,8 +24,6 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-
-import okio.BufferedSink;
 
 public class VoiceConvertFromMicActivity extends BakerBaseActivity {
     private final String[] voiceDescArray = new String[]{"变声娇娇", "变声天天", "变声恐龙贝克", "变声乐迪", "变声未眠"};
@@ -199,6 +194,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             //2. 调用SDK 发起转换
             convertManager.startFromMic(callBack);
         }

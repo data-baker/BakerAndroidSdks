@@ -7,18 +7,18 @@ public class Constants {
     /**
      * 没有token，先进行鉴权
      */
-    public static final String ERROR_NO_TOKEN = ERROR_CODE_PREFIX + "00001";
+    public static final String ERROR_NO_TOKEN = ERROR_CODE_PREFIX + "80001";
 
 
     /**
      * 网络请求出错
      */
-    public static final String ERROR_WEB_SOCKET = ERROR_CODE_PREFIX + "00002";
+    public static final String ERROR_WEB_SOCKET = ERROR_CODE_PREFIX + "80002";
 
     /**
-     * 读文件异常
+     * 无录音权限
      */
-    public static final String ERROR_READ_FILE = ERROR_CODE_PREFIX + "00003";
+    public static final String ERROR_NO_PERMISSION = ERROR_CODE_PREFIX + "80003";
 
     public static final int bufferSizeForUpload = 5120;
 }

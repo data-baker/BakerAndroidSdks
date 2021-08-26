@@ -43,6 +43,8 @@ import okhttp3.WebSocketListener;
 import okio.ByteString;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static com.databaker.voiceconvert.Constants.ERROR_NO_PERMISSION;
+import static com.databaker.voiceconvert.Constants.ERROR_NO_TOKEN;
 import static com.databaker.voiceconvert.Constants.ERROR_WEB_SOCKET;
 
 public class VoiceConvertManager {
@@ -115,17 +117,19 @@ public class VoiceConvertManager {
      * 使用sdk内部唤起的录音，进行声音转换
      */
     public void startFromMic(VoiceConvertCallBack callBack) {
+        mCallBack = callBack;
         if (Build.VERSION.SDK_INT > 23) {
             int resultCode = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO);
             if (resultCode != PERMISSION_GRANTED) {
-                throw new RuntimeException("没有申请录音的权限，请申请 Manifest.permission.RECORD_AUDIO 权限");
+                onError(ERROR_NO_PERMISSION, "没有申请录音的权限，请申请 Manifest.permission.RECORD_AUDIO 权限", "");
+                return;
             }
         }
 
         if (token.isEmpty()) {
-            throw new RuntimeException("请先调用 init 方法初始化");
+            onError(ERROR_NO_TOKEN, "请先调用 init 方法初始化", "");
+            return;
         }
-        mCallBack = callBack;
         needRecorder = true;
         startWebSocket();
     }
@@ -134,20 +138,23 @@ public class VoiceConvertManager {
      * 声音文件或者app内录音数据转换
      */
     public void startFromBytes(VoiceConvertCallBack callBack) {
-        if (token.isEmpty()) {
-            throw new RuntimeException("请先调用 init 方法初始化");
-        }
         mCallBack = callBack;
+        if (token.isEmpty()) {
+            onError(ERROR_NO_TOKEN, "请先调用 init 方法初始化", "");
+            return;
+        }
         needRecorder = false;
         startWebSocket();
     }
 
     public void sendAudio(byte[] byteArray, boolean isLast) {
         if (token.isEmpty()) {
-            throw new RuntimeException("请先调用 init 方法初始化");
+            onError(ERROR_NO_TOKEN, "请先调用 init 方法初始化", "");
+            return;
         }
         if (webSocketClient == null || webSocketClient.getWebSocket() == null) {
-            throw new IllegalStateException("webSocket is null,请先调用 startFromBytes 方法建立连接");
+            onError(ERROR_WEB_SOCKET, "webSocket is null,请先调用 startFromBytes 方法建立连接", "");
+            return;
         }
         packageAudioSend(byteArray, isLast);
     }
@@ -190,22 +197,16 @@ public class VoiceConvertManager {
                             mCallBack.onAudioOutput(audioArray, false, audioResp.getTraceid());
                         }
                     } else {
-                        if (mCallBack != null) {
-                            mCallBack.onError(audioResp.getErrcode() + "", audioResp.getErrmsg(), audioResp.getTraceid());
-                        }
+                        onError(audioResp.getErrcode() + "", audioResp.getErrmsg(), audioResp.getTraceid());
                         stopConvert();
                     }
                 } else {
-                    if (mCallBack != null) {
-                        mCallBack.onError(ERROR_WEB_SOCKET, "解析JSON长度出错", "");
-                    }
+                    onError(ERROR_WEB_SOCKET, "解析JSON长度出错", "");
                     stopConvert();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                if (mCallBack != null) {
-                    mCallBack.onError(ERROR_WEB_SOCKET, "非法异常" + e.getMessage(), "");
-                }
+                onError(ERROR_WEB_SOCKET, "非法异常" + e.getMessage(), "");
                 stopConvert();
             }
         }
@@ -214,9 +215,7 @@ public class VoiceConvertManager {
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
             if (webSocketClient != null && webSocketClient.getCancelSocket() != null
                     && !webSocket.equals(webSocketClient.getCancelSocket())) {
-                if (mCallBack != null) {
-                    mCallBack.onError(ERROR_WEB_SOCKET, t.getMessage(), "");
-                }
+                onError(ERROR_WEB_SOCKET, t.getMessage(), "");
             }
         }
     };
@@ -346,6 +345,12 @@ public class VoiceConvertManager {
         short[] shorts = new short[audioData.length / 2];
         ByteBuffer.wrap(audioData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(shorts);
         return shorts;
+    }
+
+    private void onError(String errorCode, String errorMsg, String traceId) {
+        if (mCallBack != null) {
+            mCallBack.onError(errorCode, errorMsg, traceId);
+        }
     }
 
     //************************************************ 以下是mic配置相关信息 *************************************

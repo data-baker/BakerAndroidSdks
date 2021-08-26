@@ -3,7 +3,7 @@ package com.databaker.voiceconvert.callback;
 public interface VoiceConvertCallBack {
 
     /**
-     * websocket网络连接成功后
+     * 授权验证通过，且与服务器连接成功，准备就绪回调
      */
     void onReady();
 
