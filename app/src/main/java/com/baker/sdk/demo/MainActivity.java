@@ -91,4 +91,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         Toast.makeText(this, "请同意相关权限，否则部分功能无法使用", Toast.LENGTH_SHORT).show();
     }
+
+    public void voicePrint(View view) {
+    }
 }
