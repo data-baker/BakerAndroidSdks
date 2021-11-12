@@ -69,7 +69,7 @@ object BakerVpr : BakerVprAPI {
         val params: Map<String, String> =
             mapOf(
                 "access_token" to vprRegisterRequest.access_token,
-                "audio" to vprRegisterRequest.audio,
+                "audio" to vprRegisterRequest.audioBase64(),
                 "format" to vprRegisterRequest.format,
                 "name" to vprRegisterRequest.name,
                 "registerId" to vprRegisterRequest.registerId,
@@ -139,7 +139,7 @@ object BakerVpr : BakerVprAPI {
         val params: Map<String, String> =
             mapOf(
                 "access_token" to vprMatchRequest.access_token,
-                "audio" to vprMatchRequest.audio,
+                "audio" to vprMatchRequest.audioBase64(),
                 "format" to vprMatchRequest.format,
                 "matchId" to vprMatchRequest.matchId,
                 "scoreThreshold" to vprMatchRequest.scoreThreshold.toString()
@@ -164,7 +164,7 @@ object BakerVpr : BakerVprAPI {
         val params: Map<String, String> =
             mapOf(
                 "access_token" to vprMatchMoreRequest.access_token,
-                "audio" to vprMatchMoreRequest.audio,
+                "audio" to vprMatchMoreRequest.audioBase64(),
                 "format" to vprMatchMoreRequest.format,
                 "listNum" to vprMatchMoreRequest.listNum.toString(),
                 "scoreThreshold" to vprMatchMoreRequest.scoreThreshold.toString()

@@ -10,7 +10,7 @@ import com.baker.sdk.vpr.bean.VprBaseRequest
  */
 data class VprMatchMoreRequest(
     override val access_token: String,
-    override val audio: String,
+    override val audio: ByteArray,
     override val format: String,
     override val scoreThreshold: Double,
     /**返回匹配列表的数据条数 id*/

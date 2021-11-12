@@ -7,3 +7,4 @@ include ':synthesizer'
 include ':voiceconvert'
 rootProject.name = "BakerAndroidSdks"
 include ':bakervpr'
+include ':bakervprdemo'

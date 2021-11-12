@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">BakerVprDemo</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="third_fragment_label">Third Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="vpr_match">声纹验证(1:1)</string>
+    <string name="vpr_register">声纹注册</string>
+    <string name="vpr_search">声纹对比(1:N)</string>
+    <string name="name">姓名:</string>
+    <string name="vpr_socre">分数阈值:</string>
+    <string name="str_name">输入姓名:</string>
+    <string name="vpr_title">声纹识别demo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

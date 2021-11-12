@@ -30,9 +30,11 @@ android {
 
 dependencies {
 //    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.11'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11'
-    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+    implementation project(path: ':bakerhttp')
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11' //TODO  发布出去的时候使用这个
 
 
 //

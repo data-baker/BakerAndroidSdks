@@ -9,7 +9,8 @@ import com.baker.sdk.vpr.bean.VprBaseRequest
  */
 data class VprRegisterRequest(
     override val access_token: String,
-    override val audio: String,
+    override val audio: ByteArray,
+
     override val format: String,
     override val scoreThreshold: Double,
 

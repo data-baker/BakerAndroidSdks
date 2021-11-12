@@ -4,6 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_base.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_register.xml" value="0.1890625" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_register_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_vpr_info.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/activity_vpr_register.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/content_base.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/content_home.xml" value="0.13229166666666667" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/content_register_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/fragment_first.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/fragment_second.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/fragment_third.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/bruce/AndroidStudioProjects/BakerAndroidSdks/bakervprdemo/src/main/res/layout/vprtoolbar.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
