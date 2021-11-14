@@ -24,8 +24,11 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
 
     private fun initView() {
         mBinding.run {
-
-            toolbar.title = "声纹信息填写"
+            if (BuildConfig.DEBUG){
+                etRegisterName.setText("序俭")
+                etScore.setText("61")
+            }
+            toolbar.appToolbar.title = "声纹信息填写"
             btnVprRegister.setOnClickListener {
                 val name = etRegisterName.text?.toString()
                 val score = etScore.text?.toString()
@@ -55,7 +58,7 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
                     val recorders = gson.toJson(recorderList)
                     putString(Constants.sp_key_recorders, recorders)
                 }
-                startActivity(Intent(this@VprInfoActivity, RegitsterHomeActivity::class.java).run {
+                startActivity(Intent(this@VprInfoActivity, RegisterActivity::class.java).run {
                     putExtra(Constants.sp_key_recorder_name, name)
                     putExtra(Constants.sp_key_recorder_score, score)
                 })

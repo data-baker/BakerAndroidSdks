@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<com.google.android.material.appbar.AppBarLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/abl_common"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.BakerAndroidSdks.AppBarOverlay"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:showIn="@layout/activity_register">
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/app_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:gravity="center"
         app:popupTheme="@style/Theme.BakerAndroidSdks.PopupOverlay"
-        app:title="声纹注册" />
+        app:title="声纹信息填写" />
 
 </com.google.android.material.appbar.AppBarLayout>
-
-    

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.baker.vpr.demo.R
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -34,5 +35,6 @@ open class BaseActivity<_ViewBinding : ViewBinding> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
+//        setSupportActionBar(mBinding.root.findViewById(R.id.toolbar))
     }
 }

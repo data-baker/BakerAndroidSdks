@@ -19,7 +19,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         initView()
 
         val token = sharedPreferences.getString(Constants.sp_key_access_token, "")
-        Log.e(TAG, "token: $token")
+        Log.i(TAG, "token: $token")
         if (token.isNullOrEmpty()) {
             requestToken()
         }
@@ -28,11 +28,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
     private fun initView() {
-        mBinding.tvGetToken.setOnClickListener {
-            requestToken()
-        }
-        mBinding.btnVprRegister.setOnClickListener {
-            startActivity(Intent(this, VprInfoActivity::class.java))
+        mBinding.run {
+            toolbar.appToolbar.title = "声纹识别Demo"
+            toolbar.appToolbar.setOnClickListener {
+                requestToken()
+            }
+            btnVprRegister.setOnClickListener {
+                startActivity(Intent(this@MainActivity, VprInfoActivity::class.java))
+            }
         }
     }
 
@@ -44,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 override fun onSuccess(response: GetTokenResponse?) {
                     Toast.makeText(this@MainActivity, "获取token成功", Toast.LENGTH_SHORT).show()
                     sharedPreferences.edit {
-                        Log.e(TAG, "onSuccess: ${response.toString()}")
+                        Log.i(TAG, "onSuccess: ${response.toString()}")
                         putString(Constants.sp_key_access_token, response?.access_token)
                     }
                 }

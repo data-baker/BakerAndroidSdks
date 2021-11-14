@@ -12,6 +12,6 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     }
 
     private fun initView() {
-
+        mBinding.toolbar.appToolbar.title=getString(R.string.vpr_register)
     }
 }
