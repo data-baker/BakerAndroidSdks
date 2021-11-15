@@ -1,4 +1,4 @@
-package com.baker.vpr.demo.base
+package com.baker.vpr.demo.comm
 
 /**
  *
@@ -12,5 +12,7 @@ interface Constants {
         const val sp_key_recorder_name: String = "recorder_name"
         const val sp_key_recorder_score: String = "recorder_score"
         const val sp_key_recorders: String = "recorder_set"
+         const val AudioPermissionRequestCode = 10
+
     }
 }

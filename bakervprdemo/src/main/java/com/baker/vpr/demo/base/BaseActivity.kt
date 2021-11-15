@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.baker.vpr.demo.R
+import com.baker.vpr.demo.comm.Constants
 import java.lang.reflect.ParameterizedType
 
 /**

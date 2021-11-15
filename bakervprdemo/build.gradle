@@ -42,6 +42,13 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    //log Timber.d()
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    
     implementation project(path: ':bakervpr')
     implementation project(path: ':bakerhttp')
 

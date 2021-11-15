@@ -18,4 +18,13 @@
     <string name="str_name">输入姓名:</string>
     <string name="vpr_title">声纹识别demo</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rationale_ask_ok">确认</string>
+    <string name="rationale_ask_cancel">取消</string>
+    <string name="next_page">下一段</string>
+
+    <string-array name="register_audio_text">
+        <item>君不见黄河之水天上来，\n奔流到海不复回。</item>
+        <item>君不见高堂明镜悲白发，\n朝如青丝暮成雪。</item>
+        <item>人生得意须尽欢，\n莫使金樽空对月。</item>
+    </string-array>
 </resources>

@@ -9,7 +9,7 @@ import com.baker.sdk.http.CallbackListener
 import com.baker.sdk.vpr.BakerVpr
 import com.baker.sdk.vpr.bean.response.GetTokenResponse
 import com.baker.vpr.demo.base.BaseActivity
-import com.baker.vpr.demo.base.Constants
+import com.baker.vpr.demo.comm.Constants
 import com.baker.vpr.demo.databinding.ActivityMainBinding
 import java.lang.Exception
 

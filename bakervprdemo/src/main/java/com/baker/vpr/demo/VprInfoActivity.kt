@@ -6,10 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.edit
 import com.baker.vpr.demo.base.BaseActivity
-import com.baker.vpr.demo.base.Constants
+import com.baker.vpr.demo.comm.Constants
 import com.baker.vpr.demo.bean.Recorder
 import com.baker.vpr.demo.databinding.ActivityVprInfoBinding
-import com.baker.vpr.demo.test.RegitsterHomeActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
