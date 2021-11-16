@@ -42,7 +42,7 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
                 }
 
 
-                RegisterActivity.start(this@VprInfoActivity, name, score)
+                RegisterActivity.start(this@VprInfoActivity, name, score, "", 1)
                 finish()
             }
 

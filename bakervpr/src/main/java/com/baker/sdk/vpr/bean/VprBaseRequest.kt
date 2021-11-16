@@ -30,6 +30,6 @@ abstract class VprBaseRequest {
     abstract val format: String
 
     fun audioBase64(): String {
-    return Base64.encodeToString(audio,Base64.DEFAULT)
+        return Base64.encodeToString(audio, Base64.NO_WRAP)
     }
 }

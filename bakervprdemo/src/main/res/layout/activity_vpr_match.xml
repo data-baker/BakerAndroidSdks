@@ -14,13 +14,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/dp_10"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:id="@+id/tv_list_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="声纹ID(ID)"
+            android:text="声纹ID列表"
             android:textSize="@dimen/sp_20" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -10,7 +10,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="vpr_match">声纹验证(1:1)</string>
+    <string name="vpr_match_by1">声纹验证(1:1)</string>
     <string name="vpr_register">声纹注册</string>
     <string name="vpr_search">声纹对比(1:N)</string>
     <string name="name">姓名:</string>
@@ -21,8 +21,10 @@
     <string name="rationale_ask_ok">确认</string>
     <string name="rationale_ask_cancel">取消</string>
     <string name="next_page">下一段</string>
-    <string name="stop_and_register">结束并验证注册</string>
+    <string name="stop_and_register">结束并注册</string>
+    <string name="stop_and_match">结束并验证</string>
     <string name="start_speak">开始朗读</string>
+    <string name="register_id_delete">删除声纹</string>
 
     <string-array name="register_audio_text">
         <item>君不见黄河之水天上来，\n奔流到海不复回。</item>

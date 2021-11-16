@@ -1,11 +1,14 @@
 package com.baker.vpr.demo.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baker.vpr.demo.R
+import com.baker.vpr.demo.RegisterActivity
+import com.baker.vpr.demo.VprMatchActivity
 import com.baker.vpr.demo.bean.Recorder
 
 /**
@@ -39,7 +42,21 @@ class RegisterIdListAdapter() :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val recorder = dataList[position]
-        viewHolder.textView.text = "${recorder.name}:${recorder.registerid}"
+
+        viewHolder.textView.run {
+            text = "姓名:${recorder.name}\n分数:${recorder.score}\n声纹:${recorder.registerid}"
+            setOnClickListener {
+
+                RegisterActivity.start(
+                    it.context,
+                    recorder.name ?: "",
+                    recorder.score ?: "",
+                    recorder.registerid ?: "",
+                    2
+                )
+                (it.context as VprMatchActivity).finish()
+            }
+        }
     }
 
     override fun getItemCount() = dataList.size

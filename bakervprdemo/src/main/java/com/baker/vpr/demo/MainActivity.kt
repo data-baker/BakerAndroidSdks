@@ -51,7 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 VprMatchActivity.start(this@MainActivity)
             }
             btnVprSearch.setOnClickListener {
-                VprMatchActivity.start(this@MainActivity)
+                RegisterActivity.start(this@MainActivity,from = 3)
             }
         }
     }
@@ -59,14 +59,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     fun checkVprStatus() {
         runBlocking {
             val token = sharedPreferences.getString(Constants.sp_key_access_token, "")
-            val registerid = sharedPreferences.getString(Constants.sp_key_registerid, "")
+            val registerid = sharedPreferences.getString(Constants.sp_key_recorder_registerid, "")
             launch(Dispatchers.IO) {
                 BakerVpr.queryVprStatus(
                     token,
                     registerid,
                     object : CallbackListener<QueryVprStatusResponse> {
                         override fun onSuccess(response: QueryVprStatusResponse?) {
-                            if (response?.err_no != 90000 || response?.status != 3) {
+                            if (response?.err_no != 90000 || response.status != 3) {
                                 Toast.makeText(this@MainActivity, "请先完成声纹注册", Toast.LENGTH_SHORT)
                                     .show()
                                 return

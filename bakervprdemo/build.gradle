@@ -18,10 +18,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        secure {
+            //baker123456
+            storeFile file('baker.jks')
+            storePassword "baker123456"
+            keyAlias "baker"
+            keyPassword "baker123456"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.secure
         }
     }
     compileOptions {
@@ -32,7 +42,6 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-//        experimental = true
         viewBinding true
     }
 }
@@ -53,7 +62,7 @@ dependencies {
     //log Timber.d()
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    
+
     implementation project(path: ':bakervpr')
     implementation project(path: ':bakerhttp')
 

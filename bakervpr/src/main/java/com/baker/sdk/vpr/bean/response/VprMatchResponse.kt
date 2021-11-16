@@ -12,7 +12,7 @@ data class VprMatchResponse(
     override val err_no: Int?,
     override val log_id: String?,
 
-    /** 表示比对成功，0 表示比对失败*/
+    /** 1 表示比对成功，0 表示比对失败*/
     val matchStatus: Int?,
     /**比对分数*/
     val score: String

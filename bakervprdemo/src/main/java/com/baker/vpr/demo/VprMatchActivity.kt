@@ -23,9 +23,14 @@ class VprMatchActivity : BaseActivity<ActivityVprMatchBinding>() {
     }
 
     private fun initData() {
+
+        val from = intent.getIntExtra(Constants.register_get_from, 0)
+        val recorderListStr = if (from == 2) {
+            intent.getStringExtra(KEY_DATA_JSON)
+        } else {
+            sharedPreferences.getString(Constants.sp_key_recorders, "")
+        }
         val gson = Gson()
-        val recorderListStr = sharedPreferences.getString(Constants.sp_key_recorders, "")
-        Log.i(TAG, "recorderListStr:$recorderListStr ")
         val recorderList = mutableListOf<Recorder>()
         if (recorderListStr?.isNotEmpty() == true) {
             val recorders = gson.fromJson<List<Recorder>>(
@@ -34,10 +39,7 @@ class VprMatchActivity : BaseActivity<ActivityVprMatchBinding>() {
             )
             recorderList.addAll(recorders)
             mAdapter.setData(recorderList)
-
         }
-
-
     }
 
     private fun initView() {
@@ -53,8 +55,12 @@ class VprMatchActivity : BaseActivity<ActivityVprMatchBinding>() {
 
 
     companion object {
-        fun start(context: Context) {
-            context.startActivity(Intent(context, VprMatchActivity::class.java))
+        const val KEY_DATA_JSON = "dataJson"
+        fun start(context: Context, dataJson: String = "", from: Int = 0) {
+            context.startActivity(Intent(context, VprMatchActivity::class.java).run {
+                putExtra(KEY_DATA_JSON, dataJson)
+                putExtra(Constants.register_get_from, from)
+            })
         }
     }
 }

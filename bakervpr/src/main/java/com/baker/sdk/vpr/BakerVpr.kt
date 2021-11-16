@@ -164,13 +164,13 @@ object BakerVpr : BakerVprAPI {
         vprMatchMoreRequest: VprMatchMoreRequest,
         callbackListener: CallbackListener<VprMatchMoreResponse>
     ) {
-        val params: Map<String, String> =
+        val params: Map<String, Any> =
             mapOf(
                 "access_token" to vprMatchMoreRequest.access_token,
                 "audio" to vprMatchMoreRequest.audioBase64(),
                 "format" to vprMatchMoreRequest.format,
-                "listNum" to vprMatchMoreRequest.listNum.toString(),
-                "scoreThreshold" to vprMatchMoreRequest.scoreThreshold.toString()
+                "listNum" to vprMatchMoreRequest.listNum,
+                "scoreThreshold" to vprMatchMoreRequest.scoreThreshold
             )
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(

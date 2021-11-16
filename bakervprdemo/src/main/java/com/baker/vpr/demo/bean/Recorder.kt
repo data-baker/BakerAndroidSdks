@@ -8,7 +8,7 @@ import android.os.Parcelable
  *@author xujian
  *@date 2021/11/12
  */
-data class Recorder(val name: String?, val score: String?,val registerid:String?) : Parcelable {
+data class Recorder(val name: String?, var score: String?,var registerid:String?) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
