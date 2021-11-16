@@ -21,6 +21,8 @@
     <string name="rationale_ask_ok">确认</string>
     <string name="rationale_ask_cancel">取消</string>
     <string name="next_page">下一段</string>
+    <string name="stop_and_register">结束并验证注册</string>
+    <string name="start_speak">开始朗读</string>
 
     <string-array name="register_audio_text">
         <item>君不见黄河之水天上来，\n奔流到海不复回。</item>

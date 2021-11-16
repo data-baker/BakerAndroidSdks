@@ -12,7 +12,7 @@ data class VprMatchMoreRequest(
     override val access_token: String,
     override val audio: ByteArray,
     override val format: String,
-    override val scoreThreshold: Double,
+    override val scoreThreshold: Float,
     /**返回匹配列表的数据条数 id*/
     val listNum: Int
 ) : VprBaseRequest()

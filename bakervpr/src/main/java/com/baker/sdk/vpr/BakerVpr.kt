@@ -1,5 +1,6 @@
 package com.baker.sdk.vpr
 
+import android.util.Log
 import com.baker.sdk.http.CallbackListener
 import com.baker.sdk.http.CommonOkHttpClient
 import com.baker.sdk.http.CommonOkHttpRequest
@@ -66,15 +67,17 @@ object BakerVpr : BakerVprAPI {
         vprRegisterRequest: VprRegisterRequest,
         callbackListener: CallbackListener<VprRegisterResponse>
     ) {
-        val params: Map<String, String> =
+        val params: Map<String, Any> =
             mapOf(
-                "access_token" to vprRegisterRequest.access_token,
-                "audio" to vprRegisterRequest.audioBase64(),
                 "format" to vprRegisterRequest.format,
                 "name" to vprRegisterRequest.name,
                 "registerId" to vprRegisterRequest.registerId,
-                "scoreThreshold" to vprRegisterRequest.scoreThreshold.toString()
+                "scoreThreshold" to vprRegisterRequest.scoreThreshold,
+                "access_token" to vprRegisterRequest.access_token,
+                "audio" to vprRegisterRequest.audioBase64()
             )
+
+        Log.i("vprRegister", "vprRegister: audioBase64${vprRegisterRequest.audioBase64().length}")
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(
                 BakerVprAPI.BAKER_VPR_REGISTER,
@@ -91,11 +94,11 @@ object BakerVpr : BakerVprAPI {
      * @param callbackListener
      */
     fun queryVprStatus(
-        accessToken: String,
-        registerId: String,
+        accessToken: String?,
+        registerId: String?,
         callbackListener: CallbackListener<QueryVprStatusResponse>
     ) {
-        val params: Map<String, String> =
+        val params: Map<String, String?> =
             mapOf("access_token" to accessToken, "registerId" to registerId)
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(
@@ -136,13 +139,13 @@ object BakerVpr : BakerVprAPI {
         vprMatchRequest: VprMatchRequest,
         callbackListener: CallbackListener<VprMatchResponse>
     ) {
-        val params: Map<String, String> =
+        val params: Map<String, Any> =
             mapOf(
                 "access_token" to vprMatchRequest.access_token,
                 "audio" to vprMatchRequest.audioBase64(),
                 "format" to vprMatchRequest.format,
                 "matchId" to vprMatchRequest.matchId,
-                "scoreThreshold" to vprMatchRequest.scoreThreshold.toString()
+                "scoreThreshold" to vprMatchRequest.scoreThreshold
             )
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(

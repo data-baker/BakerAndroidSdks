@@ -8,12 +8,6 @@ import com.baker.sdk.vpr.bean.VprBaseRequest
  *@date 2021/11/11
  */
 data class VprRegisterRequest(
-    override val access_token: String,
-    override val audio: ByteArray,
-
-    override val format: String,
-    override val scoreThreshold: Double,
-
     /**
      * 调用创建声纹库接口返回的 id
      */
@@ -21,5 +15,10 @@ data class VprRegisterRequest(
     /**
      * 自定义名字
      */
-    val name: String
+    val name: String,
+    override val scoreThreshold: Float,
+    override val format: String,
+    override val access_token: String,
+    override val audio: ByteArray
+
 ) : VprBaseRequest()

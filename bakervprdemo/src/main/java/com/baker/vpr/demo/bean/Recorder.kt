@@ -8,8 +8,9 @@ import android.os.Parcelable
  *@author xujian
  *@date 2021/11/12
  */
-data class Recorder(val name: String?, val score: String?) : Parcelable {
+data class Recorder(val name: String?, val score: String?,val registerid:String?) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -18,6 +19,7 @@ data class Recorder(val name: String?, val score: String?) : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(score)
+        parcel.writeString(registerid)
     }
 
     override fun describeContents(): Int {
@@ -33,4 +35,5 @@ data class Recorder(val name: String?, val score: String?) : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
 }

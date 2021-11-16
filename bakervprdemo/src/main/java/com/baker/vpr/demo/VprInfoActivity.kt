@@ -23,7 +23,7 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
 
     private fun initView() {
         mBinding.run {
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 etRegisterName.setText("序俭")
                 etScore.setText("61")
             }
@@ -41,26 +41,8 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
                     return@setOnClickListener
                 }
 
-                val gson = Gson()
-                val recorderListStr = sharedPreferences.getString(Constants.sp_key_recorders, "")
-                Log.i(TAG, "recorderListStr:$recorderListStr ")
-                val recorderList = mutableListOf<Recorder>()
-                if (recorderListStr?.isNotEmpty() == true) {
-                    val recorders = gson.fromJson<List<Recorder>>(
-                        recorderListStr,
-                        object : TypeToken<List<Recorder>>() {}.type
-                    )
-                    recorderList.addAll(recorders)
-                }
-                recorderList.add(Recorder(name, score))
-                sharedPreferences.edit {
-                    val recorders = gson.toJson(recorderList)
-                    putString(Constants.sp_key_recorders, recorders)
-                }
-                startActivity(Intent(this@VprInfoActivity, RegisterActivity::class.java).run {
-                    putExtra(Constants.sp_key_recorder_name, name)
-                    putExtra(Constants.sp_key_recorder_score, score)
-                })
+
+                RegisterActivity.start(this@VprInfoActivity, name, score)
                 finish()
             }
 
