@@ -29,7 +29,7 @@ public class BakerBaseConstants {
     public static final int AUDIO_TYPE_PCM_8K = 5;
     public static final int AUDIO_TYPE_WAV_16K = 6;
 
-    public static final String VOICE_NORMAL = "Jingjing";
+    public static final String VOICE_NORMAL = "Lingling";
 
     public static boolean isIsDebug() {
         return isDebug;

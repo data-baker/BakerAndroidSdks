@@ -45,7 +45,7 @@ public class MediaPlayerActivity extends BakerBaseActivity {
         bakerSynthesizer = new BakerSynthesizer(this, sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID),
                 sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
 //        bakerSynthesizer = new BakerSynthesizer(this);
-//        bakerSynthesizer.setDebug(MediaPlayerActivity.this, true);
+        bakerSynthesizer.setDebug(MediaPlayerActivity.this, true);
     }
 
     BakerMediaCallback bakerMediaCallback = new BakerMediaCallback() {
@@ -97,7 +97,7 @@ public class MediaPlayerActivity extends BakerBaseActivity {
         //设置返回数据的callback
         bakerSynthesizer.setBakerCallback(bakerMediaCallback);
         /**********************以下是选填参数**************************/
-        //设置发音人声音名称，默认：Jingjing
+        //设置发音人声音名称，默认：Lingling
         bakerSynthesizer.setVoice(BakerBaseConstants.VOICE_NORMAL);
         //合成请求文本的语言，目前支持ZH(中文和中英混)和ENG(纯英文，中文部分不会合成),默认：ZH
         bakerSynthesizer.setLanguage(BakerBaseConstants.LANGUAGE_ZH);

@@ -20,7 +20,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * @author hsj55
  */
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-    private final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
+    private final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     public void voiceEngrave(View view) {
-
+        //声音复刻sdk 待迁移
     }
 
     private void toAnOtherActivity(String type) {

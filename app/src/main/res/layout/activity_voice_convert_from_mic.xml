@@ -18,10 +18,11 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvvcn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="音色点击下面选择："
+        android:text="音色点击下面选择：变声娇娇"
         android:textColor="@color/design_default_color_primary"
         android:textStyle="bold" />
 
@@ -102,17 +103,24 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvvcn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="当前音色：变声娇娇"
-        android:textColor="@color/design_default_color_primary_dark"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText" />
+        android:padding="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="边转边播："
+            android:textColor="@color/design_default_color_primary_dark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
+        <Switch
+            android:id="@+id/playInTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

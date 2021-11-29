@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BakerAndroidSdks"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".convert.VoiceConvertFromFileActivity"></activity>
-        <activity android:name=".convert.VoiceConvertFromMicActivity" />
-        <activity android:name=".convert.VoiceConvertActivity" />
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+        <activity android:name=".convert.VoiceConvertFromFileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".convert.VoiceConvertFromMicActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".convert.VoiceConvertActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".tts.MediaPlayerActivity"
             android:screenOrientation="portrait" />
