@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         audioTrackPlayer.setCallBack(playerCallBack);
 
         TextView tvVoiceName = findViewById(R.id.tvvcn);
+        TextView tvTip = findViewById(R.id.switchTipTv);
         btnRecord = findViewById(R.id.btnRecord);
         btnPlay = findViewById(R.id.btnPlay);
 
@@ -96,6 +98,16 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
             }
         });
         aSwitch = findViewById(R.id.playInTime);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    tvTip.setVisibility(View.VISIBLE);
+                } else {
+                    tvTip.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     private VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
@@ -136,6 +148,9 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
                         btnRecord.setText("开始录音");
                     }
                 });
+                if (!aSwitch.isChecked()) {
+                    audioTrackPlayer.play();
+                }
             }
 
             if (aSwitch.isChecked()) {
