@@ -1,9 +1,13 @@
 package com.baker.sdk.vpr
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import com.baker.sdk.http.CallbackListener
 import com.baker.sdk.http.CommonOkHttpClient
 import com.baker.sdk.http.CommonOkHttpRequest
+import com.baker.sdk.vpr.bean.BakerException
+import com.baker.sdk.vpr.bean.BakerVprConstants
 import com.baker.sdk.vpr.bean.request.VprMatchMoreRequest
 import com.baker.sdk.vpr.bean.request.VprMatchRequest
 import com.baker.sdk.vpr.bean.request.VprRegisterRequest
@@ -16,7 +20,68 @@ import com.baker.sdk.vpr.bean.response.*
  * @author xujian
  * @date 2021/11/11
  */
-object BakerVpr : BakerVprAPI {
+object BakerVpr {
+    private const val TAG: String = "BakerVpr"
+    private var mCallBack: CallbackListener<GetTokenResponse>? = null
+
+
+    private lateinit var mClientId: String
+    private lateinit var mClientSecret: String
+    internal var mAccessToken: String="your need call method: BakerVpr.initSdk(...)"
+    private var mIsDebug: Boolean = false
+
+    fun initSdk(
+        context: Context,
+        clientId: String,
+        secret: String,
+        callBack: CallbackListener<GetTokenResponse>? = null,
+        isDebug: Boolean = false
+    ) {
+        mIsDebug = isDebug
+        mCallBack = callBack
+        try {
+            if (!checkConnectNetwork(context)) {
+                if (mCallBack != null) {
+                    mCallBack?.onFailure(
+                        BakerException(
+                            BakerVprConstants.ERROR_TYPE_NET_UNUSABLE,
+                            "网络连接不可用"
+                        )
+                    )
+                    return
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        mClientId = clientId
+        mClientSecret = secret
+        getToken(mClientId, mClientSecret, object : CallbackListener<GetTokenResponse> {
+            override fun onSuccess(response: GetTokenResponse?) {
+                if (response?.access_token.isNullOrEmpty()) {
+                    val error =
+                        "baker vpr sdk init token error, ${response?.error}\n${response?.error_description}"
+                    Log.e(TAG, error)
+                    mCallBack?.onFailure(BakerException(error))
+
+                } else {
+                    mCallBack?.onSuccess(response)
+                    mAccessToken = response?.access_token ?: ""
+                }
+            }
+
+            override fun onFailure(e: Exception?) {
+                Log.e(TAG, "baker asr sdk init token error${e?.message}")
+                e?.printStackTrace()
+            }
+        })
+    }
+
+    private fun checkConnectNetwork(context: Context): Boolean {
+        val cm = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetInfo = cm.activeNetworkInfo
+        return activeNetInfo != null && activeNetInfo.isConnectedOrConnecting
+    }
 
     /**
      * 获取 access_token  (登录开放平台，点击声纹识别，在授权管理中查看自己的APISecret和APIKey)
@@ -49,8 +114,10 @@ object BakerVpr : BakerVprAPI {
      * @param accessToken
      * @param callbackListener
      */
-    fun createVprId(accessToken: String, callbackListener: CallbackListener<CreateIdResponse>) {
-        val params: Map<String, String> = mapOf("access_token" to accessToken)
+    fun createVprId(
+        callbackListener: CallbackListener<CreateIdResponse>
+    ) {
+        val params: Map<String, String?> = mapOf("access_token" to mAccessToken)
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(
                 BakerVprAPI.BAKER_VPR_CREATE_ID,
@@ -73,7 +140,7 @@ object BakerVpr : BakerVprAPI {
                 "name" to vprRegisterRequest.name,
                 "registerId" to vprRegisterRequest.registerId,
                 "scoreThreshold" to vprRegisterRequest.scoreThreshold,
-                "access_token" to vprRegisterRequest.access_token,
+                "access_token" to  vprRegisterRequest.access_token,
                 "audio" to vprRegisterRequest.audioBase64()
             )
 
@@ -94,12 +161,11 @@ object BakerVpr : BakerVprAPI {
      * @param callbackListener
      */
     fun queryVprStatus(
-        accessToken: String?,
         registerId: String?,
         callbackListener: CallbackListener<QueryVprStatusResponse>
     ) {
         val params: Map<String, String?> =
-            mapOf("access_token" to accessToken, "registerId" to registerId)
+            mapOf("access_token" to mAccessToken, "registerId" to registerId)
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(
                 BakerVprAPI.BAKER_VPR_STATUS,
@@ -116,12 +182,11 @@ object BakerVpr : BakerVprAPI {
      * @param callbackListener
      */
     fun deleteVoicePrint(
-        accessToken: String,
         registerId: String,
         callbackListener: CallbackListener<DeleteVoicePrintResponse>
     ) {
         val params: Map<String, String> =
-            mapOf("access_token" to accessToken, "registerId" to registerId)
+            mapOf("access_token" to mAccessToken, "registerId" to registerId)
         CommonOkHttpClient.sendRequest(
             CommonOkHttpRequest.createRequestBodyPostRequest(
                 BakerVprAPI.BAKER_VPR_DELETE,

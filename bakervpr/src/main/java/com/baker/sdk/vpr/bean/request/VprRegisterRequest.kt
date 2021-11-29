@@ -18,7 +18,6 @@ data class VprRegisterRequest(
     val name: String,
     override val scoreThreshold: Float,
     override val format: String,
-    override val access_token: String,
     override val audio: ByteArray
 
 ) : VprBaseRequest()

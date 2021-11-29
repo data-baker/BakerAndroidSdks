@@ -7,7 +7,7 @@ import com.baker.sdk.vpr.bean.BakerBaseResponse
  *@author xujian
  *@date 2021/11/11
  */
-class CreateIdResponse(
+data class CreateIdResponse(
     override val err_msg: String?,
     override val err_no: Int?,
     override val log_id: String?,

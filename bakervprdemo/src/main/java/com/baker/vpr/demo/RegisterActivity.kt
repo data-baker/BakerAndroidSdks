@@ -110,9 +110,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     }
 
     private fun deleteVprRegisterId() {
-        val token = sharedPreferences.getString(Constants.sp_key_access_token, "")
         BakerVpr.deleteVoicePrint(
-            token ?: "",
             registerid,
             object : CallbackListener<DeleteVoicePrintResponse> {
                 override fun onSuccess(response: DeleteVoicePrintResponse?) {
@@ -204,9 +202,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     private fun uploadAudioDataforSearch() {
         val bytes = File(PCM_PATH).readBytes()
         Log.i(TAG, "uploadAudioData: File.size${bytes.size}")
-        val accessToken = sharedPreferences.getString(Constants.sp_key_access_token, "")
         val vprMatchMoreRequest = VprMatchMoreRequest(
-            access_token = accessToken ?: "",
             format = "pcm",
             audio = bytes,
             scoreThreshold = 30.0f,
@@ -252,9 +248,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     private fun uploadAudioDataforMatch() {
         val bytes = File(PCM_PATH).readBytes()
         Log.i(TAG, "uploadAudioData: File.size${bytes.size}")
-        val accessToken = sharedPreferences.getString(Constants.sp_key_access_token, "")
         val vprMatchRequest = VprMatchRequest(
-            access_token = accessToken ?: "",
             format = "pcm",
             audio = bytes,
             scoreThreshold = mRecordScore.toFloat(),
@@ -300,14 +294,12 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
         val bytes = File(PCM_PATH).readBytes()
         Log.i(TAG, "uploadAudioData: File.size${bytes.size}")
-        val accessToken = sharedPreferences.getString(Constants.sp_key_access_token, "")
         val vprRegisterRequest = VprRegisterRequest(
-            access_token = accessToken ?: "",
             format = "pcm",
             audio = bytes,
             name = mRecordName,
             scoreThreshold = mRecordScore.toFloat(),
-            registerId = registerid ?: ""
+            registerId = registerid
         )
         BakerVpr.vprRegister(
             vprRegisterRequest,
@@ -356,7 +348,8 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
      * 获取文件保存路径
      */
     private fun getSaveFilePath(): File {
-        val file = File(Environment.getExternalStorageDirectory(), "audio")
+//        val file = File(Environment.getExternalStorageDirectory(), "audio")
+        val file = File(this.filesDir.absoluteFile,"audio")
         if (!file.exists()) {
             file.mkdirs()
         }
@@ -379,71 +372,69 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             launch(
                 Dispatchers.IO
             ) {
-                val token = sharedPreferences.getString(Constants.sp_key_access_token, "")
-                token?.let {
-                    BakerVpr.createVprId(token, object : CallbackListener<CreateIdResponse> {
-                        override fun onSuccess(response: CreateIdResponse?) {
-                            if (response?.err_no == 90000) {
-                                Timber.d("createVprId-${response.err_msg}\t${response.registerid}")
 
-                                val gson = Gson()
-                                val recorderListStr =
-                                    sharedPreferences.getString(Constants.sp_key_recorders, "")
-                                Log.i(TAG, "recorderListStr:$recorderListStr ")
-                                val recorderList = mutableListOf<Recorder>()
-                                if (recorderListStr?.isNotEmpty() == true) {
-                                    val recorders = gson.fromJson<List<Recorder>>(
-                                        recorderListStr,
-                                        object : TypeToken<List<Recorder>>() {}.type
-                                    )
-                                    recorderList.addAll(recorders)
-                                }
+                BakerVpr.createVprId(object : CallbackListener<CreateIdResponse> {
+                    override fun onSuccess(response: CreateIdResponse?) {
+                        if (response?.err_no == 90000) {
+                            Timber.d("createVprId-${response.err_msg}\t${response.registerid}")
 
-                                val recorder = Recorder(
-                                    mRecordName,
-                                    mRecordScore,
+                            val gson = Gson()
+                            val recorderListStr =
+                                sharedPreferences.getString(Constants.sp_key_recorders, "")
+                            Log.i(TAG, "recorderListStr:$recorderListStr ")
+                            val recorderList = mutableListOf<Recorder>()
+                            if (recorderListStr?.isNotEmpty() == true) {
+                                val recorders = gson.fromJson<List<Recorder>>(
+                                    recorderListStr,
+                                    object : TypeToken<List<Recorder>>() {}.type
+                                )
+                                recorderList.addAll(recorders)
+                            }
+
+                            val recorder = Recorder(
+                                mRecordName,
+                                mRecordScore,
+                                response.registerid
+                            )
+                            val tamp = recorderList.filter {
+                                it.name == mRecordName
+                            }.map {
+                                it.registerid = response.registerid
+                                it.score = mRecordScore
+                            }
+                            if (tamp.isEmpty()) {
+                                recorderList.add(recorder)
+                            }
+
+                            sharedPreferences.edit {
+                                val recorders = gson.toJson(recorderList)
+                                putString(Constants.sp_key_recorders, recorders)
+                            }
+                            registerid = response.registerid ?: ""
+                            sharedPreferences.edit {
+                                putString(
+                                    Constants.sp_key_recorder_registerid,
                                     response.registerid
                                 )
-                                val tamp = recorderList.filter {
-                                    it.name == mRecordName
-                                }.map {
-                                    it.registerid = response.registerid
-                                    it.score = mRecordScore
-                                }
-                                if (tamp.isEmpty()) {
-                                    recorderList.add(recorder)
-                                }
-
-                                sharedPreferences.edit {
-                                    val recorders = gson.toJson(recorderList)
-                                    putString(Constants.sp_key_recorders, recorders)
-                                }
-                                registerid = response.registerid ?: ""
-                                sharedPreferences.edit {
-                                    putString(
-                                        Constants.sp_key_recorder_registerid,
-                                        response.registerid
-                                    )
-                                }
-                            } else {
-                                Toast.makeText(
-                                    this@RegisterActivity,
-                                    "数据异常${response?.err_msg}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
-                        }
-
-                        override fun onFailure(e: Exception?) {
+                        } else {
                             Toast.makeText(
                                 this@RegisterActivity,
-                                "创建声纹库失败",
+                                "数据异常${response?.err_msg}",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            e?.printStackTrace()
                         }
-                    })
-                }
+                    }
+
+                    override fun onFailure(e: Exception?) {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "创建声纹库失败",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        e?.printStackTrace()
+                    }
+                })
             }
         }
     }

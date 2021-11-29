@@ -8,7 +8,6 @@ import com.baker.sdk.vpr.bean.VprBaseRequest
  * @date 2021/11/11
  */
 data class VprMatchRequest(
-    override val access_token: String,
     override val audio: ByteArray,
     override val format: String,
     override val scoreThreshold: Float,

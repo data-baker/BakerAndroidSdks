@@ -10,5 +10,7 @@ data class GetTokenResponse(
     val expires_in: Int?,
     val jti: String?,
     val scope: String?,
-    val token_type: String?
+    val token_type: String?,
+    var error:String?=null,
+    var error_description:String?=null
 )

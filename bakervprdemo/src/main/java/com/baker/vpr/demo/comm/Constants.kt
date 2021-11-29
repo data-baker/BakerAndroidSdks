@@ -8,7 +8,6 @@ package com.baker.vpr.demo.comm
 interface Constants {
     companion object {
         const val sharedPreference_name = "Vpr_sharedPreferences"
-        const val sp_key_access_token = "token"
         const val sp_key_recorder_registerid = "registerid"
         const val sp_key_recorder_name: String = "recorder_name"
         const val sp_key_recorder_score: String = "recorder_score"

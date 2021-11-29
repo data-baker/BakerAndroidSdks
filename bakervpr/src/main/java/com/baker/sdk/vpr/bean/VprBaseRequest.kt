@@ -1,6 +1,7 @@
 package com.baker.sdk.vpr.bean
 
 import android.util.Base64
+import com.baker.sdk.vpr.BakerVpr
 
 /**
  * @author xujian
@@ -11,7 +12,7 @@ abstract class VprBaseRequest {
     /**
      * 通过client_id，client_secret调用授权服务获得见获取访问令牌
      */
-    abstract val access_token: String
+    internal var access_token: String=BakerVpr.mAccessToken
 
     /**
      * 注册有效分数，不得低于系统默认值
