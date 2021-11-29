@@ -82,6 +82,6 @@ dependencies {
 
     implementation 'pub.devrel:easypermissions:1.3.0'
     //引入第三方封装的工具类包
-    implementation 'com.blankj:utilcodex:1.29.0'
+    implementation 'com.blankj:utilcodex:1.30.6'
     implementation 'com.jaredrummler:material-spinner:1.3.1'
 }
