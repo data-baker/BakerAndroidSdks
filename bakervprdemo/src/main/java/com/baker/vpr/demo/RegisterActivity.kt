@@ -27,13 +27,12 @@ import com.baker.vpr.demo.comm.Constants
 import com.baker.vpr.demo.databinding.ActivityRegisterBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import timber.log.Timber
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -188,10 +187,16 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
             val file = getSaveFilePath()
             PCM_PATH = file.absolutePath
+            val startTime=System.currentTimeMillis()
+
+            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("HH:mm:ss", Locale.CHINA).also {
+                it.timeZone = TimeZone.getTimeZone("UTC")
+            }
             recorderHelper.startRecorder(file, object : RecorderCallback {
                 override fun onRecorded(bytes: ByteArray?) {
                     val decibel = recorderHelper.getDecibelForPcm(bytes, Config.ENCODING_FORMAT)
                     runOnUiThread {
+                        mBinding.tvRecordTime.text=simpleDateFormat.format(Date(System.currentTimeMillis()-startTime))
                         changeVolumeImg(decibel.toInt())
                     }
                 }
@@ -258,6 +263,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             vprMatchRequest,
             object : CallbackListener<VprMatchResponse> {
                 override fun onSuccess(response: VprMatchResponse?) {
+                    Timber.i("response=${response.toString()}")
                     if (response?.err_no != 90000) {
                         Toast.makeText(
                             this@RegisterActivity,
@@ -266,6 +272,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                         ).show()
                         return
                     }
+
                     VprMatchResultActivity.start(
                         this@RegisterActivity,
                         mRecordName,
@@ -305,6 +312,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             vprRegisterRequest,
             object : CallbackListener<VprRegisterResponse> {
                 override fun onSuccess(response: VprRegisterResponse?) {
+                    Timber.i("BakerVpr.vprRegister=${response.toString()}")
                     if (response?.err_no != 90000) {
                         Toast.makeText(
                             this@RegisterActivity,
@@ -348,22 +356,14 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
      * 获取文件保存路径
      */
     private fun getSaveFilePath(): File {
-//        val file = File(Environment.getExternalStorageDirectory(), "audio")
-        val file = File(this.filesDir.absoluteFile,"audio")
+        val file = File(this.filesDir.absoluteFile, "audio")
         if (!file.exists()) {
             file.mkdirs()
         }
         val wavFile = File(file, UUID.randomUUID().toString() + ".pcm")
-        if (wavFile.isFile) {
-            Timber.d("file = ${wavFile.absolutePath}")
-        } else {
-            Timber.d("文件不是file ${wavFile.absolutePath}")
-        }
-        if (wavFile.exists()) {
-            Timber.d("文件存在吗 = true")
-        } else {
-            Timber.d("文件不存在")
-        }
+        Timber.d("file：${wavFile.absolutePath}是文件么？${wavFile.isFile}")
+
+        Timber.d("文件存在吗 = ${wavFile.exists()}")
         return wavFile
     }
 
