@@ -60,7 +60,6 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
         initData()
         initView()
-
         requestRuntimePermissions { Timber.i("获得所需权限") }
     }
 
@@ -356,7 +355,8 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
      * 获取文件保存路径
      */
     private fun getSaveFilePath(): File {
-        val file = File(this.filesDir.absoluteFile, "audio")
+//        val file = File(this.filesDir.absoluteFile, "audio")
+        val file = File(Environment.getExternalStorageDirectory().path+"/audio")
         if (!file.exists()) {
             file.mkdirs()
         }

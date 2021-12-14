@@ -8,7 +8,7 @@ public class Config {
     /**
      * 采样率。现在能够保证在所有设备上使用的采样率是44100Hz
      */
-    public static final int SAMPLE_RATE_INHZ =16000;//44100;
+    public static final int SAMPLE_RATE_INHZ =16000;//16000;44100;48000;
     /**
      * 输入声道数。CHANNEL_IN_MONO and CHANNEL_IN_STEREO. 其中CHANNEL_IN_MONO是可以保证在所有设备能够使用的。
      */
