@@ -25,7 +25,7 @@ class VprInfoActivity : BaseActivity<ActivityVprInfoBinding>() {
         mBinding.run {
             if (BuildConfig.DEBUG) {
                 etRegisterName.setText("序俭")
-                etScore.setText("61")
+                etScore.setText("15")
             }
             toolbar.appToolbar.title = "声纹信息填写"
             btnVprRegister.setOnClickListener {

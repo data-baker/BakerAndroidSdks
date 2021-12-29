@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
-            android:hint="60"
+            android:hint="15"
             android:inputType="numberDecimal"
             android:textSize="@dimen/sp_25" />
 

@@ -9,15 +9,15 @@ package com.baker.sdk.vpr
 class BakerVprAPI {
 
     companion object {
-
-
         private const val host_fat = "http://10.10.50.19:50601/"
         private const val host_uat = "https://openapitest.data-baker.com/"
-        private const val vpr_host = host_uat
+        private const val host_pro = "https://openapi.data-baker.com/"
+        private const val vpr_host = host_pro
 
         private const val token_fat = "http://10.10.50.23:9904/"
         private const val token_uat = "https://oauth2cmstest.data-baker.com:8012/"
-        private const val token_host = token_uat
+        private const val token_pro = " https://openapi.data-baker.com/"
+        private const val token_host = token_pro
 
         /**
          * 获取token URL

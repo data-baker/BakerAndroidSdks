@@ -23,7 +23,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         initView()
 
         val key = resources.getStringArray(R.array.vpr_key)
-        BakerVpr.initSdk(this, key[0], key[1], object : CallbackListener<GetTokenResponse> {
+
+        BakerVpr.initSdk(this, key[0], key[1], object:CallbackListener<GetTokenResponse> {
             override fun onSuccess(response: GetTokenResponse?) {
                 Toast.makeText(this@MainActivity, "token获取成功", Toast.LENGTH_SHORT)
                     .apply {
@@ -38,7 +39,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     }.show()
             }
 
-        })
+        },isDebug = false)
         getValidSampleRates()
     }
 
