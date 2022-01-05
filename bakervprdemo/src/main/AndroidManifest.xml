@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BakerAndroidSdks.NoActionBar">
+        <activity
+            android:name=".VprJavaActivity"
+            android:exported="true" />
         <activity
             android:name=".VprMatchResultActivity"
             android:exported="true" />

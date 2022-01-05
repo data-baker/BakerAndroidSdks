@@ -111,7 +111,6 @@ object BakerVpr {
     /**
      * 创建声纹库，获得获得声纹库id
      *
-     * @param accessToken
      * @param callbackListener
      */
     fun createVprId(
@@ -156,7 +155,6 @@ object BakerVpr {
     /**
      * 查询声纹状态码
      *
-     * @param accessToken 通过 client_id，client_secret 调用授权服务获得见 获取访问令牌
      * @param registerId 特征库 id
      * @param callbackListener
      */
@@ -175,9 +173,7 @@ object BakerVpr {
     }
 
     /**
-     * 查询声纹状态码
-     *
-     * @param accessToken 通过 client_id，client_secret 调用授权服务获得见 获取访问令牌
+     * 删除声纹
      * @param registerId 特征库 id
      * @param callbackListener
      */

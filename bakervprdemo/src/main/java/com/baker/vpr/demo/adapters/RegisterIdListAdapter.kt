@@ -1,49 +1,44 @@
 package com.baker.vpr.demo.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baker.vpr.demo.R
 import com.baker.vpr.demo.RegisterActivity
 import com.baker.vpr.demo.VprMatchActivity
 import com.baker.vpr.demo.bean.Recorder
+import com.baker.vpr.demo.databinding.VprRegisteridItemBinding
 
 /**
  *
  *@author xujian
  *@date 2021/11/15
  */
-class RegisterIdListAdapter() :
-    RecyclerView.Adapter<RegisterIdListAdapter.ViewHolder>() {
+class RegisterIdListAdapter :
+    RecyclerView.Adapter<RegisterIdListAdapter.MyViewHolder>() {
     private var dataList: ArrayList<Recorder> = arrayListOf()
 
-    public fun setData(dataList: List<Recorder>) {
+    fun setData(dataList: List<Recorder>) {
         this.dataList.addAll(dataList)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
+    class MyViewHolder(val mBinding: VprRegisteridItemBinding) :
+        RecyclerView.ViewHolder(mBinding.root)
 
-        init {
-            textView = view.findViewById(R.id.textView)
-        }
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MyViewHolder {
+        val binding=VprRegisteridItemBinding.inflate(
+            LayoutInflater.from(viewGroup.context),
+            viewGroup,
+            false
+        )
+        return MyViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.vpr_registerid_item, viewGroup, false)
-
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: MyViewHolder, position: Int) {
         val recorder = dataList[position]
 
-        viewHolder.textView.run {
+        viewHolder.mBinding.textView.run {
             text = "姓名:${recorder.name}\n分数:${recorder.score}\n声纹:${recorder.registerid}"
             setOnClickListener {
 

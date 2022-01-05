@@ -17,7 +17,7 @@ import com.baker.sdk.vpr.bean.request.VprMatchMoreRequest
 import com.baker.sdk.vpr.bean.request.VprMatchRequest
 import com.baker.sdk.vpr.bean.request.VprRegisterRequest
 import com.baker.sdk.vpr.bean.response.*
-import com.baker.vpr.demo.adapters.AudioRecordVPAdapter
+import com.baker.vpr.demo.adapters.AudioTextAdapter
 import com.baker.vpr.demo.audio.AudioRecorderHelper
 import com.baker.vpr.demo.audio.Config
 import com.baker.vpr.demo.audio.RecorderCallback
@@ -91,7 +91,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             val audioTexts = resources.getStringArray(R.array.register_audio_text)
 
             vpAudioText.adapter =
-                AudioRecordVPAdapter(this@RegisterActivity, audioTexts.toMutableList())
+                AudioTextAdapter(this@RegisterActivity, audioTexts.toMutableList())
             vpAudioText.isUserInputEnabled = false
 
             btnAudioControl.setOnClickListener {

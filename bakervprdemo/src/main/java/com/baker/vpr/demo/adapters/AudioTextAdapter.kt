@@ -6,14 +6,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.baker.vpr.demo.fragment.AudioTextFragment
 import java.util.*
 
-/**
- * @param isSupportLeadRead 是否支持领读
- */
-class AudioRecordVPAdapter(
+class AudioTextAdapter(
     fragmentActivity: FragmentActivity,
-    val dataList: MutableList<String?>,
-//    private val leadTextListener: (text: String) -> Unit
-) :FragmentStateAdapter(fragmentActivity) {
+    private val dataList: MutableList<String?>,
+) : FragmentStateAdapter(fragmentActivity) {
 
 
     override fun createFragment(position: Int): Fragment {

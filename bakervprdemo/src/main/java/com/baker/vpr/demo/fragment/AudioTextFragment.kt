@@ -13,15 +13,13 @@ import timber.log.Timber
 class AudioTextFragment :
     BaseFragment<FragmentAudioTextBinding>() {
 
-    private lateinit var leadTextListener: (text: String) -> Unit
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Timber.d("onViewCreated")
         val arguments = arguments
         val audioText: String?
         if (arguments != null) {
             audioText = arguments.getString(AUDIO_TEXT)
-            getBinding()?.run {
+            getBinding().run {
                 tvAudio.text = audioText
                 tvAudio.movementMethod = ScrollingMovementMethod.getInstance();
             }
@@ -34,12 +32,10 @@ class AudioTextFragment :
         @JvmStatic
         fun newInstance(
             text: String?,
-//            leadTextListener: (text: String) -> Unit
         ): AudioTextFragment {
             val bundle = Bundle()
             bundle.putString(AUDIO_TEXT, text ?: "")
             val audioTextFragment = AudioTextFragment()
-//            audioTextFragment.leadTextListener = leadTextListener
             audioTextFragment.arguments = bundle
             return audioTextFragment
         }

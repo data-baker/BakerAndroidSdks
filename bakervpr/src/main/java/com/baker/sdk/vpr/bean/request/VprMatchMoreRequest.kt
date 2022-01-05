@@ -12,6 +12,6 @@ data class VprMatchMoreRequest(
     override val audio: ByteArray,
     override val format: String,
     override val scoreThreshold: Float,
-    /**返回匹配列表的数据条数 id*/
+    /**返回匹配列表的数据条数*/
     val listNum: Int
 ) : VprBaseRequest()
