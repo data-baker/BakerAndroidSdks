@@ -35,6 +35,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
 //    implementation project(path: ":bakerbasecomponent")
     implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.13'
+
 }
 
 //task to delete the old jar

@@ -35,7 +35,7 @@ public class CommonOkHttpClient {
 
 //            clientBuilder.addInterceptor(new HeaderInterceptor());
             //拦截器
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY,BuildConfig.DEBUG);
             clientBuilder.addInterceptor(logging);
 
             // https支持
