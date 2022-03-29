@@ -220,13 +220,6 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
      */
     @Override
     public void start() {
-        if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO)) {
-            if (mCallBack != null) {
-                mCallBack.onError(BakerLongTimeAsrConstants.ERROR_TYPE_RECORD_PERMISSION, "recording permission is forbidden.");
-            }
-            return;
-        }
-
         manageAudioFocus();
         if (net == null) {
             net = new EventManagerMultiNet();

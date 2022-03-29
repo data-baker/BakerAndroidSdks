@@ -26,7 +26,6 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-
 }
 
 dependencies {
@@ -34,8 +33,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.core:core:1.3.2'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.11'
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.13'
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.13'
 //    implementation project(path: ":bakerhttp")
 //    implementation project(path: ":bakerbasecomponent")
 }

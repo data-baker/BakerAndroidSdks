@@ -21,6 +21,7 @@ import com.baker.sdk.http.BakerTokenManager;
 import com.baker.sdk.http.CallbackListener;
 import com.baker.speech.asr.base.BakerAsrConstants;
 import com.baker.speech.asr.base.BakerRecognizerCallback;
+import com.baker.speech.asr.bean.AsrParams;
 import com.baker.speech.asr.bean.BakerException;
 import com.baker.speech.asr.bean.BakerResponse;
 import com.baker.speech.asr.event.EventManager;
@@ -45,6 +46,9 @@ public class BakerRecognizer implements EventManager {
     private BakerTokenManager tokenManager;
 
     private String domain = "common";
+    private String audioFormat = "pcm";
+    private int sampleRate = 16000;
+    private boolean addPct = true;
 
     public void initSdk(Context context, BakerRecognizerCallback callBack) {
         mContext = context;
@@ -130,6 +134,18 @@ public class BakerRecognizer implements EventManager {
         this.domain = domain;
     }
 
+    public void setAudioFormat(String audioFormat) {
+        this.audioFormat = audioFormat;
+    }
+
+    public void setSampleRate(int sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    public void setAddPct(boolean addPct) {
+        this.addPct = addPct;
+    }
+
     public void setUrl(String url) {
         if (!TextUtils.isEmpty(url)) {
             this.url = url;
@@ -175,7 +191,7 @@ public class BakerRecognizer implements EventManager {
 
         EventManagerMessagePool.offer(mic, "mic.start");
         //1=sdk麦克风录音 2=接收字节流
-        EventManagerMessagePool.offer(net, "net.start", domain);
+        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new AsrParams(addPct, domain, 1)));
     }
 
     public void stopAsr() {
@@ -183,15 +199,67 @@ public class BakerRecognizer implements EventManager {
         reset();
     }
 
+    /**
+     * start()、send()、end()搭配使用，用于接收字节流接口
+     */
+    public void start(){
+        manageAudioFocus();
+        if (net == null) {
+            net = new EventManagerMultiNet();
+        }
+        net.setmOwner(BakerRecognizer.this);
+        if (!TextUtils.isEmpty(url)) {
+            net.setUrl(url);
+        }
+        //1=sdk麦克风录音 2=接收字节流
+        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new AsrParams(audioFormat, sampleRate, addPct, domain, 2)));
+    }
+
+    /**
+     * start()、send()、end()搭配使用，用于接收字节流接口
+     */
+    public void send(byte[] data){
+        if (data == null) {
+            if (mCallBack != null) {
+                mCallBack.onError(new BakerException(BakerAsrConstants.ERROR_CODE_DATA_IS_NULL, "发送的数据为空."));
+            }
+            return;
+        }
+        if (net == null) {
+            if (mCallBack != null) {
+                mCallBack.onError(new BakerException(BakerAsrConstants.ERROR_CODE_NOT_START, "网络未准备好，没有调用start()方法."));
+            }
+            return;
+        }
+        BakerPrivateConstants.dataQueue.offer(data);
+        EventManagerMessagePool.offer(net, "net.upload");
+    }
+
+    /**
+     * start()、send()、end()搭配使用，用于接收字节流接口
+     */
+    public void end(){
+        if (net != null) {
+            EventManagerMessagePool.offer(net, "net.disconnect");
+        }
+        reset();
+    }
+
     @Override
     public void send(String name, byte[] data, String params) {
         switch (name) {
-            case "net.start-called":
+            case "net.start-called-1":
                 if (mCallBack != null) {
                     mCallBack.onReadyOfSpeech();
                 }
                 //获取声音数据
                 EventManagerMessagePool.offer(mic, "mic.record");
+                break;
+            case "net.start-called-2":
+                if (mCallBack != null) {
+                    mCallBack.onReadyOfSpeech();
+                }
+                BakerPrivateConstants.dataQueue.clear();
                 break;
             case "asr.partial":
                 if (!TextUtils.isEmpty(params) && mCallBack != null) {

@@ -20,7 +20,8 @@ import pub.devrel.easypermissions.EasyPermissions;
  * @author hsj55
  */
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-    private final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
+    private final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +58,24 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     public void voiceConvert(View view) {
-        if (EasyPermissions.hasPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO})) {
+        if (EasyPermissions.hasPermissions(this, permissions)) {
             //已经打开权限
             toAnOtherActivity("voice_convert");
         } else {
             //没有打开相关权限、申请权限
-            EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, new String[]{Manifest.permission.RECORD_AUDIO});
+            EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, permissions);
         }
     }
 
     public void voiceEngrave(View view) {
-
+        //声音复刻sdk 待迁移
+        if (EasyPermissions.hasPermissions(this, permissions)) {
+            //已经打开权限
+            toAnOtherActivity("gramophone");
+        } else {
+            //没有打开相关权限、申请权限
+            EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, permissions);
+        }
     }
 
     private void toAnOtherActivity(String type) {

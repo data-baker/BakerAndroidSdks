@@ -2,7 +2,6 @@ package com.baker.sdk.demo.longasr;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -28,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baker.sdk.basecomponent.util.ThreadPoolUtil;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.R;
@@ -220,22 +219,27 @@ public class LongAsrFileActivity extends BakerBaseActivity {
             longTimeAsr.setDomain(domain);
             //*********************************结束设置参数****************************
             longTimeAsr.start();
-            try {
-                FileInputStream in = new FileInputStream(path);
-                byte[] buffer;
-                int readSize;
-                //需要固定5120长度
-                while ((readSize = in.read(buffer = new byte[5120])) != -1) {
-                    longTimeAsr.send(buffer);
-                }
+            ThreadPoolUtil.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        FileInputStream in = new FileInputStream(path);
+                        byte[] buffer;
+                        int readSize;
+                        //需要固定5120长度
+                        while ((readSize = in.read(buffer = new byte[5120])) != -1) {
+                            longTimeAsr.send(buffer);
+                        }
 
-                //追加一片空数据，表示完成传输。
-                if (readSize < 5120) {
-                    longTimeAsr.send(new byte[]{});
+                        //追加一片空数据，表示完成传输。
+                        if (readSize < 5120) {
+                            longTimeAsr.send(new byte[]{});
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            });
         }
     }
 

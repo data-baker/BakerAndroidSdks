@@ -1,0 +1,388 @@
+# compiler: R8
+# compiler_version: 2.1.62
+# pg_map_id: 5aa1817
+# common_typos_disable
+com.baker.engrave.lib.BakerVoiceEngraver -> com.baker.engrave.lib.BakerVoiceEngraver:
+    1:1:void com.baker.engrave.lib.net.NetUtil.finishRecords(java.lang.String,java.lang.String,java.lang.String):0:0 -> finishRecords
+    1:1:boolean finishRecords(java.lang.String,java.lang.String):0 -> finishRecords
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> finishRecords
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> finishRecords
+    2:2:void com.baker.engrave.lib.net.NetUtil.finishRecords(java.lang.String,java.lang.String,java.lang.String):0 -> finishRecords
+    2:2:boolean finishRecords(java.lang.String,java.lang.String):0 -> finishRecords
+    3:3:void com.baker.engrave.lib.net.NetUtil.finishRecords(java.lang.String,java.lang.String,java.lang.String):0:0 -> finishRecords
+    3:3:boolean finishRecords(java.lang.String,java.lang.String):0 -> finishRecords
+    1:1:com.baker.engrave.lib.BakerVoiceEngraver com.baker.engrave.lib.BakerVoiceEngraver$HolderClass.access$400():0:0 -> getInstance
+    1:1:com.baker.engrave.lib.BakerVoiceEngraver getInstance():0 -> getInstance
+    1:1:void com.baker.engrave.lib.net.NetUtil.getMouldInfo(java.lang.String):0:0 -> getMouldInfo
+    1:1:void getMouldInfo(java.lang.String):0 -> getMouldInfo
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> getMouldInfo
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> getMouldInfo
+    2:2:void com.baker.engrave.lib.net.NetUtil.getMouldInfo(java.lang.String):0 -> getMouldInfo
+    2:2:void getMouldInfo(java.lang.String):0 -> getMouldInfo
+    3:3:void com.baker.engrave.lib.net.NetUtil.getMouldInfo(java.lang.String):0:0 -> getMouldInfo
+    3:3:void getMouldInfo(java.lang.String):0 -> getMouldInfo
+    1:1:void com.baker.engrave.lib.net.NetUtil.getMouldList(int,int,java.lang.String):0:0 -> getMouldList
+    1:1:void getMouldList(int,int,java.lang.String):0 -> getMouldList
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> getMouldList
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> getMouldList
+    2:2:void com.baker.engrave.lib.net.NetUtil.getMouldList(int,int,java.lang.String):0 -> getMouldList
+    2:2:void getMouldList(int,int,java.lang.String):0 -> getMouldList
+    3:3:void com.baker.engrave.lib.net.NetUtil.getMouldList(int,int,java.lang.String):0:0 -> getMouldList
+    3:3:void getMouldList(int,int,java.lang.String):0 -> getMouldList
+    1:1:void com.baker.engrave.lib.net.NetUtil.getTextList():0:0 -> getTextList
+    1:1:void getTextList():0 -> getTextList
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> getTextList
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> getTextList
+    2:2:void com.baker.engrave.lib.net.NetUtil.getTextList():0 -> getTextList
+    2:2:void getTextList():0 -> getTextList
+    3:3:void com.baker.engrave.lib.net.NetUtil.getTextList():0:0 -> getTextList
+    3:3:void getTextList():0 -> getTextList
+    1:1:void com.baker.engrave.lib.net.NetUtil.getVoiceMouldId(java.lang.String):0:0 -> getVoiceMouldId
+    1:1:void getVoiceMouldId():0 -> getVoiceMouldId
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> getVoiceMouldId
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> getVoiceMouldId
+    2:2:void com.baker.engrave.lib.net.NetUtil.getVoiceMouldId(java.lang.String):0 -> getVoiceMouldId
+    2:2:void getVoiceMouldId():0 -> getVoiceMouldId
+    3:3:void com.baker.engrave.lib.net.NetUtil.getVoiceMouldId(java.lang.String):0:0 -> getVoiceMouldId
+    3:3:void getVoiceMouldId():0 -> getVoiceMouldId
+    1:1:void com.baker.engrave.lib.net.NetUtil.setNetCallback(com.baker.engrave.lib.callback.BaseNetCallback):0:0 -> initSDK
+    1:1:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.baker.engrave.lib.callback.InitListener):0 -> initSDK
+    2:2:void com.baker.engrave.lib.util.DetectUtil.setCallback(android.content.Context,com.baker.engrave.lib.callback.BaseNetCallback):0:0 -> initSDK
+    2:2:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.baker.engrave.lib.callback.InitListener):0 -> initSDK
+    3:3:void com.baker.engrave.lib.util.RecordUtil.setNetCallback(android.content.Context,com.baker.engrave.lib.callback.BaseNetCallback):0:0 -> initSDK
+    3:3:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.baker.engrave.lib.callback.InitListener):0 -> initSDK
+    4:4:void initSDK(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.baker.engrave.lib.callback.InitListener):0:0 -> initSDK
+    1:1:void com.baker.engrave.lib.net.NetUtil.recordInterrupt(java.lang.String):0:0 -> recordInterrupt
+    1:1:void recordInterrupt():0 -> recordInterrupt
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> recordInterrupt
+    2:2:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> recordInterrupt
+    2:2:void com.baker.engrave.lib.net.NetUtil.recordInterrupt(java.lang.String):0 -> recordInterrupt
+    2:2:void recordInterrupt():0 -> recordInterrupt
+    3:3:void com.baker.engrave.lib.net.NetUtil.recordInterrupt(java.lang.String):0:0 -> recordInterrupt
+    3:3:void recordInterrupt():0 -> recordInterrupt
+    4:4:void recordInterrupt():0:0 -> recordInterrupt
+com.baker.engrave.lib.BakerVoiceEngraver$1 -> com.baker.engrave.lib.BakerVoiceEngraver$a:
+    com.baker.engrave.lib.callback.PlayListener val$listener -> b
+    com.baker.engrave.lib.BakerVoiceEngraver this$0 -> c
+    int val$currentIndex -> a
+com.baker.engrave.lib.BakerVoiceEngraver$1$1 -> com.baker.engrave.lib.BakerVoiceEngraver$a$a:
+    com.baker.engrave.lib.BakerVoiceEngraver$1 this$1 -> a
+com.baker.engrave.lib.BakerVoiceEngraver$1$2 -> com.baker.engrave.lib.BakerVoiceEngraver$a$b:
+    com.baker.engrave.lib.BakerVoiceEngraver$1 this$1 -> a
+com.baker.engrave.lib.BakerVoiceEngraver$1$3 -> com.baker.engrave.lib.BakerVoiceEngraver$a$c:
+    com.baker.engrave.lib.BakerVoiceEngraver$1 this$1 -> b
+    java.lang.Exception val$e -> a
+com.baker.engrave.lib.BakerVoiceEngraver$2 -> com.baker.engrave.lib.BakerVoiceEngraver$b:
+    com.baker.engrave.lib.BakerVoiceEngraver this$0 -> b
+    com.baker.engrave.lib.callback.InitListener val$listener -> a
+com.baker.engrave.lib.BakerVoiceEngraver$2$1 -> com.baker.engrave.lib.BakerVoiceEngraver$b$a:
+    com.baker.engrave.lib.BakerVoiceEngraver$2 this$1 -> a
+com.baker.engrave.lib.BakerVoiceEngraver$2$2 -> com.baker.engrave.lib.BakerVoiceEngraver$b$b:
+    com.baker.engrave.lib.BakerVoiceEngraver$2 this$1 -> a
+com.baker.engrave.lib.BakerVoiceEngraver$2$3 -> com.baker.engrave.lib.BakerVoiceEngraver$b$c:
+    java.io.IOException val$e -> a
+    com.baker.engrave.lib.BakerVoiceEngraver$2 this$1 -> b
+com.baker.engrave.lib.BakerVoiceEngraver$HolderClass -> com.baker.engrave.lib.BakerVoiceEngraver$c:
+    com.baker.engrave.lib.BakerVoiceEngraver instance -> a
+com.baker.engrave.lib.callback.BaseNetCallback -> a.a.a.a.a.a:
+com.baker.engrave.lib.net.BakerOkHttpClient -> a.a.a.a.b.a:
+    okhttp3.OkHttpClient mHttpClient -> a
+    okhttp3.Request createPostRequest(java.lang.String,java.util.concurrent.ConcurrentHashMap,java.util.concurrent.ConcurrentHashMap) -> a
+    void enqueue(okhttp3.Request,okhttp3.Callback) -> a
+com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass -> a.a.a.a.b.a$a:
+    com.baker.engrave.lib.net.BakerOkHttpClient client -> a
+    1:1:void com.baker.engrave.lib.net.BakerOkHttpClient.<init>(com.baker.engrave.lib.net.BakerOkHttpClient$1):0:0 -> <clinit>
+    1:1:void <clinit>():0 -> <clinit>
+    2:2:void <clinit>():0:0 -> <clinit>
+com.baker.engrave.lib.net.NetUtil -> a.a.a.a.b.h:
+    com.baker.engrave.lib.callback.BaseNetCallback netCallback -> a
+    com.google.gson.Gson gson -> c
+    java.lang.String[] recordTextList -> d
+    java.lang.String mToken -> b
+    java.lang.String genSignature(java.lang.String,java.lang.String,java.util.Map) -> a
+    java.util.concurrent.ConcurrentHashMap getHeaders() -> a
+    java.lang.String md5(java.lang.String) -> a
+    void onFault(int,int,java.lang.String) -> a
+    int random6num() -> b
+    1:1:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient$HolderClass.access$100():0:0 -> c
+    1:1:com.baker.engrave.lib.net.BakerOkHttpClient com.baker.engrave.lib.net.BakerOkHttpClient.getInstance():0 -> c
+    1:1:java.lang.String requestToken():0 -> c
+    2:2:java.lang.String requestToken():0:0 -> c
+    3:3:okhttp3.Request com.baker.engrave.lib.net.BakerOkHttpClient.createGetRequest(java.lang.String):0:0 -> c
+    3:3:java.lang.String requestToken():0 -> c
+    4:4:okhttp3.Response com.baker.engrave.lib.net.BakerOkHttpClient.execute(okhttp3.Request):0:0 -> c
+    4:4:java.lang.String requestToken():0 -> c
+    5:5:java.lang.String requestToken():0:0 -> c
+com.baker.engrave.lib.net.NetUtil$1 -> a.a.a.a.b.b:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+    1:1:java.lang.String[] com.baker.engrave.lib.net.NetUtil.access$102(java.lang.String[]):0:0 -> onResponse
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    2:2:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.net.NetUtil.access$200():0:0 -> onResponse
+    2:2:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    3:3:java.lang.String[] com.baker.engrave.lib.net.NetUtil.access$100():0:0 -> onResponse
+    3:3:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    4:4:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    5:5:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    5:5:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    6:6:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    7:7:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    7:7:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+com.baker.engrave.lib.net.NetUtil$2 -> a.a.a.a.b.c:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    2:2:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.net.NetUtil.access$200():0:0 -> onResponse
+    3:3:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    4:4:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    5:5:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    5:5:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+com.baker.engrave.lib.net.NetUtil$3 -> a.a.a.a.b.d:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+com.baker.engrave.lib.net.NetUtil$4 -> a.a.a.a.b.e:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+    1:1:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.net.NetUtil.access$200():0:0 -> onResponse
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    2:2:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    3:3:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    3:3:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    4:4:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    5:5:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    5:5:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+com.baker.engrave.lib.net.NetUtil$5 -> a.a.a.a.b.f:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+    1:1:com.google.gson.Gson com.baker.engrave.lib.net.NetUtil.access$300():0:0 -> onResponse
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    2:2:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.net.NetUtil.access$200():0:0 -> onResponse
+    3:3:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    4:4:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    5:5:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    5:5:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    6:6:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    7:7:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    7:7:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+com.baker.engrave.lib.net.NetUtil$6 -> a.a.a.a.b.g:
+    1:1:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onFailure
+    1:1:void onFailure(okhttp3.Call,java.io.IOException):0 -> onFailure
+    1:1:com.google.gson.Gson com.baker.engrave.lib.net.NetUtil.access$300():0:0 -> onResponse
+    1:1:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    2:2:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.net.NetUtil.access$200():0:0 -> onResponse
+    3:3:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    4:4:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    5:5:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    5:5:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+    6:6:void onResponse(okhttp3.Call,okhttp3.Response):0:0 -> onResponse
+    7:7:void com.baker.engrave.lib.net.NetUtil.access$000(int,int,java.lang.String):0:0 -> onResponse
+    7:7:void onResponse(okhttp3.Call,okhttp3.Response):0 -> onResponse
+com.baker.engrave.lib.net.TokenInterceptor -> a.a.a.a.b.i:
+com.baker.engrave.lib.net.WebSocketClient -> com.baker.engrave.lib.net.WebSocketClient:
+    1:1:com.baker.engrave.lib.net.WebSocketClient com.baker.engrave.lib.net.WebSocketClient$Singleton.access$100():0:0 -> getInstance
+    1:1:com.baker.engrave.lib.net.WebSocketClient getInstance():0 -> getInstance
+com.baker.engrave.lib.net.WebSocketClient$1 -> com.baker.engrave.lib.net.WebSocketClient$a:
+com.baker.engrave.lib.net.WebSocketClient$Singleton -> com.baker.engrave.lib.net.WebSocketClient$b:
+    com.baker.engrave.lib.net.WebSocketClient socketClient -> a
+com.baker.engrave.lib.util.BaseUtil -> a.a.a.a.c.a:
+    1:1:java.lang.String com.baker.engrave.lib.net.NetUtil.getToken():0:0 -> a
+    1:1:com.baker.engrave.lib.bean.RecordingSocketBean com.baker.engrave.lib.util.WebSocketUtil.formatParameters(com.baker.engrave.lib.bean.RecordingSocketBean$ParamBean,com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean):0 -> a
+    2:2:java.lang.String com.baker.engrave.lib.net.NetUtil.getClientId():0:0 -> a
+    2:2:com.baker.engrave.lib.bean.RecordingSocketBean com.baker.engrave.lib.util.WebSocketUtil.formatParameters(com.baker.engrave.lib.bean.RecordingSocketBean$ParamBean,com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean):0 -> a
+    3:3:com.baker.engrave.lib.bean.RecordingSocketBean com.baker.engrave.lib.util.WebSocketUtil.formatParameters(com.baker.engrave.lib.bean.RecordingSocketBean$ParamBean,com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean):0:0 -> a
+    boolean hasPermission(android.content.Context,java.lang.String[]) -> a
+com.baker.engrave.lib.util.DetectUtil -> a.a.a.a.c.b:
+    android.content.Context mContext -> c
+    android.telephony.PhoneStateListener mPhoneStateListener -> m
+    android.media.AudioManager$OnAudioFocusChangeListener audioFocusChangeListener -> n
+    boolean isLast -> j
+    int decibels -> h
+    boolean recording -> k
+    java.io.File mAudioFile -> g
+    omrecorder.Recorder mRecorder -> b
+    com.baker.engrave.lib.callback.BaseNetCallback baseNetCallback -> a
+    android.media.AudioManager mAudioManager -> d
+    android.media.AudioFocusRequest mFocusRequest -> e
+    android.telephony.TelephonyManager mTelephonyManager -> f
+    java.util.List decibelsList -> i
+    android.os.CountDownTimer timer -> l
+    boolean access$202(boolean) -> a
+    1:1:omrecorder.PullableSource mic():0:0 -> a
+    1:1:void startRecording():0 -> a
+    2:2:void startRecording():0:0 -> a
+    3:3:java.io.File file():0:0 -> a
+    3:3:void startRecording():0 -> a
+    4:4:void startRecording():0:0 -> a
+    5:5:void getAudioFocus():0:0 -> a
+    5:5:void startRecording():0 -> a
+    6:6:void startRecording():0:0 -> a
+    1:1:void reset():0:0 -> b
+    1:1:void stopRecording():0 -> b
+    2:2:void stopRecording():0:0 -> b
+com.baker.engrave.lib.util.DetectUtil$1 -> a.a.a.a.c.b$a:
+    1:1:java.util.List com.baker.engrave.lib.util.DetectUtil.access$100():0:0 -> onFinish
+    1:1:void onFinish():0 -> onFinish
+    2:2:int com.baker.engrave.lib.util.DetectUtil.access$000():0:0 -> onFinish
+    2:2:void onFinish():0 -> onFinish
+    3:3:void onFinish():0:0 -> onFinish
+    4:4:java.util.List com.baker.engrave.lib.util.DetectUtil.access$100():0:0 -> onFinish
+    4:4:void onFinish():0 -> onFinish
+    5:5:void onFinish():0:0 -> onFinish
+    6:6:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onFinish
+    6:6:void onFinish():0 -> onFinish
+    7:7:void onFinish():0:0 -> onFinish
+    8:8:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onFinish
+    8:8:void onFinish():0 -> onFinish
+    9:9:void onFinish():0:0 -> onFinish
+    1:1:int com.baker.engrave.lib.util.DetectUtil.access$000():0:0 -> onTick
+    1:1:void onTick(long):0 -> onTick
+    2:2:void onTick(long):0:0 -> onTick
+    3:3:int com.baker.engrave.lib.util.DetectUtil.access$000():0:0 -> onTick
+    3:3:void onTick(long):0 -> onTick
+    4:4:java.util.List com.baker.engrave.lib.util.DetectUtil.access$100():0:0 -> onTick
+    4:4:void onTick(long):0 -> onTick
+    5:5:int com.baker.engrave.lib.util.DetectUtil.access$000():0:0 -> onTick
+    5:5:void onTick(long):0 -> onTick
+    6:6:void onTick(long):0:0 -> onTick
+com.baker.engrave.lib.util.DetectUtil$2 -> a.a.a.a.c.b$b:
+    1:1:int com.baker.engrave.lib.util.DetectUtil.access$002(int):0:0 -> onAudioChunkPulled
+    1:1:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    2:2:boolean com.baker.engrave.lib.util.DetectUtil.access$200():0:0 -> onAudioChunkPulled
+    2:2:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onAudioChunkPulled
+    3:3:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    4:4:int com.baker.engrave.lib.util.DetectUtil.access$000():0:0 -> onAudioChunkPulled
+    4:4:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    5:5:void onAudioChunkPulled(omrecorder.AudioChunk):0:0 -> onAudioChunkPulled
+com.baker.engrave.lib.util.DetectUtil$3 -> a.a.a.a.c.b$c:
+    1:1:boolean com.baker.engrave.lib.util.DetectUtil.access$400():0:0 -> onCallStateChanged
+    1:1:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    2:2:void onCallStateChanged(int,java.lang.String):0:0 -> onCallStateChanged
+    3:3:android.os.CountDownTimer com.baker.engrave.lib.util.DetectUtil.access$500():0:0 -> onCallStateChanged
+    3:3:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    4:4:void onCallStateChanged(int,java.lang.String):0:0 -> onCallStateChanged
+    5:5:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onCallStateChanged
+    5:5:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    6:6:boolean com.baker.engrave.lib.util.DetectUtil.access$400():0:0 -> onCallStateChanged
+    6:6:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    7:7:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onCallStateChanged
+    7:7:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    8:8:void onCallStateChanged(int,java.lang.String):0:0 -> onCallStateChanged
+com.baker.engrave.lib.util.DetectUtil$4 -> a.a.a.a.c.b$d:
+    1:1:boolean com.baker.engrave.lib.util.DetectUtil.access$400():0:0 -> onAudioFocusChange
+    1:1:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    2:2:void onAudioFocusChange(int):0:0 -> onAudioFocusChange
+    3:3:android.os.CountDownTimer com.baker.engrave.lib.util.DetectUtil.access$500():0:0 -> onAudioFocusChange
+    3:3:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    4:4:void onAudioFocusChange(int):0:0 -> onAudioFocusChange
+    5:5:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onAudioFocusChange
+    5:5:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    6:6:boolean com.baker.engrave.lib.util.DetectUtil.access$400():0:0 -> onAudioFocusChange
+    6:6:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    7:7:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.DetectUtil.access$300():0:0 -> onAudioFocusChange
+    7:7:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    8:8:void onAudioFocusChange(int):0:0 -> onAudioFocusChange
+com.baker.engrave.lib.util.RecordUtil -> a.a.a.a.c.c:
+    android.content.Context mContext -> a
+    android.telephony.PhoneStateListener mPhoneStateListener -> q
+    java.lang.String mContentText -> i
+    java.lang.String mSessionId -> h
+    java.io.File mAudioFile -> f
+    boolean recording -> j
+    boolean isFirst -> l
+    omrecorder.Recorder mRecorder -> e
+    android.media.AudioManager$OnAudioFocusChangeListener audioFocusChangeListener -> r
+    android.media.AudioFocusRequest mFocusRequest -> c
+    com.baker.engrave.lib.callback.BaseNetCallback netCallback -> g
+    java.util.concurrent.LinkedBlockingDeque linkedBlockingDeque -> o
+    android.media.AudioManager mAudioManager -> b
+    com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean audioBean -> n
+    java.lang.Thread mThread -> m
+    android.telephony.TelephonyManager mTelephonyManager -> d
+    int countUploadAudioIndex -> p
+    okhttp3.WebSocket mWebSocket -> k
+    1:1:void endRecord(int):0:0 -> a
+    1:1:void access$1000(int):0 -> a
+    boolean access$102(boolean) -> a
+    2:2:void sendPcm(byte[],int):0:0 -> a
+    2:2:void access$1100(byte[],int):0 -> a
+    void endRecordAndStartRecognize() -> a
+    3:3:omrecorder.PullableSource mic():0:0 -> a
+    3:3:void startRecord(java.lang.String,java.lang.String):0 -> a
+    4:4:void startRecord(java.lang.String,java.lang.String):0:0 -> a
+    5:5:java.io.File file():0:0 -> a
+    5:5:void startRecord(java.lang.String,java.lang.String):0 -> a
+    6:6:void startRecord(java.lang.String,java.lang.String):0:0 -> a
+    7:7:void getAudioFocus():0:0 -> a
+    7:7:void startRecord(java.lang.String,java.lang.String):0 -> a
+    8:8:void startRecord(java.lang.String,java.lang.String):0:0 -> a
+    9:9:void com.baker.engrave.lib.util.RecordUtil$RecordingWebSocketListener.<init>(com.baker.engrave.lib.util.RecordUtil$1):0:0 -> a
+    9:9:void startRecord(java.lang.String,java.lang.String):0 -> a
+    10:10:void startRecord(java.lang.String,java.lang.String):0:0 -> a
+    1:1:void reset():0:0 -> b
+    1:1:void stopRecord():0 -> b
+    2:2:void stopRecord():0:0 -> b
+com.baker.engrave.lib.util.RecordUtil$1 -> a.a.a.a.c.c$a:
+    1:1:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onAudioChunkPulled
+    1:1:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    2:2:void onAudioChunkPulled(omrecorder.AudioChunk):0:0 -> onAudioChunkPulled
+    3:3:boolean com.baker.engrave.lib.util.RecordUtil.access$100():0:0 -> onAudioChunkPulled
+    3:3:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    4:4:void onAudioChunkPulled(omrecorder.AudioChunk):0:0 -> onAudioChunkPulled
+    5:5:java.util.concurrent.LinkedBlockingDeque com.baker.engrave.lib.util.RecordUtil.access$200():0:0 -> onAudioChunkPulled
+    5:5:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    6:6:void onAudioChunkPulled(omrecorder.AudioChunk):0:0 -> onAudioChunkPulled
+    7:7:java.util.concurrent.LinkedBlockingDeque com.baker.engrave.lib.util.RecordUtil.access$200():0:0 -> onAudioChunkPulled
+    7:7:void onAudioChunkPulled(omrecorder.AudioChunk):0 -> onAudioChunkPulled
+    8:8:void onAudioChunkPulled(omrecorder.AudioChunk):0:0 -> onAudioChunkPulled
+com.baker.engrave.lib.util.RecordUtil$2 -> a.a.a.a.c.d:
+    1:1:java.util.concurrent.LinkedBlockingDeque com.baker.engrave.lib.util.RecordUtil.access$200():0:0 -> run
+    1:1:void run():0 -> run
+    2:2:void run():0:0 -> run
+com.baker.engrave.lib.util.RecordUtil$3 -> a.a.a.a.c.c$b:
+    1:1:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onCallStateChanged
+    1:1:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    2:2:boolean com.baker.engrave.lib.util.RecordUtil.access$1200():0:0 -> onCallStateChanged
+    2:2:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onCallStateChanged
+    3:3:void onCallStateChanged(int,java.lang.String):0 -> onCallStateChanged
+    4:4:void onCallStateChanged(int,java.lang.String):0:0 -> onCallStateChanged
+com.baker.engrave.lib.util.RecordUtil$4 -> a.a.a.a.c.c$c:
+    1:1:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onAudioFocusChange
+    1:1:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    2:2:boolean com.baker.engrave.lib.util.RecordUtil.access$1200():0:0 -> onAudioFocusChange
+    2:2:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    3:3:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onAudioFocusChange
+    3:3:void onAudioFocusChange(int):0 -> onAudioFocusChange
+    4:4:void onAudioFocusChange(int):0:0 -> onAudioFocusChange
+com.baker.engrave.lib.util.RecordUtil$PcmBean -> a.a.a.a.c.c$d:
+    byte[] pcm -> b
+    int state -> a
+com.baker.engrave.lib.util.RecordUtil$RecordingWebSocketListener -> a.a.a.a.c.c$e:
+    1:1:com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean com.baker.engrave.lib.util.RecordUtil.access$402(com.baker.engrave.lib.bean.RecordingSocketBean$AudioBean):0:0 -> onMessage
+    1:1:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    2:2:void com.baker.engrave.lib.util.RecordUtil.newThread():0:0 -> onMessage
+    2:2:void com.baker.engrave.lib.util.RecordUtil.access$500():0 -> onMessage
+    2:2:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    3:3:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
+    4:4:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onMessage
+    4:4:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    5:5:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
+    6:6:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onMessage
+    6:6:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    7:7:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
+    8:8:com.baker.engrave.lib.callback.BaseNetCallback com.baker.engrave.lib.util.RecordUtil.access$000():0:0 -> onMessage
+    8:8:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    9:9:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
+    10:10:java.lang.String com.baker.engrave.lib.util.RecordUtil.access$700():0:0 -> onMessage
+    10:10:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    11:11:java.lang.String com.baker.engrave.lib.util.RecordUtil.access$800():0:0 -> onMessage
+    11:11:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    12:12:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
+    13:13:okhttp3.WebSocket com.baker.engrave.lib.util.RecordUtil.access$902(okhttp3.WebSocket):0:0 -> onMessage
+    13:13:void onMessage(okhttp3.WebSocket,java.lang.String):0 -> onMessage
+    14:14:void onMessage(okhttp3.WebSocket,java.lang.String):0:0 -> onMessage
