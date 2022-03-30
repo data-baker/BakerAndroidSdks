@@ -15,6 +15,7 @@ import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.convert.VoiceConvertActivity;
 import com.baker.sdk.demo.convert.VoiceConvertFromFileActivity;
 import com.baker.sdk.demo.convert.VoiceConvertFromMicActivity;
+import com.baker.sdk.demo.gramophone.GramophoneActivity;
 import com.baker.sdk.demo.longasr.LongAsrActivity;
 import com.baker.sdk.demo.tts.TtsActivity;
 import com.baker.sdk.http.BakerTokenManager;
@@ -82,6 +83,16 @@ public class AuthorizationActivity extends BakerBaseActivity {
                         etClientSecret.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET));
                     }
                     break;
+                case "gramophone":
+                    //声音转换 获取token
+                    setTitle("声音复刻");
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_ID))) {
+                        etClientId.setText(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_ID));
+                    }
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET))) {
+                        etClientSecret.setText(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET));
+                    }
+                    break;
                 default:
                     break;
             }
@@ -141,6 +152,11 @@ public class AuthorizationActivity extends BakerBaseActivity {
                 sharedPreferencesCommit(Constants.VOICE_CONVERT_CLIENT_SECRET, clientSecret);
                 mIntent.setClass(AuthorizationActivity.this, VoiceConvertActivity.class);
                 break;
+            case "gramophone":
+                sharedPreferencesCommit(Constants.GRAMOPHONE_CLIENT_ID, clientId);
+                sharedPreferencesCommit(Constants.GRAMOPHONE_CLIENT_SECRET, clientSecret);
+                mIntent.setClass(AuthorizationActivity.this, GramophoneActivity.class);
+                break;
             default:
                 break;
         }
@@ -169,6 +185,10 @@ public class AuthorizationActivity extends BakerBaseActivity {
             case "voice_convert":
                 sharedPreferencesRemove(Constants.VOICE_CONVERT_CLIENT_ID);
                 sharedPreferencesRemove(Constants.VOICE_CONVERT_CLIENT_SECRET);
+                break;
+            case "gramophone":
+                sharedPreferencesRemove(Constants.GRAMOPHONE_CLIENT_ID);
+                sharedPreferencesRemove(Constants.GRAMOPHONE_CLIENT_SECRET);
                 break;
         }
     }
