@@ -101,12 +101,12 @@ public class MediaPlayerActivity extends BakerBaseActivity {
         bakerSynthesizer.setVoice(BakerBaseConstants.VOICE_NORMAL);
         //合成请求文本的语言，目前支持ZH(中文和中英混)和ENG(纯英文，中文部分不会合成),默认：ZH
         bakerSynthesizer.setLanguage(BakerBaseConstants.LANGUAGE_ZH);
-        //设置播放的语速，在0～9之间（只支持整型值），不传时默认为5
-        bakerSynthesizer.setSpeed(5);
-        //设置语音的音量，在0～9之间（只支持整型值），不传时默认值为5
+        //设置播放的语速，在0～9之间（支持浮点值），默认值为5
+        bakerSynthesizer.setSpeed(5.0f);
+        //设置语音的音量，在0～9之间（只支持整型值），默认值为5
         bakerSynthesizer.setVolume(5);
-        //设置语音的音调，取值0-9，不传时默认为5中语调
-        bakerSynthesizer.setPitch(5);
+        //设置语音的音调，在0～9之间，（支持浮点值），默认值为5
+        bakerSynthesizer.setPitch(5.0f);
         /**
          * 可不填，不填时默认为4, 16K采样率的pcm格式
          * audiotype=4 ：返回16K采样率的pcm格式

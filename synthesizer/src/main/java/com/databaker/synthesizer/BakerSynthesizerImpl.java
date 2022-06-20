@@ -48,10 +48,10 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
     private String mUrl;
     private String voiceName = BakerBaseConstants.VOICE_NORMAL;
     private String language = BakerBaseConstants.LANGUAGE_ZH;
-    private int speed = 5;
+    private float speed = 5.0f;
     private int timeOut;
     private int volume = 5;
-    private int pitch = 5;
+    private float pitch = 5.0f;
     private boolean k16OrK8 = BakerBaseConstants.K16;
     private int audioType = BakerBaseConstants.AUDIO_TYPE_PCM_16K;
     private int rate = BakerBaseConstants.RATE_16K;
@@ -426,7 +426,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
      * @param s
      */
     @Override
-    public void setSpeed(int s) {
+    public void setSpeed(float s) {
         if (s < 0 || s > 9) {
             return;
         }
@@ -452,7 +452,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
      * @param p
      */
     @Override
-    public void setPitch(int p) {
+    public void setPitch(float p) {
         if (p < 0 || p > 9) {
             return;
         }

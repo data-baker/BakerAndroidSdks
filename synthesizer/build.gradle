@@ -35,8 +35,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.13'
-//    implementation project(path: ":bakerbasecomponent")
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.13'
+    implementation project(path: ":bakerbasecomponent")
 }
 
 

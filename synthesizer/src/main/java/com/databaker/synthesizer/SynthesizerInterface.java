@@ -55,7 +55,7 @@ public interface SynthesizerInterface {
      *
      * @param s
      */
-    void setSpeed(int s);
+    void setSpeed(float s);
 
     /**
      * 设置语音的音量，在0～9之间（只支持整型值），不传时默认值为5
@@ -69,7 +69,7 @@ public interface SynthesizerInterface {
      *
      * @param p
      */
-    void setPitch(int p);
+    void setPitch(float p);
 
     /**
      * 可不填，不填时默认为3，表示mp3格式
