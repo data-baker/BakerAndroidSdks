@@ -24,6 +24,8 @@ import okio.GzipSource;
 
 import static okhttp3.internal.platform.Platform.INFO;
 
+import com.baker.sdk.basecomponent.BakerBaseConstants;
+
 /**
  * @author hsj55
  * 2020/9/17
@@ -123,6 +125,12 @@ public final class HttpLoggingInterceptor implements Interceptor {
     public HttpLoggingInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
+        return this;
+    }
+    public HttpLoggingInterceptor setLevel(Level level,Boolean isDebug) {
+        if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
+        this.level = level;
+        BakerBaseConstants.setIsDebug(isDebug);
         return this;
     }
 
