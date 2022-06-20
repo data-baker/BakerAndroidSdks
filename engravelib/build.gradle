@@ -33,7 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.kailashdabhi:om-recorder:1.1.5'
+    implementation 'com.github.kailash09dabhi:OmRecorder:1.1.5'
     debugImplementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
 }
 

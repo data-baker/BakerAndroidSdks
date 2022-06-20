@@ -63,7 +63,7 @@ public class BakerSynthesizer implements SynthesizerInterface {
     }
 
     @Override
-    public void setSpeed(int s) {
+    public void setSpeed(float s) {
         synthesizer.setSpeed(s);
     }
 
@@ -73,7 +73,7 @@ public class BakerSynthesizer implements SynthesizerInterface {
     }
 
     @Override
-    public void setPitch(int p) {
+    public void setPitch(float p) {
         synthesizer.setPitch(p);
     }
 
