@@ -65,10 +65,10 @@ dependencies {
 
     implementation project(path: ':bakervpr')
     implementation project(path: ':bakerhttp')
-//    implementation('com.github.xujianliu.BakerAndroidSdks:bakervpr:2.0.14')
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11'
-    implementation "com.google.code.gson:gson:2.8.6"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation('com.github.xujianliu.BakerAndroidSdks:bakervpr:2.0.15')
+    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11'
+//    implementation "com.google.code.gson:gson:2.8.6"
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     testImplementation 'junit:junit:4.13.2'
