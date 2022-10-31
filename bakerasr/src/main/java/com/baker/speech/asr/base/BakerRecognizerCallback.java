@@ -1,6 +1,7 @@
 package com.baker.speech.asr.base;
 
 import com.baker.speech.asr.bean.BakerException;
+import com.baker.speech.asr.bean.BakerResponse;
 
 import java.util.List;
 
@@ -28,12 +29,12 @@ public interface BakerRecognizerCallback {
      * @param uncertain
      * @param isLast
      */
-    void onResult(List<String> nbest, List<String> uncertain, boolean isLast, String traceId);
+    void onResult(BakerResponse response);
 
     /**
      * 此回调表示：sdk内部录音机识别到用户开始输入声音。
      */
-//    void onBeginOfSpeech();
+    void onBeginOfSpeech();
 
     /**
      * 此回调表示：检测到了语音的尾端点，语音输入结束。

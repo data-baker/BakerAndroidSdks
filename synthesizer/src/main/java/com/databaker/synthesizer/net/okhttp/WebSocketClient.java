@@ -15,8 +15,8 @@ import okhttp3.WebSocketListener;
  * 2019/11/27
  */
 public class WebSocketClient {
-    private Request request;
-    private OkHttpClient client;
+    private final Request request;
+    private final OkHttpClient client;
     private WebSocket webSocket;
     private int connectTimeOut = 10;
     //    private final String baseUrl = "ws://echo.websocket.org";
@@ -83,7 +83,7 @@ public class WebSocketClient {
         cancelSocket = webSocket;
         client.dispatcher().cancelAll();
         webSocket = client.newWebSocket(request, listener);
-        HLogger.d("webSocket.id==" + webSocket.toString());
+        HLogger.d("webSocket.id==" + webSocket);
         if (cancelSocket != null) {
             HLogger.d("webSocket.id==" + webSocket.toString() + "cancelSocket==" + cancelSocket.toString());
         }

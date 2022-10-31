@@ -3,6 +3,7 @@ package com.baker.sdk.http.interceptor;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -31,7 +32,7 @@ import com.baker.sdk.basecomponent.BakerBaseConstants;
  * 2020/9/17
  */
 public final class HttpLoggingInterceptor implements Interceptor {
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     public enum Level {
         /**
@@ -95,7 +96,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         this(mDefault);
     }
 
-    private static Logger mDefault = new Logger() {
+    private static final Logger mDefault = new Logger() {
         @Override
         public void log(String message) {
             Platform.get().log(INFO, message, null);

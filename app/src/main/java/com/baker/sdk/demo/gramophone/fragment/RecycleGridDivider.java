@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecycleGridDivider extends RecyclerView.ItemDecoration {
-    private int space;
-    private int color;
+    private final int space;
+    private final int color;
     private Paint mPaint;
 
     /**

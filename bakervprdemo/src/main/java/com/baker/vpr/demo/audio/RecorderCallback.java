@@ -1,6 +1,6 @@
 package com.baker.vpr.demo.audio;
 
-public abstract interface RecorderCallback {
+public interface RecorderCallback {
 //    /**
 //     * 录音开始
 //     */
@@ -21,7 +21,7 @@ public abstract interface RecorderCallback {
      *
      * @param bytes 录制的数据data
      */
-    public abstract void onRecorded(byte[] bytes);
+    void onRecorded(byte[] bytes);
 
 //
 //    /**

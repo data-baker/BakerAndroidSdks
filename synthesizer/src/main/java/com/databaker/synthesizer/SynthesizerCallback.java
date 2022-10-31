@@ -22,8 +22,12 @@ public interface SynthesizerCallback {
      * @param audioType 音频类型，如audio/pcm，audio/mp3
      * @param interval  音频interval信息，
      * @param endFlag   是否时最后一个数据块，false：否，true：是
+     * @param interval_x
+     * interval-info-x: L=1&T=1,L=1&T=2,L=1&T=1,L=1&T=2,L=1&T=5
+     * L表示语言种类，目前支持1：纯中文，5：中英混
+     * T表示interval类型，0：默认值，1：声母，2：韵母，3：儿化韵母，4：英文，5：#3静音
      */
-    void onBinaryReceived(byte[] data, String audioType, String interval, boolean endFlag);
+    void onBinaryReceived(byte[] data, String audioType, String interval, String interval_x, boolean endFlag);
 
     void onSynthesisCompleted();
 

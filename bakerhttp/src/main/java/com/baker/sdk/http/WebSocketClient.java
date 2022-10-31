@@ -12,8 +12,8 @@ import okhttp3.WebSocketListener;
  * 2020/9/17
  */
 public class WebSocketClient {
-    private Request request;
-    private OkHttpClient client;
+    private final Request request;
+    private final OkHttpClient client;
     private WebSocket webSocket;
     private int connectTimeOut = 10;
     //    private final String baseUrl = "ws://echo.websocket.org";

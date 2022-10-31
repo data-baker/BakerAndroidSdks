@@ -8,7 +8,7 @@ import android.os.HandlerThread;
  * 2021/2/2
  */
 public class EventManagerMessagePool {
-    private static Handler sWorkHandler;
+    private static final Handler sWorkHandler;
     static {
         HandlerThread t = new HandlerThread("msg-owner-asr");
         t.start();

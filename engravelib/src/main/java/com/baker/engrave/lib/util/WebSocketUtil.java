@@ -25,7 +25,7 @@ public class WebSocketUtil {
         signature = NetUtil.genSignature(NetConstants.VERSION, nounce, params);
         RecordingSocketBean.HeaderBean headerBean = new RecordingSocketBean.HeaderBean(token, userId, nounce, timestamp, signature);
         RecordingSocketBean recordingSocketBean = new RecordingSocketBean(headerBean, paramBean, audioBean);
-        HLogger.d("request:" + recordingSocketBean.toString());
+        HLogger.d("request:" + recordingSocketBean);
         return recordingSocketBean;
     }
 }

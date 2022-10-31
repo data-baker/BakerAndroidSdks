@@ -31,7 +31,7 @@ import static com.baker.sdk.basecomponent.BakerBaseConstants.components;
 public class BakerCrashUtils implements Thread.UncaughtExceptionHandler {
     private final String URL_POST_SUBMIT = "https://sdkinfo.data-baker.com:8677/sdk-submit/sdk-info/sign-upload";
     private static final String CRASH_TEMP_FILE_NAME = "crash_socket_tts_record.txt";
-    private Thread.UncaughtExceptionHandler mDefaultHandler;
+    private final Thread.UncaughtExceptionHandler mDefaultHandler;
     private Context mContext;
 
     private BakerCrashUtils() {

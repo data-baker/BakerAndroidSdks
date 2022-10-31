@@ -16,19 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BakerPlayer {
-    private String TAG = "BakerPlayer";
-    private static List<OneSecPcmBlock> playData = new ArrayList<>();
+    private final String TAG = "BakerPlayer";
+    private static final List<OneSecPcmBlock> playData = new ArrayList<>();
     private static int position = 0;
     private static boolean isFinished = false;
     private boolean playing = false;
 
     private final int SAMPLE_RATE = 16000;
     // 初始化播放器
-    private int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
+    private final int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
             AudioFormat.CHANNEL_OUT_MONO,
             AudioFormat.ENCODING_PCM_16BIT);
 
-    private AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE,
+    private final AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE,
             AudioFormat.CHANNEL_OUT_MONO
             , AudioFormat.ENCODING_PCM_16BIT,
             iMinBufSize * 10, AudioTrack.MODE_STREAM);
@@ -48,7 +48,7 @@ public class BakerPlayer {
         }
     };
 
-    private Thread ttsPlayerThread;
+    private final Thread ttsPlayerThread;
     public BakerPlayer() {
         playing = true;
 

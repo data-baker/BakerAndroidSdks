@@ -100,7 +100,7 @@ public class VoiceConvertFromFileActivity extends BakerBaseActivity {
         });
     }
 
-    private VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
+    private final VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
         @Override
         public void onReady() {
             Log.e("VoiceConvertActivity", "onReady()");

@@ -19,9 +19,9 @@ import okhttp3.Request;
  * 2020/9/17
  */
 public class CommonOkHttpClient {
-    private static int connectTimeout = 30;
-    private static int readTimeout = 30;
-    private static int writeTimeout = 30;
+    private static final int connectTimeout = 30;
+    private static final int readTimeout = 30;
+    private static final int writeTimeout = 30;
     private static OkHttpClient mClient;
 
     public static synchronized OkHttpClient init() {
@@ -56,7 +56,7 @@ public class CommonOkHttpClient {
         return call;
     }
 
-    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new Logger() {
+    private static final HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new Logger() {
         @Override
         public void log(String message) {
             HLogger.d(message);

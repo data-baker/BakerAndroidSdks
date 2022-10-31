@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class BakerMediaPlayer {
     private boolean k16OrK8 = BakerBaseConstants.K16;
-    private static List<OneSecPcmBlock> playData = new ArrayList<>();
+    private static final List<OneSecPcmBlock> playData = new ArrayList<>();
     private static int duration = 0;  //单位是：秒，预估时取整秒数。
     private static int position = 0;
     private static boolean isFinished = false;
@@ -31,7 +31,7 @@ public class BakerMediaPlayer {
     private Thread ttsPlayerThread;
 
     private static final class HolderClass {
-        private static BakerMediaPlayer inStance = new BakerMediaPlayer();
+        private static final BakerMediaPlayer inStance = new BakerMediaPlayer();
     }
 
     public static BakerMediaPlayer getInstance() {

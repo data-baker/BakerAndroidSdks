@@ -10,6 +10,7 @@ public class BakerResponse {
     private String audio_type;
     private String interval;
     private int end_flag;
+    private String interval_x;
 
     public int getIdx() {
         return idx;
@@ -49,6 +50,14 @@ public class BakerResponse {
 
     public void setEnd_flag(int end_flag) {
         this.end_flag = end_flag;
+    }
+
+    public String getInterval_x() {
+        return interval_x;
+    }
+
+    public void setInterval_x(String interval_x) {
+        this.interval_x = interval_x;
     }
 
     @Override

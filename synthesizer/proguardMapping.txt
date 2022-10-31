@@ -1,6 +1,6 @@
 # compiler: R8
-# compiler_version: 2.1.75
-# pg_map_id: 375f736
+# compiler_version: 2.1.86
+# pg_map_id: ae48d4a
 # common_typos_disable
 com.databaker.synthesizer.BakerMediaCallback -> com.databaker.synthesizer.BakerMediaCallback:
     1:1:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onBinaryReceived
@@ -24,17 +24,9 @@ com.databaker.synthesizer.BakerMediaCallback -> com.databaker.synthesizer.BakerM
     10:10:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onBinaryReceived
     10:10:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onBinaryReceived
     10:10:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0 -> onBinaryReceived
-    11:11:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0:0 -> onBinaryReceived
-    12:12:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onBinaryReceived
-    12:12:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onBinaryReceived
-    12:12:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0 -> onBinaryReceived
-    13:13:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0:0 -> onBinaryReceived
-    14:14:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onBinaryReceived
-    14:14:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onBinaryReceived
-    14:14:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0 -> onBinaryReceived
-    15:15:void com.databaker.synthesizer.BakerMediaPlayer.onCacheAvailable():0:0 -> onBinaryReceived
-    15:15:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0 -> onBinaryReceived
-    16:16:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0:0 -> onBinaryReceived
+    11:11:void com.databaker.synthesizer.BakerMediaPlayer.onCacheAvailable():0:0 -> onBinaryReceived
+    11:11:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0 -> onBinaryReceived
+    12:12:void onBinaryReceived(byte[],java.lang.String,java.lang.String,boolean):0:0 -> onBinaryReceived
 com.databaker.synthesizer.BakerMediaPlayer -> a.a.a.b:
     java.lang.Thread ttsPlayerThread -> d
     java.util.List playData -> e
@@ -53,83 +45,77 @@ com.databaker.synthesizer.BakerMediaPlayer$1 -> a.a.a.a:
     2:2:java.util.List com.databaker.synthesizer.BakerMediaPlayer.access$300():0:0 -> run
     2:2:void run():0 -> run
     3:3:void run():0:0 -> run
-    4:4:java.util.List com.databaker.synthesizer.BakerMediaPlayer.access$300():0:0 -> run
+    4:4:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     4:4:void run():0 -> run
     5:5:void run():0:0 -> run
-    6:6:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    6:6:boolean com.databaker.synthesizer.BakerMediaPlayer.access$500():0:0 -> run
     6:6:void run():0 -> run
     7:7:void run():0:0 -> run
-    8:8:boolean com.databaker.synthesizer.BakerMediaPlayer.access$500():0:0 -> run
+    8:8:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     8:8:void run():0 -> run
     9:9:void run():0:0 -> run
-    10:10:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    10:10:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     10:10:void run():0 -> run
     11:11:void run():0:0 -> run
-    12:12:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    12:12:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     12:12:void run():0 -> run
     13:13:void run():0:0 -> run
-    14:14:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    14:14:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
     14:14:void run():0 -> run
     15:15:void run():0:0 -> run
-    16:16:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
+    16:16:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     16:16:void run():0 -> run
-    17:17:java.util.List com.databaker.synthesizer.BakerMediaPlayer.access$300():0:0 -> run
-    17:17:void run():0 -> run
-    18:18:void run():0:0 -> run
-    19:19:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    17:17:void run():0:0 -> run
+    18:18:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    18:18:void run():0 -> run
+    19:19:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
     19:19:void run():0 -> run
     20:20:void run():0:0 -> run
-    21:21:android.media.AudioTrack com.databaker.synthesizer.BakerMediaPlayer.access$400(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
+    21:21:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
     21:21:void run():0 -> run
-    22:22:java.util.List com.databaker.synthesizer.BakerMediaPlayer.access$300():0:0 -> run
-    22:22:void run():0 -> run
-    23:23:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
+    22:22:void run():0:0 -> run
+    23:23:int com.databaker.synthesizer.BakerMediaPlayer.access$208():0:0 -> run
     23:23:void run():0 -> run
     24:24:void run():0:0 -> run
-    25:25:java.util.List com.databaker.synthesizer.BakerMediaPlayer.access$300():0:0 -> run
+    25:25:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
     25:25:void run():0 -> run
-    26:26:int com.databaker.synthesizer.BakerMediaPlayer.access$200():0:0 -> run
+    26:26:com.baker.sdk.basecomponent.bean.BakerError com.databaker.synthesizer.util.SynthesizerErrorUtils.formatErrorBean(java.lang.String):0:0 -> run
     26:26:void run():0 -> run
     27:27:void run():0:0 -> run
-    28:28:int com.databaker.synthesizer.BakerMediaPlayer.access$208():0:0 -> run
-    28:28:void run():0 -> run
-    29:29:void run():0:0 -> run
-    30:30:com.databaker.synthesizer.BakerMediaCallback com.databaker.synthesizer.BakerMediaPlayer.access$600(com.databaker.synthesizer.BakerMediaPlayer):0:0 -> run
-    30:30:void run():0 -> run
-    31:31:com.baker.sdk.basecomponent.bean.BakerError com.databaker.synthesizer.util.SynthesizerErrorUtils.formatErrorBean(java.lang.String):0:0 -> run
-    31:31:void run():0 -> run
-    32:32:void run():0:0 -> run
 com.databaker.synthesizer.BakerMediaPlayer$HolderClass -> a.a.a.b$a:
     com.databaker.synthesizer.BakerMediaPlayer inStance -> a
     1:1:void com.databaker.synthesizer.BakerMediaPlayer.<init>(com.databaker.synthesizer.BakerMediaPlayer$1):0:0 -> <clinit>
     1:1:void <clinit>():0 -> <clinit>
     2:2:void <clinit>():0:0 -> <clinit>
 com.databaker.synthesizer.BakerSynthesizerImpl -> com.databaker.synthesizer.BakerSynthesizerImpl:
-    java.lang.String voiceName -> g
     boolean k16OrK8 -> m
     int audioType -> n
     java.lang.String mUrl -> f
-    int rate -> o
-    int pitch -> l
     java.lang.String language -> h
     float speed -> i
-    boolean enableTimestamp -> p
     com.databaker.synthesizer.util.AuthenticationUtils authenticationUtils -> b
     int timeOut -> j
-    int volume -> k
-    com.databaker.synthesizer.BakerSynthesizerImpl$HsjWebSocketListener listener -> t
-    boolean isFirst -> q
-    com.databaker.synthesizer.net.okhttp.WebSocketClient webSocketClient -> a
-    java.util.concurrent.LinkedBlockingQueue textQueue -> s
-    com.databaker.synthesizer.SynthesizerCallback callback -> e
-    int isInit -> u
+    boolean isFirst -> u
+    com.databaker.synthesizer.net.okhttp.base.CallbackListener mAuthenticationUtilsListener -> z
+    java.util.concurrent.LinkedBlockingQueue textQueue -> w
+    int isInit -> y
     java.lang.String originText -> c
-    int perDuration -> r
+    int enable_subtitles -> s
+    int spectrum -> q
+    java.lang.String voiceName -> g
+    float pitch -> l
+    int rate -> o
+    int volume -> k
+    com.databaker.synthesizer.BakerSynthesizerImpl$HsjWebSocketListener listener -> x
+    com.databaker.synthesizer.net.okhttp.WebSocketClient webSocketClient -> a
+    int perDuration -> v
+    com.databaker.synthesizer.SynthesizerCallback callback -> e
+    int silence -> t
+    int spectrum_8k -> r
+    int enableTimestamp -> p
     java.lang.String contentStr -> d
-    com.databaker.synthesizer.net.okhttp.base.CallbackListener mAuthenticationUtilsListener -> v
     boolean access$102(com.databaker.synthesizer.BakerSynthesizerImpl,boolean) -> a
     void getTtsToken(int) -> a
-    void initBaseComponent(android.content.Context,java.lang.String) -> a
     void onFault(com.baker.sdk.basecomponent.bean.BakerError) -> a
     1:1:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> bakerPause
     1:1:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> bakerPause
@@ -284,59 +270,49 @@ com.databaker.synthesizer.BakerSynthesizerImpl$HsjWebSocketListener -> com.datab
     7:7:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
     8:8:void com.databaker.synthesizer.BakerMediaPlayer.init(boolean):0:0 -> onOpen
     8:8:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    9:9:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onOpen
-    9:9:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onOpen
+    9:9:void com.databaker.synthesizer.BakerMediaPlayer.clean():0:0 -> onOpen
     9:9:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    10:10:void com.databaker.synthesizer.BakerMediaPlayer.clean():0:0 -> onOpen
-    10:10:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    11:11:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onOpen
-    11:11:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onOpen
+    10:10:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
+    11:11:java.lang.String com.databaker.synthesizer.BakerSynthesizerImpl.access$400(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
     11:11:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
     12:12:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
-    13:13:java.lang.String com.databaker.synthesizer.BakerSynthesizerImpl.access$400(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
+    13:13:int com.databaker.synthesizer.BakerSynthesizerImpl.access$500(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
     13:13:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
     14:14:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
-    15:15:int com.databaker.synthesizer.BakerSynthesizerImpl.access$500(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
+    15:15:void com.databaker.synthesizer.BakerMediaPlayer.setDuration(int):0:0 -> onOpen
     15:15:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    16:16:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
-    17:17:void com.databaker.synthesizer.BakerMediaPlayer.setDuration(int):0:0 -> onOpen
-    17:17:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    18:18:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer$HolderClass.access$100():0:0 -> onOpen
-    18:18:com.databaker.synthesizer.BakerMediaPlayer com.databaker.synthesizer.BakerMediaPlayer.getInstance():0 -> onOpen
+    16:16:com.databaker.synthesizer.SynthesizerCallback com.databaker.synthesizer.BakerSynthesizerImpl.access$200(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
+    16:16:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
+    17:17:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
+    18:18:void com.databaker.synthesizer.BakerMediaPlayer.setCallback(com.databaker.synthesizer.BakerMediaCallback):0:0 -> onOpen
     18:18:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
     19:19:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
-    20:20:com.databaker.synthesizer.SynthesizerCallback com.databaker.synthesizer.BakerSynthesizerImpl.access$200(com.databaker.synthesizer.BakerSynthesizerImpl):0:0 -> onOpen
+    20:20:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0:0 -> onOpen
+    20:20:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
     20:20:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    21:21:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
-    22:22:void com.databaker.synthesizer.BakerMediaPlayer.setCallback(com.databaker.synthesizer.BakerMediaCallback):0:0 -> onOpen
+    21:21:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0:0 -> onOpen
+    21:21:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
+    21:21:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
+    21:21:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
+    22:22:okhttp3.WebSocket com.databaker.synthesizer.net.okhttp.WebSocketClient.getWebSocket():0:0 -> onOpen
+    22:22:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0 -> onOpen
+    22:22:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
+    22:22:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
     22:22:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    23:23:void onOpen(okhttp3.WebSocket,okhttp3.Response):0:0 -> onOpen
+    23:23:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0:0 -> onOpen
+    23:23:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
+    23:23:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
+    23:23:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
     24:24:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0:0 -> onOpen
     24:24:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
     24:24:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    25:25:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0:0 -> onOpen
+    25:25:okhttp3.WebSocket com.databaker.synthesizer.net.okhttp.WebSocketClient.getWebSocket():0:0 -> onOpen
     25:25:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
     25:25:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
     25:25:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    26:26:okhttp3.WebSocket com.databaker.synthesizer.net.okhttp.WebSocketClient.getWebSocket():0:0 -> onOpen
-    26:26:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0 -> onOpen
-    26:26:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
+    26:26:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0:0 -> onOpen
     26:26:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
     26:26:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    27:27:void com.databaker.synthesizer.BakerSynthesizerImpl.closeSocket():0:0 -> onOpen
-    27:27:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
-    27:27:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
-    27:27:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    28:28:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0:0 -> onOpen
-    28:28:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
-    28:28:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    29:29:okhttp3.WebSocket com.databaker.synthesizer.net.okhttp.WebSocketClient.getWebSocket():0:0 -> onOpen
-    29:29:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0 -> onOpen
-    29:29:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
-    29:29:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
-    30:30:void com.databaker.synthesizer.BakerSynthesizerImpl.send():0:0 -> onOpen
-    30:30:void com.databaker.synthesizer.BakerSynthesizerImpl.access$600(com.databaker.synthesizer.BakerSynthesizerImpl):0 -> onOpen
-    30:30:void onOpen(okhttp3.WebSocket,okhttp3.Response):0 -> onOpen
 com.databaker.synthesizer.SynthesizerConstants -> a.a.a.c:
     java.lang.String ttsToken -> a
     java.lang.String mClientSecret -> c

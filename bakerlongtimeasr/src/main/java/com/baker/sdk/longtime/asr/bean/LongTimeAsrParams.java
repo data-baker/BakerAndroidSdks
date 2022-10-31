@@ -12,6 +12,11 @@ public class LongTimeAsrParams {
     private int speech_type = 1;
     private boolean add_pct = true;
     private String domain = "common";
+    //配置的热词组的id
+    private String hotwordid = "";
+    //asr个性化模型的id
+    private String diylmid = "";
+
     /**
      * 1=sdk麦克风录音 2=接收字节流
      */
@@ -25,19 +30,22 @@ public class LongTimeAsrParams {
         this.req_idx = req_idx;
     }
 
-    public LongTimeAsrParams(String audio_data, int sample_rate, int req_idx, boolean add_pct, String domain) {
-        this.audio_data = audio_data;
+    public LongTimeAsrParams(int sample_rate, boolean add_pct, String domain, String hotwordid, String diylmid, int type) {
         this.sample_rate = sample_rate;
-        this.req_idx = req_idx;
         this.add_pct = add_pct;
         this.domain = domain;
+        this.hotwordid = hotwordid;
+        this.diylmid = diylmid;
+        this.type = type;
     }
 
-    public LongTimeAsrParams(String audio_format, int sample_rate, boolean add_pct, String domain, int type) {
+    public LongTimeAsrParams(String audio_format, int sample_rate, boolean add_pct, String domain, String hotwordid, String diylmid, int type) {
         this.audio_format = audio_format;
         this.sample_rate = sample_rate;
         this.add_pct = add_pct;
         this.domain = domain;
+        this.hotwordid = hotwordid;
+        this.diylmid = diylmid;
         this.type = type;
     }
 
@@ -103,5 +111,21 @@ public class LongTimeAsrParams {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getHotwordid() {
+        return hotwordid;
+    }
+
+    public void setHotwordid(String hotwordid) {
+        this.hotwordid = hotwordid;
+    }
+
+    public String getDiylmid() {
+        return diylmid;
+    }
+
+    public void setDiylmid(String diylmid) {
+        this.diylmid = diylmid;
     }
 }

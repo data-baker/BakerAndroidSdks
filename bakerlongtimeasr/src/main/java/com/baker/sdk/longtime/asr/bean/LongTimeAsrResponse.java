@@ -1,5 +1,7 @@
 package com.baker.sdk.longtime.asr.bean;
 
+import java.util.List;
+
 /**
  * @author hsj55
  * 2020/9/24
@@ -12,6 +14,15 @@ public class LongTimeAsrResponse {
     private String asr_text;
     private int end_flag;
     private String sentence_end;
+    private String sos;
+    private String eos;
+    private String confidence;
+    private int speed;
+    private String speed_label;
+    private int volume;
+    private String volume_label;
+    private List<BakerLongAsrWord> words;
+
 
     public int getCode() {
         return code;
@@ -67,6 +78,70 @@ public class LongTimeAsrResponse {
 
     public void setSentence_end(String sentence_end) {
         this.sentence_end = sentence_end;
+    }
+
+    public String getSos() {
+        return sos;
+    }
+
+    public void setSos(String sos) {
+        this.sos = sos;
+    }
+
+    public String getEos() {
+        return eos;
+    }
+
+    public void setEos(String eos) {
+        this.eos = eos;
+    }
+
+    public String getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(String confidence) {
+        this.confidence = confidence;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public String getSpeed_label() {
+        return speed_label;
+    }
+
+    public void setSpeed_label(String speed_label) {
+        this.speed_label = speed_label;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public String getVolume_label() {
+        return volume_label;
+    }
+
+    public void setVolume_label(String volume_label) {
+        this.volume_label = volume_label;
+    }
+
+    public List<BakerLongAsrWord> getWords() {
+        return words;
+    }
+
+    public void setWords(List<BakerLongAsrWord> words) {
+        this.words = words;
     }
 
     @Override

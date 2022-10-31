@@ -28,7 +28,7 @@ public class ExperienceFragment extends BaseFragment implements MouldRecyclerVie
     private RecyclerView recyclerView;
     private TextView tvNullTip;
     private MouldRecyclerViewAdapter adapter;
-    private List<Mould> mouldList = new ArrayList<>();
+    private final List<Mould> mouldList = new ArrayList<>();
 
     @Nullable
     @Override

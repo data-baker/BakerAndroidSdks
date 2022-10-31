@@ -231,7 +231,7 @@ public class EngraveActivity extends BakerBaseActivity {
             @Override
             public void playError(Exception e) {
                 e.printStackTrace();
-                log("试听出错" + e.toString());
+                log("试听出错" + e);
                 disMissProgressDialog();
             }
         });

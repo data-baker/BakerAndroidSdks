@@ -30,7 +30,7 @@ public interface SynthesizerInterface {
     void setUrl(String u);
 
     /**
-     * 设置发音人声音名称，默认：标准合成_模仿儿童_果子
+     * 设置发音人声音名称，例如：Jiaojiao
      *
      * @param name
      */
@@ -44,14 +44,23 @@ public interface SynthesizerInterface {
     void setText(String text);
 
     /**
-     * 合成请求文本的语言，目前支持ZH(中文和中英混)和ENG(纯英文，中文部分不会合成),默认：ZH
+     * 合成请求文本的语言
+     * ZH(中文和中英混)
+     * ENG(纯英文，中文部分不会合成)
+     * CAT(粤语）
+     * SCH(四川话)
+     * TJH(天津话)
+     * TAI(台湾话)
+     * KR(韩语)
+     * BRA(巴葡语)
+     * JP(日语)
      *
      * @param l
      */
     void setLanguage(String l);
 
     /**
-     * 设置播放的语速，在0～9之间（只支持整型值），不传时默认为5
+     * 设置播放的语速，在0～9之间（支持浮点值），默认值为5
      *
      * @param s
      */
@@ -65,33 +74,23 @@ public interface SynthesizerInterface {
     void setVolume(int v);
 
     /**
-     * 设置语音的音调，取值0-9，不传时默认为5中语调
+     * 设置语音的音调，在0～9之间，（支持浮点值），默认值为5
      *
      * @param p
      */
     void setPitch(float p);
 
     /**
-     * 可不填，不填时默认为3，表示mp3格式
-     * audiotype=4 ：返回16K采样率的pcm格式
-     * audiotype=5 ：返回8K采样率的pcm格式
-     * audiotype=6 ：返回16K采样率的wav格式
-     * audiotype=6&rate=1 ：返回8K的wav格式
-     *
+     * audiotype = 4，返回16K采样率的pcm格式，默认值
+     * audiotype = 5，返回8K采样率的pcm格式
+     * audiotype=5&rate=3，返回24K采样率的pcm格式
+     * （示例及sdk播放器未支持24k声音播放）
      * @param type
      */
     void setAudioType(int type);
 
     /**
-     * 可不填，不填时默认为2，取值范围1-8，2以上的值仅针对返回MP3格式，对应的码率为：
-     * 1 —— 8kbps
-     * 2 —— 16kbps
-     * 3 —— 24kbps
-     * 4 —— 32kbps
-     * 5 —— 40kbps
-     * 6 —— 48kbps
-     * 7 —— 56kbps
-     * 8 —— 64kbps
+     * rate=3，请求24k采样率时使用
      *
      * @param r
      */
@@ -122,16 +121,18 @@ public interface SynthesizerInterface {
 
     int getDuration();
 
-    /**
-     *
-     * @param token
-     */
     void setTtsToken(String token);
 
+    void setSpectrum(int spectrum);
+    void setSpectrum8k(int spectrum);
     /**
-     * 设置是否返回时间戳内容。true=支持返回，false=不需要返回。不设置默认为false不返回。
+     * 音子级别时间戳功能：
+     * 0:关闭音子级别时间戳功能
+     * 1:开启音子级别时间戳功能
      *
      * @param enable
      */
-    void setEnableTimestamp(boolean enable);
+    void setInterval(int enable);
+    void setEnableSubtitles(int enable);
+    void setSilence(int enable);
 }

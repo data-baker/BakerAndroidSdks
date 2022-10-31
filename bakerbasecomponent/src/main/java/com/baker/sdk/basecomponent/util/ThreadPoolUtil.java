@@ -17,14 +17,14 @@ public class ThreadPoolUtil {
     }
 
     //可用处理器的Java虚拟机的数量
-    private static int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors();
-    private static int MAX_POOL_SIZE = CORE_POOL_SIZE * 2;
-    private static int KEEP_ALIVE_TIME = 10;
-    private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(
+    private static final int CORE_POOL_SIZE = Runtime.getRuntime().availableProcessors();
+    private static final int MAX_POOL_SIZE = CORE_POOL_SIZE * 2;
+    private static final int KEEP_ALIVE_TIME = 10;
+    private static final BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(
             10);
 
     // 线程工厂,把传递进来的runnable对象生成一个Thread
-    private static ThreadFactory threadFactory = new ThreadFactory() {
+    private static final ThreadFactory threadFactory = new ThreadFactory() {
 
         // 原子型的integer变量生成的integer值不会重复
         private final AtomicInteger integer = new AtomicInteger();
@@ -37,14 +37,14 @@ public class ThreadPoolUtil {
     };
 
     // 当线程池发生异常的时候回调进入
-    private static RejectedExecutionHandler handler = new RejectedExecutionHandler() {
+    private static final RejectedExecutionHandler handler = new RejectedExecutionHandler() {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             // 进行重启操作
         }
 
     };
-    private static ThreadPoolExecutor threadPool;
+    private static final ThreadPoolExecutor threadPool;
 
     static {
 //        corePoolSize： 线程池维护线程的最少数量

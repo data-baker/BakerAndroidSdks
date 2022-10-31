@@ -7,12 +7,12 @@ package com.baker.sdk.longtime.asr.bean;
 public class LongTimeAsrBaseParams {
     private String access_token;
     private String version = "1.0";
-    private LongTimeAsrParams asr_params;
+    private Object asr_params;
 
     public LongTimeAsrBaseParams() {
     }
 
-    public LongTimeAsrBaseParams(String access_token, LongTimeAsrParams asr_params) {
+    public LongTimeAsrBaseParams(String access_token, Object asr_params) {
         this.access_token = access_token;
         this.asr_params = asr_params;
     }
@@ -33,11 +33,11 @@ public class LongTimeAsrBaseParams {
         this.version = version;
     }
 
-    public LongTimeAsrParams getAsr_params() {
+    public Object getAsr_params() {
         return asr_params;
     }
 
-    public void setAsr_params(LongTimeAsrParams asr_params) {
+    public void setAsr_params(Object asr_params) {
         this.asr_params = asr_params;
     }
 }

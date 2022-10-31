@@ -70,7 +70,7 @@ public class ExperienceActivity extends BakerBaseActivity implements SeekBar.OnS
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!TextUtils.isEmpty(charSequence.toString().trim()) && charSequence.toString().trim().length() < 201) {
-                    tranStrColor(String.format(getString(R.string.string_words_remind), String.valueOf(charSequence.toString().trim().length())));
+                    tranStrColor(String.format(getString(R.string.string_words_remind), charSequence.toString().trim().length()));
                 }
             }
 
@@ -189,9 +189,9 @@ public class ExperienceActivity extends BakerBaseActivity implements SeekBar.OnS
         btnPlay.setText("合成播放");
     }
 
-    private int messageWhat = 102;
+    private final int messageWhat = 102;
     private boolean refreshSeekBar = false;
-    private Handler handler = new Handler(Looper.getMainLooper()) {
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == messageWhat && refreshSeekBar) {

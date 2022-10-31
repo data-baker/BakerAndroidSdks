@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "2.0.4"
+        versionCode 6
+        versionName "2.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -38,8 +38,8 @@ dependencies {
 
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.15'
-    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.15'
-//    implementation project(path: ":bakerbasecomponent")
-//    implementation project(path: ":bakerhttp")
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.15'
+    implementation project(path: ":bakerbasecomponent")
+    implementation project(path: ":bakerhttp")
 }

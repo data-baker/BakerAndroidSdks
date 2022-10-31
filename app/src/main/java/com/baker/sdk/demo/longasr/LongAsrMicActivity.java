@@ -14,9 +14,11 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,24 +27,28 @@ import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.longtime.asr.LongTimeAsr;
+import com.baker.sdk.longtime.asr.bean.LongTimeAsrResponse;
 import com.baker.sdk.longtime.asr.listener.LongTimeAsrCallBack;
 
 /**
  * @author hsj55
  */
 public class LongAsrMicActivity extends BakerBaseActivity {
-    private static String TAG = LongAsrMicActivity.class.getName();
+    private static final String TAG = LongAsrMicActivity.class.getName();
     private SharedPreferences mSharedPreferences;
 
     private ImageView imgRecording;
     private TextView resultTv, errorInfoTv;
     private Button btn;
     private EditText editText;
+    private Spinner spinner;
+    private int sample = 16000;
+    private String[] samples;
 
     private String domain = "common";
     private boolean isNormal = true;
     private String mErrorInfo;
-    private StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -84,7 +90,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         setContentView(R.layout.activity_long_asr_mic);
 
         setTitle("录音识别");
-
+        samples = getResources().getStringArray(R.array.sample);
         mSharedPreferences = getSharedPreferences(Constants.SP_TABLE_NAME, Context.MODE_PRIVATE);
 
         errorInfoTv = findViewById(R.id.tv_error);
@@ -110,7 +116,24 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         btn = findViewById(R.id.startRecognize);
         imgRecording = findViewById(R.id.img_recording);
         imgRecording.setVisibility(View.INVISIBLE);
-        editText = findViewById(R.id.spinner);
+        editText = findViewById(R.id.edit_domain);
+
+        spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sample = Integer.valueOf(samples[position]);
+                if (sample == 8000) {
+                    domain = "kefu";
+                    editText.setText("kefu");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         longTimeAsr = new LongTimeAsr();
 //        longTimeAsr.isDebug(true);
@@ -140,7 +163,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         if (longTimeAsr != null) {
             //*********************************设置参数****************************
             //音频采样率，支持16000(默认)，8000
-            longTimeAsr.setSampleRate(16000);
+            longTimeAsr.setSampleRate(sample);
             //是否在短静音处添加标点，默认true
             longTimeAsr.setAddPct(true);
             //模型名称，必须填写公司购买的语言模型，默认为common
@@ -149,6 +172,10 @@ public class LongAsrMicActivity extends BakerBaseActivity {
                 domain = text;
             }
             longTimeAsr.setDomain(domain);
+            //配置的热词组的id，有就设置，没有就不设置
+//        longTimeAsr.setHotwordid("");
+            //asr个性化模型的id，有就设置，没有就不设置
+//        longTimeAsr.setDiylmid("");
             //*********************************结束设置参数****************************
 //            time = System.currentTimeMillis();
 //            showLog = true;
@@ -160,7 +187,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         longTimeAsr.stopAsr();
     }
 
-    private LongTimeAsrCallBack callBack = new LongTimeAsrCallBack() {
+    private final LongTimeAsrCallBack callBack = new LongTimeAsrCallBack() {
         @Override
         public void onError(String code, String errorMessage) {
             Message message = Message.obtain();
@@ -184,7 +211,7 @@ public class LongAsrMicActivity extends BakerBaseActivity {
         }
 
         @Override
-        public void onRecording(String result, boolean sentenceEnd, boolean endFlag) {
+        public void onRecording(LongTimeAsrResponse response) {
 //            Log.e(TAG, "result = " + result + ", isLast = " + sentenceEnd);
 //            if (showLog) {
 //                long w = System.currentTimeMillis() - time;
@@ -195,14 +222,14 @@ public class LongAsrMicActivity extends BakerBaseActivity {
 
             Message message = Message.obtain();
             message.what = 3;
-            message.obj = stringBuilder.toString() + result;
+            message.obj = stringBuilder.toString() + response.getAsr_text();
             handler.sendMessage(message);
 
-            if (sentenceEnd) {
-                stringBuilder.append(result);
+            if ("true".equals(response.getSentence_end())) {
+                stringBuilder.append(response.getAsr_text());
             }
 
-            if (endFlag) {
+            if (response.getEnd_flag() == 1) {
                 handler.sendEmptyMessage(0);
             }
         }

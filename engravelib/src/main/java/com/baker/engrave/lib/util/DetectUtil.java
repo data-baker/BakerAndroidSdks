@@ -40,12 +40,12 @@ public class DetectUtil {
     private static AudioManager mAudioManager;
     private static AudioFocusRequest mFocusRequest;
     private static TelephonyManager mTelephonyManager;
-    private static File mAudioFile = new File(Environment.getExternalStorageDirectory() +
+    private static final File mAudioFile = new File(Environment.getExternalStorageDirectory() +
             File.separator + "DecibelDetection" + File.separator + "AudioTemporaryCache.pcm");
     //记录当前显示的分贝值
     private static int decibels = 0;
     //保存所有分贝值，用来计算平均值
-    private static List<Integer> decibelsList = new ArrayList<>();
+    private static final List<Integer> decibelsList = new ArrayList<>();
     //显示最终分贝
     private static boolean isLast;
     private static boolean recording = false;
@@ -55,7 +55,7 @@ public class DetectUtil {
         baseNetCallback = callback;
     }
 
-    private static CountDownTimer timer = new CountDownTimer(3250, 250) {
+    private static final CountDownTimer timer = new CountDownTimer(3250, 250) {
         @Override
         public void onTick(long l) {
             HLogger.d("__5" + decibels);
@@ -207,7 +207,7 @@ public class DetectUtil {
         mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    private static PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+    private static final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(int state, String phoneNumber) {
             switch (state) {
@@ -230,7 +230,7 @@ public class DetectUtil {
         }
     };
 
-    private static AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+    private static final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int i) {
             if (i == AudioManager.AUDIOFOCUS_LOSS) {

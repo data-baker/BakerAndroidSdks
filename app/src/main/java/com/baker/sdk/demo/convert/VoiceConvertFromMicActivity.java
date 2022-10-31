@@ -110,7 +110,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         });
     }
 
-    private VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
+    private final VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
         @Override
         public void onReady() {
             Log.e("VoiceConvertActivity", "onReady()");
@@ -173,7 +173,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         }
     };
 
-    private PlayerCallBack playerCallBack = new PlayerCallBack() {
+    private final PlayerCallBack playerCallBack = new PlayerCallBack() {
         @Override
         public void onPlaying() {
             runOnUiThread(new Runnable() {

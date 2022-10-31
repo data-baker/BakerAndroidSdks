@@ -13,7 +13,7 @@ public interface DetectCallback {
      *
      * @param value
      */
-    public void dbDetecting(int value);
+    void dbDetecting(int value);
 
     /**
      * 环境检测最终结果反馈
@@ -23,7 +23,7 @@ public interface DetectCallback {
      * @param result
      * @param value
      */
-    public void dbDetectionResult(boolean result, int value);
+    void dbDetectionResult(boolean result, int value);
 
     /**
      * 错误信息回调
@@ -31,5 +31,5 @@ public interface DetectCallback {
      * @param errorCode
      * @param message
      */
-    public void onDetectError(int errorCode, String message);
+    void onDetectError(int errorCode, String message);
 }

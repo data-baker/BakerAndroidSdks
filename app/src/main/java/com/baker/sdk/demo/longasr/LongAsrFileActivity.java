@@ -31,6 +31,7 @@ import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.longtime.asr.LongTimeAsr;
+import com.baker.sdk.longtime.asr.bean.LongTimeAsrResponse;
 import com.baker.sdk.longtime.asr.listener.LongTimeAsrCallBack;
 import com.blankj.utilcode.util.UriUtils;
 
@@ -41,7 +42,7 @@ import java.io.FileInputStream;
  * @author hsj55
  */
 public class LongAsrFileActivity extends BakerBaseActivity {
-    private static String TAG = LongAsrFileActivity.class.getName();
+    private static final String TAG = LongAsrFileActivity.class.getName();
     private SharedPreferences mSharedPreferences;
 
     private TextView resultTv, pathTv;
@@ -52,7 +53,7 @@ public class LongAsrFileActivity extends BakerBaseActivity {
 
     private boolean isNormal = true;
     private String domain = "common";
-    private StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
     private String[] samples;
     private int sample = 16000;
     private LongTimeAsr longTimeAsr;
@@ -217,6 +218,15 @@ public class LongAsrFileActivity extends BakerBaseActivity {
                 domain = text;
             }
             longTimeAsr.setDomain(domain);
+            if (path.toLowerCase().endsWith("wav")) {
+                longTimeAsr.setAudioFormat("wav");
+            } else if (path.toLowerCase().endsWith("pcm")) {
+                longTimeAsr.setAudioFormat("pcm");
+            }
+            //配置的热词组的id，有就设置，没有就不设置
+//        longTimeAsr.setHotwordid("");
+            //asr个性化模型的id，有就设置，没有就不设置
+//        longTimeAsr.setDiylmid("");
             //*********************************结束设置参数****************************
             longTimeAsr.start();
             ThreadPoolUtil.execute(new Runnable() {
@@ -247,7 +257,7 @@ public class LongAsrFileActivity extends BakerBaseActivity {
         longTimeAsr.end();
     }
 
-    private LongTimeAsrCallBack callBack = new LongTimeAsrCallBack() {
+    private final LongTimeAsrCallBack callBack = new LongTimeAsrCallBack() {
         @Override
         public void onReady() {
             handler.sendEmptyMessage(1);
@@ -259,18 +269,18 @@ public class LongAsrFileActivity extends BakerBaseActivity {
         }
 
         @Override
-        public void onRecording(String result, boolean sentenceEnd, boolean endFlag) {
-            Log.e(TAG, "result = " + result + ", isLast = " + sentenceEnd);
+        public void onRecording(LongTimeAsrResponse response) {
+            Log.e(TAG, "result = " + response.getAsr_text() + ", isLast = " + "true".equals(response.getSentence_end()));
 
             Message message = Message.obtain();
             message.what = 3;
-            message.obj = stringBuilder.toString() + result;
+            message.obj = stringBuilder.toString() + response.getAsr_text();
             handler.sendMessage(message);
-            if (sentenceEnd) {
-                stringBuilder.append(result);
+            if ("true".equals(response.getSentence_end())) {
+                stringBuilder.append(response.getAsr_text());
             }
 
-            if (endFlag) {
+            if (response.getEnd_flag() == 1) {
                 handler.sendEmptyMessage(0);
             }
         }

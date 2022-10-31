@@ -52,6 +52,10 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
     private String domain = "common";
     private boolean debug = false;
     private String audioFormat = "pcm";
+    //配置的热词组的id
+    private String hotwordid = "";
+    //asr个性化模型的id
+    private String diylmid = "";
 
     public LongTimeAsrImpl() {
     }
@@ -165,8 +169,18 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
     }
 
     @Override
+    public void setHotWordId(String id) {
+        this.hotwordid = id;
+    }
+
+    @Override
+    public void setDiylmid(String id) {
+        this.diylmid = id;
+    }
+
+    @Override
     public void setAudioFormat(String format) {
-        if ("pcm".equals(format.toLowerCase()) || "wav".equals(format.toLowerCase())) {
+        if ("pcm".equalsIgnoreCase(format) || "wav".equalsIgnoreCase(format)) {
             audioFormat = format;
         }
     }
@@ -206,7 +220,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
 
         EventManagerMessagePool.offer(mic, "mic.start", String.valueOf(sampleRate));
         //1=sdk麦克风录音 2=接收字节流
-        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new LongTimeAsrParams(audioFormat, sampleRate, addPct, domain, 1)));
+        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new LongTimeAsrParams(sampleRate, addPct, domain, hotwordid, diylmid, 1)));
     }
 
     @Override
@@ -229,7 +243,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
             net.setUrl(privateUrl);
         }
         //1=sdk麦克风录音 2=接收字节流
-        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new LongTimeAsrParams(audioFormat, sampleRate, addPct, domain, 2)));
+        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new LongTimeAsrParams(audioFormat, sampleRate, addPct, domain, hotwordid, diylmid, 2)));
     }
 
     /**
@@ -283,7 +297,8 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
             case "asr.partial":
                 if (!TextUtils.isEmpty(params) && mCallBack != null) {
                     LongTimeAsrResponse response = GsonConverter.fromJson(params, LongTimeAsrResponse.class);
-                    mCallBack.onRecording(response.getAsr_text(), "true".equals(response.getSentence_end()), response.getEnd_flag() == 1);
+                    mCallBack.onRecording(response);
+//                    mCallBack.onRecording(response.getAsr_text(), "true".equals(response.getSentence_end()), response.getEnd_flag() == 1);
                 }
                 break;
             case "net.error":
@@ -366,7 +381,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
         }
     }
 
-    private PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+    private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(int state, String phoneNumber) {
             switch (state) {
@@ -387,7 +402,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
         }
     };
 
-    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+    private final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int i) {
 

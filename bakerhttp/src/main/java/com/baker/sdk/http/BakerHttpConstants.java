@@ -13,7 +13,7 @@ public class BakerHttpConstants {
     //获取tts合成需要的token的url
     public static final String URL_GET_TOKEN = "https://openapi.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
 
-    private static List<AuthorInfo> authorInfos = new ArrayList<>();
+    private static final List<AuthorInfo> authorInfos = new ArrayList<>();
 
     public static AuthorInfo getAuthorInfoByClientId(String clientId) {
         for (AuthorInfo info : authorInfos) {

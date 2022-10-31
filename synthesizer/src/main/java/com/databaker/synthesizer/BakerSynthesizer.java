@@ -9,7 +9,7 @@ import android.content.Context;
 
 public class BakerSynthesizer implements SynthesizerInterface {
 
-    private SynthesizerInterface synthesizer;
+    private final SynthesizerInterface synthesizer;
 
     public BakerSynthesizer(Context context) {
         synthesizer = new BakerSynthesizerImpl(context);
@@ -143,7 +143,27 @@ public class BakerSynthesizer implements SynthesizerInterface {
     }
 
     @Override
-    public void setEnableTimestamp(boolean enable) {
-        synthesizer.setEnableTimestamp(enable);
+    public void setSpectrum(int spectrum) {
+        synthesizer.setSpectrum(spectrum);
+    }
+
+    @Override
+    public void setSpectrum8k(int spectrum) {
+        synthesizer.setSpectrum8k(spectrum);
+    }
+
+    @Override
+    public void setInterval(int enable) {
+        synthesizer.setInterval(enable);
+    }
+
+    @Override
+    public void setEnableSubtitles(int enable) {
+        synthesizer.setEnableSubtitles(enable);
+    }
+
+    @Override
+    public void setSilence(int enable) {
+        synthesizer.setSilence(enable);
     }
 }

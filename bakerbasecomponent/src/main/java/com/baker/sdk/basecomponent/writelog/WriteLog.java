@@ -18,8 +18,8 @@ import java.util.Date;
 public class WriteLog {
 
     private static FileOutputStream fos2;
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static StringBuilder stringBuilder = new StringBuilder();
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final StringBuilder stringBuilder = new StringBuilder();
 
     public static void openStream(Context context) {
         if (!BakerBaseConstants.isIsDebug() || context == null) {

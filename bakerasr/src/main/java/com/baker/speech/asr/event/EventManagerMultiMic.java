@@ -3,9 +3,11 @@ package com.baker.speech.asr.event;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.text.TextUtils;
 
 import com.baker.sdk.basecomponent.util.GsonConverter;
 import com.baker.speech.asr.BakerPrivateConstants;
+import com.baker.speech.asr.bean.AsrParams;
 import com.baker.speech.asr.bean.BakerException;
 
 import java.nio.ByteBuffer;
@@ -56,6 +58,10 @@ public class EventManagerMultiMic implements EventManager {
             case "mic.start":
                 stopRecord();
                 status = Status.STATUS_NO_READY;
+                if (!TextUtils.isEmpty(params)) {
+                    AsrParams asrParams = GsonConverter.fromJson(params, AsrParams.class);
+                    AUDIO_SAMPLE_RATE = asrParams.getSample_rate();
+                }
                 createDefaultAudio();
                 BakerPrivateConstants.dataQueue.clear();
                 break;
@@ -126,7 +132,7 @@ public class EventManagerMultiMic implements EventManager {
     }
 
 
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             int readsize = 0;

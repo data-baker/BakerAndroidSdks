@@ -60,7 +60,7 @@ public class RecordUtil {
     private static BaseNetCallback netCallback;
     private static String mSessionId, mContentText;
     private static boolean recording = false;
-    private static List<RecordingSocketBean.ParamBean> rerecords = new ArrayList<>();//重录的时候告诉后台
+    private static final List<RecordingSocketBean.ParamBean> rerecords = new ArrayList<>();//重录的时候告诉后台
     private static WebSocket mWebSocket;
     private static boolean isFirst = true; //是否是ws第一次发送
 
@@ -197,11 +197,7 @@ public class RecordUtil {
                             BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(true);
                         } else {
                             netCallback.recordsResult(4, (int) data.getPercent());
-                            if (BuildConfig.DEBUG) {
-                                BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(true);
-                            } else {
-                                BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(false);
-                            }
+                            BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(BuildConfig.DEBUG);
                         }
                         webSocket.close(1000, "正常关闭");
                     }
@@ -234,7 +230,7 @@ public class RecordUtil {
         public void onFailure(@NotNull WebSocket webSocket, Throwable t, Response response) {
             //返回错误信息
             t.printStackTrace();
-            HLogger.e("返回错误信息 " + t.toString());
+            HLogger.e("返回错误信息 " + t);
             endRecord(4);
         }
     }
@@ -405,7 +401,7 @@ public class RecordUtil {
         mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    private static PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+    private static final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(int state, String phoneNumber) {
             switch (state) {
@@ -425,7 +421,7 @@ public class RecordUtil {
         }
     };
 
-    private static AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+    private static final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int i) {
             if (i == AudioManager.AUDIOFOCUS_LOSS) {

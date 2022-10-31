@@ -13,8 +13,7 @@ data class Recorder(val name: String?, var score: String?,var registerid:String?
         parcel.readString(),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

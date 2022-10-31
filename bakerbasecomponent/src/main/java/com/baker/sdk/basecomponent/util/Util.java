@@ -19,11 +19,7 @@ public class Util {
         ConnectivityManager cm = (ConnectivityManager)
                 context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = cm.getActiveNetworkInfo();
-        if (activeNetInfo != null && activeNetInfo.isConnectedOrConnecting()) {
-            return true;
-        } else {
-            return false;
-        }
+        return activeNetInfo != null && activeNetInfo.isConnectedOrConnecting();
     }
 
     public static Map<String, Object> getInfo(String myTag) {

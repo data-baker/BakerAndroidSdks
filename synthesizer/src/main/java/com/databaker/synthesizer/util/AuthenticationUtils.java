@@ -22,7 +22,7 @@ import java.util.Map;
 public class AuthenticationUtils {
 
     private int retryCount = 0;
-    private CallbackListener listener;
+    private final CallbackListener listener;
 
     public AuthenticationUtils(CallbackListener listener) {
         this.listener = listener;
@@ -64,6 +64,7 @@ public class AuthenticationUtils {
 
             @Override
             public void onFailure(Exception e) {
+                e.printStackTrace();
                 WriteLog.writeLogs("authentication==ttsToken==" + e.getMessage());
                 if (retryCount > 0) {
                     retryCount = retryCount - 1;

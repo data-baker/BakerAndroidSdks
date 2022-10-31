@@ -49,6 +49,16 @@ public class BakerRecognizer implements EventManager {
     private String audioFormat = "pcm";
     private int sampleRate = 16000;
     private boolean addPct = true;
+    //配置的热词组的id
+    private String hotwordid = "";
+    //asr个性化模型的id
+    private String diylmid = "";
+    //默认关闭静音检测
+    private Boolean enable_vad = false;
+    //最大开始静音时长
+    private int max_begin_silence = 0;
+    //最大结束静音时长
+    private int max_end_silence = 0;
 
     public void initSdk(Context context, BakerRecognizerCallback callBack) {
         mContext = context;
@@ -152,6 +162,26 @@ public class BakerRecognizer implements EventManager {
         }
     }
 
+    public void setHotwordid(String hotwordid) {
+        this.hotwordid = hotwordid;
+    }
+
+    public void setDiylmid(String diylmid) {
+        this.diylmid = diylmid;
+    }
+
+    public void setEnable_vad(Boolean enable_vad) {
+        this.enable_vad = enable_vad;
+    }
+
+    public void setMax_begin_silence(int max_begin_silence) {
+        this.max_begin_silence = max_begin_silence;
+    }
+
+    public void setMax_end_silence(int max_end_silence) {
+        this.max_end_silence = max_end_silence;
+    }
+
     public void setCallBack(BakerRecognizerCallback callBack) {
         this.mCallBack = callBack;
     }
@@ -189,9 +219,10 @@ public class BakerRecognizer implements EventManager {
         net.setmOwner(BakerRecognizer.this);
         net.setUrl(url);
 
-        EventManagerMessagePool.offer(mic, "mic.start");
+        EventManagerMessagePool.offer(mic, "mic.start", GsonConverter.toJson(new AsrParams(sampleRate)));
         //1=sdk麦克风录音 2=接收字节流
-        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new AsrParams(addPct, domain, 1)));
+        EventManagerMessagePool.offer(net, "net.start",
+                GsonConverter.toJson(new AsrParams(sampleRate, addPct, domain, hotwordid, diylmid, enable_vad, max_begin_silence,max_end_silence, 1)));
     }
 
     public void stopAsr() {
@@ -212,7 +243,8 @@ public class BakerRecognizer implements EventManager {
             net.setUrl(url);
         }
         //1=sdk麦克风录音 2=接收字节流
-        EventManagerMessagePool.offer(net, "net.start", GsonConverter.toJson(new AsrParams(audioFormat, sampleRate, addPct, domain, 2)));
+        EventManagerMessagePool.offer(net, "net.start",
+                GsonConverter.toJson(new AsrParams(audioFormat, sampleRate, addPct, domain, hotwordid, diylmid, enable_vad, max_begin_silence,max_end_silence, 2)));
     }
 
     /**
@@ -261,17 +293,23 @@ public class BakerRecognizer implements EventManager {
                 }
                 BakerPrivateConstants.dataQueue.clear();
                 break;
+            case "asr.start":
+                if (!TextUtils.isEmpty(params) && mCallBack != null) {
+                    mCallBack.onBeginOfSpeech();
+                }
+                break;
             case "asr.partial":
                 if (!TextUtils.isEmpty(params) && mCallBack != null) {
                     BakerResponse bakerResponse = GsonConverter.fromJson(params, BakerResponse.class);
-                    mCallBack.onResult(bakerResponse.getNbest(), bakerResponse.getUncertain(), bakerResponse.getEnd_flag() == 1, bakerResponse.getTraceId());
+                    mCallBack.onResult(bakerResponse);
                 }
                 break;
             case "asr.finish":
                 EventManagerMessagePool.offer(mic, "mic.error");
                 if (!TextUtils.isEmpty(params) && mCallBack != null) {
                     BakerResponse bakerResponse = GsonConverter.fromJson(params, BakerResponse.class);
-                    mCallBack.onResult(bakerResponse.getNbest(), bakerResponse.getUncertain(), bakerResponse.getEnd_flag() == 1, bakerResponse.getTraceId());
+                    mCallBack.onResult(bakerResponse);
+                    mCallBack.onEndOfSpeech();
                 }
                 break;
             case "net.error":
@@ -354,7 +392,7 @@ public class BakerRecognizer implements EventManager {
         }
     }
 
-    private PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
+    private final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
         @Override
         public void onCallStateChanged(int state, String phoneNumber) {
             switch (state) {
@@ -375,7 +413,7 @@ public class BakerRecognizer implements EventManager {
         }
     };
 
-    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+    private final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int i) {
 

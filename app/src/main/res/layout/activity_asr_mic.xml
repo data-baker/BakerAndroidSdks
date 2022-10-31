@@ -16,7 +16,7 @@
         android:layout_height="60dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="长按开启识别" />
+        android:text="点击开启识别" />
 
     <ImageView
         android:id="@+id/img_recording"
@@ -42,18 +42,17 @@
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <EditText
-        android:id="@+id/spinner"
+        android:id="@+id/edit_domain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/tv_tip_1"
-        app:layout_constraintRight_toLeftOf="@id/img_recording"
-        app:layout_constraintBottom_toTopOf="@id/startRecognize"
-        android:layout_marginBottom="14dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
         android:text="common"
-        android:textSize="18sp"
         android:textColor="#000000"
-        />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/startRecognize"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@id/tv_tip_1"
+        app:layout_constraintRight_toLeftOf="@id/img_recording" />
 
     <TextView
         android:id="@+id/tv_tip_2"
@@ -61,10 +60,18 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
-        android:text="采样率：16000"
+        android:text="采样率："
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@id/tv_tip_1"
         app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/tv_tip_2"
+        app:layout_constraintTop_toTopOf="@id/tv_tip_2"
+        android:entries="@array/sample"/>
 
     <TextView
         android:id="@+id/tv_tip_3"

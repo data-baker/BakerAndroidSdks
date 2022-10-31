@@ -20,7 +20,7 @@ public class ConvertHelper {
 
     private FileOutputStream mOutStream;
 
-    private byte[] mBuffer = new byte[2048];
+    private final byte[] mBuffer = new byte[2048];
 
 
     public void pcmToWav(File inPcmFilePath, File outWavFilePath) {

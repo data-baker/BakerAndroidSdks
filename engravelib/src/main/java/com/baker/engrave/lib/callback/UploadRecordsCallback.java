@@ -12,12 +12,12 @@ public interface UploadRecordsCallback {
      *
      * @param result
      */
-    public void uploadRecordsResult(boolean result, String mouldId);
+    void uploadRecordsResult(boolean result, String mouldId);
     /**
      * 错误信息回调
      *
      * @param errorCode
      * @param message
      */
-    public void onUploadError(int errorCode, String message);
+    void onUploadError(int errorCode, String message);
 }

@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,11 +56,15 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
     private boolean k16OrK8 = BakerBaseConstants.K16;
     private int audioType = BakerBaseConstants.AUDIO_TYPE_PCM_16K;
     private int rate = BakerBaseConstants.RATE_16K;
-    private boolean enableTimestamp = false;
+    private int enableTimestamp = 1;
+    private int spectrum = 1;
+    private int spectrum_8k = 0;
+    private int enable_subtitles = 0;
+    private int silence = 0;
     private boolean isFirst;
     private int perDuration = 260;
 
-    private LinkedBlockingQueue<String> textQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<String> textQueue = new LinkedBlockingQueue<>();
 
     @Override
     public void setDebug(Context context, boolean debug) {
@@ -97,12 +102,12 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         return BakerMediaPlayer.getInstance().getDuration();
     }
 
-    private HsjWebSocketListener listener = new HsjWebSocketListener();
+    private final HsjWebSocketListener listener = new HsjWebSocketListener();
 
     private class HsjWebSocketListener extends WebSocketListener {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
-            WriteLog.writeLogs("webSocket onOpen：" + response.toString());
+            WriteLog.writeLogs("webSocket onOpen：" + response);
             if (isFirst && callback != null) {
                 callback.onSynthesisStarted();
                 if (callback instanceof BakerMediaCallback) {
@@ -132,7 +137,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
                                 }
                                 byte[] bytes = Base64.decode(response.getData().getAudio_data(), Base64.DEFAULT);
                                 callback.onBinaryReceived(bytes, response.getData().getAudio_type(), response.getData().getInterval(),
-                                        textQueue.size() < 1 && response.getData().getEnd_flag() == 1);
+                                        response.getData().getInterval_x(), textQueue.size() < 1 && response.getData().getEnd_flag() == 1);
                             }
 
                             if (response.getData().getEnd_flag() == 1) {
@@ -208,10 +213,18 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         ttsParams.put("audiotype", String.valueOf(audioType));
         if (rate != 0)
             ttsParams.put("rate", String.valueOf(rate));
-        if (enableTimestamp) {
-            ttsParams.put("interval", "1");
-        } else {
-            ttsParams.put("interval", "0");
+        ttsParams.put("interval", String.valueOf(enableTimestamp));
+        if (enableTimestamp == 1) {
+            ttsParams.put("enable_subtitles", String.valueOf(enable_subtitles));
+        }
+        if (silence>0){
+            ttsParams.put("silence", String.valueOf(silence));
+        }
+        if (spectrum>0){
+            ttsParams.put("spectrum", String.valueOf(spectrum));
+        }
+        if (spectrum_8k>0){
+            ttsParams.put("spectrum_8k", String.valueOf(spectrum_8k));
         }
 
         params.put("tts_params", ttsParams);
@@ -265,7 +278,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         authenticationUtils.authentication(true);
     }
 
-    private CallbackListener mAuthenticationUtilsListener = new AuthenticationUtilsListener();
+    private final CallbackListener mAuthenticationUtilsListener = new AuthenticationUtilsListener();
 
     private class AuthenticationUtilsListener implements CallbackListener<String> {
 
@@ -296,6 +309,20 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         if (!TextUtils.isEmpty(token)) {
             SynthesizerConstants.ttsToken = token;
         }
+    }
+
+    @Override
+    public void setSpectrum(int s) {
+        if (s < 0) return;
+        if (s > 20) return;
+        spectrum = s;
+    }
+
+    @Override
+    public void setSpectrum8k(int spectrum) {
+        if (spectrum < 0) return;
+        if (spectrum > 20) return;
+        spectrum_8k = spectrum;
     }
 
     @Override
@@ -374,12 +401,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
     @Override
     public void setVoice(String name) {
         if (!TextUtils.isEmpty(name)) {
-            try {
-                voiceName = new String(name.getBytes(BakerBaseConstants.UTF_8), BakerBaseConstants.UTF_8);
-            } catch (UnsupportedEncodingException e) {
-                onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_PARAMS_NOT_AVAILABLE_SET_VOICE_FAULT, e.getMessage()));
-                WriteLog.writeLogs("setVoice==" + e.getMessage());
-            }
+            voiceName = new String(name.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         }
     }
 
@@ -463,8 +485,6 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
      * 可不填，不填时默认为3，表示mp3格式
      * audiotype=4 ：返回16K采样率的pcm格式
      * audiotype=5 ：返回8K采样率的pcm格式
-     * audiotype=6 ：返回16K采样率的wav格式
-     * audiotype=6&rate=1 ：返回8K的wav格式
      *
      * @param type
      */
@@ -502,8 +522,18 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
      * @param enable
      */
     @Override
-    public void setEnableTimestamp(boolean enable) {
+    public void setInterval(int enable) {
         enableTimestamp = enable;
+    }
+
+    @Override
+    public void setEnableSubtitles(int enable) {
+        enable_subtitles = enable;
+    }
+
+    @Override
+    public void setSilence(int enable) {
+        silence = enable;
     }
 
     @Override
@@ -536,4 +566,6 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
             callback.onTaskFailed(errorBean);
         }
     }
+
+
 }

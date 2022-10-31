@@ -21,7 +21,7 @@ class AudioTextFragment :
             audioText = arguments.getString(AUDIO_TEXT)
             getBinding().run {
                 tvAudio.text = audioText
-                tvAudio.movementMethod = ScrollingMovementMethod.getInstance();
+                tvAudio.movementMethod = ScrollingMovementMethod.getInstance()
             }
         }
     }

@@ -8,23 +8,23 @@ import android.util.Log;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AudioTrackPlayer {
-    private static String TAG = "AudioTrackPlayer";
+    private static final String TAG = "AudioTrackPlayer";
     private final int SAMPLE_RATE = 16000;
     private boolean playing = false;
-    private LinkedBlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>();
 
     // 初始化播放器
-    private int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
+    private final int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
             AudioFormat.CHANNEL_OUT_MONO,
             AudioFormat.ENCODING_PCM_16BIT);
 
-    private AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE,
+    private final AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE,
             AudioFormat.CHANNEL_OUT_MONO
             , AudioFormat.ENCODING_PCM_16BIT,
             iMinBufSize * 10, AudioTrack.MODE_STREAM);
     private byte[] tempData;
 
-    private Thread ttsPlayerThread;
+    private final Thread ttsPlayerThread;
 
     public AudioTrackPlayer() {
 //        Log.i(TAG, "init");

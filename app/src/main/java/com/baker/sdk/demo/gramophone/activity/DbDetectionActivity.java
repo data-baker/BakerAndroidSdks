@@ -16,7 +16,7 @@ import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 
 public class DbDetectionActivity extends BakerBaseActivity implements DetectCallback {
-    private String TAG = "DbDetectionActivity";
+    private final String TAG = "DbDetectionActivity";
     private int BTN_TYPE = 0; //0=默认状态，检测未通过。1=检测通过，可以复刻。
     private Button btnStartEngrave;
     private TextView tvDetectValue, tvDetectTip;

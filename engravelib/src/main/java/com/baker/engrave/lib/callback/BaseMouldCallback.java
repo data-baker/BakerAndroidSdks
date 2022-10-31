@@ -13,13 +13,13 @@ public interface BaseMouldCallback {
      * 根据mouldId查询mould信息回调
      * @param mould
      */
-    public void mouldInfo(Mould mould);
+    void mouldInfo(Mould mould);
 
     /**
      * 根据queryId分页查询mould信息回调
      * @param list
      */
-    public void mouldList(List<Mould> list);
+    void mouldList(List<Mould> list);
 
     /**
      * 错误信息回调
@@ -27,5 +27,5 @@ public interface BaseMouldCallback {
      * @param errorCode
      * @param message
      */
-    public void onMouldError(int errorCode, String message);
+    void onMouldError(int errorCode, String message);
 }

@@ -256,7 +256,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             format = "pcm",
             audio = bytes,
             scoreThreshold = mRecordScore.toFloat(),
-            matchId = registerid ?: ""
+            matchId = registerid
         )
         BakerVpr.vprMatchRatioOne(
             vprMatchRequest,
@@ -491,7 +491,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // 将结果转发给 EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     companion object {

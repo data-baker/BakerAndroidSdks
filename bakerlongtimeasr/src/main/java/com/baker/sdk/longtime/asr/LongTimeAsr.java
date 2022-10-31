@@ -11,7 +11,7 @@ import com.baker.sdk.longtime.asr.listener.LongTimeAsrInterface;
  * 2020/9/29
  */
 public class LongTimeAsr implements LongTimeAsrInterface {
-    private LongTimeAsrImpl impl;
+    private final LongTimeAsrImpl impl;
 
     public LongTimeAsr() {
         impl = new LongTimeAsrImpl();
@@ -60,6 +60,16 @@ public class LongTimeAsr implements LongTimeAsrInterface {
     @Override
     public void setDomain(String domain) {
         impl.setDomain(domain);
+    }
+
+    @Override
+    public void setHotWordId(String id) {
+
+    }
+
+    @Override
+    public void setDiylmid(String id) {
+
     }
 
     @Override

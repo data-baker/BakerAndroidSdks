@@ -25,9 +25,9 @@ import okhttp3.Response;
  */
 
 public class CommonOkHttpClient {
-    private static int connectTimeout = 30;
-    private static int readTimeout = 30;
-    private static int writeTimeout = 30;
+    private static final int connectTimeout = 30;
+    private static final int readTimeout = 30;
+    private static final int writeTimeout = 30;
     private static OkHttpClient mClient;
 
     public static synchronized OkHttpClient init() {
@@ -62,7 +62,7 @@ public class CommonOkHttpClient {
         return call;
     }
 
-    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new Logger() {
+    private static final HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new Logger() {
         @Override
         public void log(String message) {
             HLogger.d(message);
@@ -71,7 +71,7 @@ public class CommonOkHttpClient {
     /**
      * 设置头信息
      */
-    private static Interceptor headerInterceptor = new Interceptor() {
+    private static final Interceptor headerInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();

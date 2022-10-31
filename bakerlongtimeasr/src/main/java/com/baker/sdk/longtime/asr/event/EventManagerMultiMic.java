@@ -128,7 +128,7 @@ public class EventManagerMultiMic implements EventManager {
 //    private long time_start_record;
 //    private boolean show = true;
 
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             int readsize = 0;

@@ -15,9 +15,9 @@ import com.baker.sdk.demo.R;
 import java.util.List;
 
 public class MouldRecyclerViewAdapter extends RecyclerView.Adapter<MouldRecyclerViewAdapter.MouldHolder> {
-    private List<Mould> moulds;
-    private Context mContext;
-    private RecyclerViewItemOnClickListener mListener;
+    private final List<Mould> moulds;
+    private final Context mContext;
+    private final RecyclerViewItemOnClickListener mListener;
 
     public MouldRecyclerViewAdapter(List<Mould> list, Context context, RecyclerViewItemOnClickListener listener) {
         this.moulds = list;
@@ -58,7 +58,9 @@ public class MouldRecyclerViewAdapter extends RecyclerView.Adapter<MouldRecycler
     }
 
     class MouldHolder extends RecyclerView.ViewHolder {
-        private TextView tvIndex, tvStatusName, tvMouldId;
+        private final TextView tvIndex;
+        private final TextView tvStatusName;
+        private final TextView tvMouldId;
 
         public MouldHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +71,6 @@ public class MouldRecyclerViewAdapter extends RecyclerView.Adapter<MouldRecycler
     }
 
     public interface RecyclerViewItemOnClickListener {
-        public void onItemClick(int index, String mouldId);
+        void onItemClick(int index, String mouldId);
     }
 }

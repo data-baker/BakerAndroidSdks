@@ -39,7 +39,7 @@ import static com.baker.speech.asr.BakerPrivateConstants.bufferSizeForUpload;
 public class EventManagerMultiNet implements EventManager {
     private EventManager mOwner;
     private WebSocketClient webSocketClient;
-    private AtomicInteger mIdx = new AtomicInteger(-1);
+    private final AtomicInteger mIdx = new AtomicInteger(-1);
     private String domain = "common";
     private String mTtsToken;
     private boolean isFinish = false;
@@ -49,6 +49,16 @@ public class EventManagerMultiNet implements EventManager {
     private String audioFormat = "pcm";
     private int sampleRate = 16000;
     private boolean addPct = true;
+    //配置的热词组的id
+    private String hotwordid = "";
+    //asr个性化模型的id
+    private String diylmid = "";
+    //默认关闭静音检测
+    private Boolean enable_vad = false;
+    //最大开始静音时长
+    private int max_begin_silence = 0;
+    //最大结束静音时长
+    private int max_end_silence = 0;
 
     public void setmOwner(EventManager mOwner) {
         this.mOwner = mOwner;
@@ -83,6 +93,11 @@ public class EventManagerMultiNet implements EventManager {
                     addPct = asrParams.isAdd_pct();
                     audioFormat = asrParams.getAudio_format();
                     sampleRate = asrParams.getSample_rate();
+                    hotwordid = asrParams.getHotwordid();
+                    diylmid = asrParams.getDiylmid();
+                    enable_vad = asrParams.getEnable_vad();
+                    max_begin_silence = asrParams.getMax_begin_silence();
+                    max_end_silence = asrParams.getMax_end_silence();
                 }
                 if (webSocketClient == null) {
                     webSocketClient = new WebSocketClient(url);
@@ -129,16 +144,31 @@ public class EventManagerMultiNet implements EventManager {
             } else {
                 asrParams.put("req_idx", mIdx.get());
             }
-            //识别类型  0：一句话识别，sdk做vad   1：长语音识别，服务端做vad  默认为0
-            asrParams.put("speech_type", 0);
 
             //------以下是非必须字段-----
+            //识别类型  0：一句话识别，sdk做vad   1：长语音识别，服务端做vad  默认为0
+//            asrParams.put("speech_type", 0);
             //是否在短静音处添加标点，默认false
             asrParams.put("add_pct", addPct);
             //是否在后处理中执⾏ITN，默认false
-            asrParams.put("enable_itn", false);
+//            asrParams.put("enable_itn", false);
             //模型名称
             asrParams.put("domain", domain);
+            //配置的热词组的id
+            if (!TextUtils.isEmpty(hotwordid)) {
+                asrParams.put("hotwordid", hotwordid);
+            }
+            //asr个性化模型的id
+            if (!TextUtils.isEmpty(diylmid)) {
+                asrParams.put("diylmid", diylmid);
+            }
+            asrParams.put("enable_vad", enable_vad);
+            if (enable_vad && max_begin_silence > 0) {
+                asrParams.put("max_begin_silence", max_begin_silence);
+            }
+            if (enable_vad && max_end_silence > 0) {
+                asrParams.put("max_end_silence", max_end_silence);
+            }
 
             hashMapParams.put("asr_params", asrParams);
             String s = GsonConverter.toJson(hashMapParams);
@@ -157,7 +187,7 @@ public class EventManagerMultiNet implements EventManager {
         }
     }
 
-    private WebSocketListener listener = new WebSocketListener() {
+    private final WebSocketListener listener = new WebSocketListener() {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             //1=sdk麦克风录音 2=接收字节流
@@ -189,13 +219,13 @@ public class EventManagerMultiNet implements EventManager {
                 onFault(BakerAsrConstants.ERROR_CODE_WEBSOCKET_ONFAILURE, t.getMessage());
             }
             HLogger.d("onClosing, error message = " + t.getMessage());
-            Log.e("onFailure", "onFailure, error message = " + t.getMessage() + ", webSocket = " + webSocket.toString());
+            Log.e("onFailure", "onFailure, error message = " + t.getMessage() + ", webSocket = " + webSocket);
         }
 
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
             super.onMessage(webSocket, text);
-//            Log.d("hsj", "onMessage, text = " + text);
+            Log.d("hsj", "onMessage, text = " + text);
             HLogger.d("onMessage, text = " + text);
             if (webSocketClient != null && webSocket.equals(webSocketClient.getWebSocket())) {
                 if (!TextUtils.isEmpty(text)) {
@@ -203,7 +233,7 @@ public class EventManagerMultiNet implements EventManager {
                         BaseResponse response = GsonConverter.fromJson(text, BaseResponse.class);
                         if (response.getCode() == 90000) {
                             //将外层的traceId给data对象，一起传回上层。
-                            response.getData().setTraceId(response.getTrace_id());
+//                            response.getData().setTraceId(response.getTrace_id());
                             if (response.getData().getEnd_flag() == 1) {
                                 //最后确定的结果
                                 EventManagerMessagePool.clean();
@@ -214,6 +244,9 @@ public class EventManagerMultiNet implements EventManager {
                             } else {
                                 EventManagerMessagePool.offer(mOwner, "asr.partial", GsonConverter.toJson(response.getData()));
                             }
+                        } else if (response.getCode() == 90001){
+                            //检测到音频输入，忽略，只是一个状态回调
+                            EventManagerMessagePool.offer(mOwner, "asr.start", "{}");
                         } else if (response.getCode() == 40008) {
                             //token已过期
                             onFault(String.valueOf(response.getCode()), "errorMsg = "

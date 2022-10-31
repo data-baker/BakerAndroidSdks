@@ -162,7 +162,7 @@ public class VoiceConvertManager {
         webSocketClient.start(webSocketListener);
     }
 
-    private WebSocketListener webSocketListener = new WebSocketListener() {
+    private final WebSocketListener webSocketListener = new WebSocketListener() {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             super.onOpen(webSocket, response);
@@ -253,7 +253,7 @@ public class VoiceConvertManager {
         }
     }
 
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             int readsize = 0;
@@ -358,7 +358,7 @@ public class VoiceConvertManager {
     //采用频率
     //44100是目前的标准，但是某些设备仍然支持22050，16000，11025
     //采样频率一般共分为22.05KHz、44.1KHz、48KHz三个等级
-    private static int AUDIO_SAMPLE_RATE = 16000;
+    private static final int AUDIO_SAMPLE_RATE = 16000;
     //声道 单声道
     private final static int AUDIO_CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     //编码

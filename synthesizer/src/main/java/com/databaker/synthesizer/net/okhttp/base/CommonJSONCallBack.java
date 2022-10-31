@@ -19,8 +19,8 @@ import okhttp3.Response;
  */
 
 public class CommonJSONCallBack<Tt> implements Callback {
-    private Handler handler;
-    private CallbackListener listener;
+    private final Handler handler;
+    private final CallbackListener listener;
 
     public CommonJSONCallBack(CallbackListener listener) {
         // 创建主线程的handler

@@ -15,9 +15,11 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.speech.asr.BakerRecognizer;
 import com.baker.speech.asr.base.BakerRecognizerCallback;
 import com.baker.speech.asr.bean.BakerException;
+import com.baker.speech.asr.bean.BakerResponse;
 
 import java.util.List;
 
@@ -34,15 +37,18 @@ import java.util.List;
  * @author hsj55
  */
 public class AsrMicActivity extends BakerBaseActivity {
-    private static String TAG = AsrMicActivity.class.getName();
+    private static final String TAG = AsrMicActivity.class.getName();
     private SharedPreferences mSharedPreferences;
 
     private TextView resultTv, traceTv;
     private Button btn;
     private ImageView imgRecording;
-    private EditText spinner;
+    private EditText editDomain;
     private String domain = "common";
     private String mTraceId;
+    private int sample = 16000;
+    private String[] samples;
+    private Spinner spinner;
 
     private BakerRecognizer bakerRecognizer;
 
@@ -52,7 +58,7 @@ public class AsrMicActivity extends BakerBaseActivity {
         setContentView(R.layout.activity_asr_mic);
 
         setTitle("录音识别");
-
+        samples = getResources().getStringArray(R.array.sample);
         mSharedPreferences = getSharedPreferences(Constants.SP_TABLE_NAME, Context.MODE_PRIVATE);
 
         traceTv = findViewById(R.id.tv_trace);
@@ -79,11 +85,28 @@ public class AsrMicActivity extends BakerBaseActivity {
         btn = findViewById(R.id.startRecognize);
         imgRecording = findViewById(R.id.img_recording);
         imgRecording.setVisibility(View.INVISIBLE);
-        spinner = findViewById(R.id.spinner);
+        editDomain = findViewById(R.id.edit_domain);
 
-        btn.setOnLongClickListener(new View.OnLongClickListener() {
+        spinner = findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sample = Integer.valueOf(samples[position]);
+                if (sample == 8000) {
+                    domain = "kefu";
+                    editDomain.setText("kefu");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (bakerRecognizer != null) {
                     setParams();
                     //返回0启动成功，返回1=callback为空，未启动成功
@@ -91,23 +114,35 @@ public class AsrMicActivity extends BakerBaseActivity {
                 }
                 resultTv.setText("");
                 traceTv.setText("");
-                return true;
             }
         });
-        btn.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.e("hsj", "MotionEvent.ACTION_UP");
-                    if (bakerRecognizer != null) {
-                        bakerRecognizer.stopAsr();
-                    }
-                    btn.setText("长按开启识别");
-                    imgRecording.setVisibility(View.INVISIBLE);
-                }
-                return false;
-            }
-        });
+//        btn.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                if (bakerRecognizer != null) {
+//                    setParams();
+//                    //返回0启动成功，返回1=callback为空，未启动成功
+//                    bakerRecognizer.startAsr();
+//                }
+//                resultTv.setText("");
+//                traceTv.setText("");
+//                return true;
+//            }
+//        });
+//        btn.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (event.getAction() == MotionEvent.ACTION_UP) {
+//                    Log.e("hsj", "MotionEvent.ACTION_UP");
+//                    if (bakerRecognizer != null) {
+//                        bakerRecognizer.stopAsr();
+//                    }
+//                    btn.setText("点击开启识别");
+//                    imgRecording.setVisibility(View.INVISIBLE);
+//                }
+//                return false;
+//            }
+//        });
 
         bakerRecognizer = new BakerRecognizer();
         bakerRecognizer.initSdk(AsrMicActivity.this, sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_ID),
@@ -127,12 +162,12 @@ public class AsrMicActivity extends BakerBaseActivity {
             switch (msg.what) {
                 case 0:
                     //onError
-                    btn.setText("长按开启识别");
+                    btn.setText("点击开启识别");
                     imgRecording.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
                     //onReady
-                    btn.setText("松开结束识别");
+                    btn.setText("识别中");
                     imgRecording.setVisibility(View.VISIBLE);
                     break;
                 case 2:
@@ -145,7 +180,7 @@ public class AsrMicActivity extends BakerBaseActivity {
         }
     };
 
-    private BakerRecognizerCallback bakerRecognizerCallback = new BakerRecognizerCallback(){
+    private final BakerRecognizerCallback bakerRecognizerCallback = new BakerRecognizerCallback() {
         @Override
         public void onReadyOfSpeech() {
             resultTv.setText("");
@@ -161,16 +196,35 @@ public class AsrMicActivity extends BakerBaseActivity {
         }
 
         @Override
-        public void onResult(List<String> nbest, List<String> uncertain, boolean isLast, String traceId) {
-            mTraceId = traceId;
-            if (nbest != null && nbest.size() > 0) {
-                appendResult(nbest.get(0));
+        public void onResult(BakerResponse response) {
+            if (response != null) {
+                mTraceId = response.getTraceId();
+                if (response.getNbest() != null && response.getNbest().size() > 0) {
+                    Log.e(TAG, "result=" + response.getNbest().get(0));
+                    appendResult(response.getNbest().get(0));
+                }
             }
+        }
+
+        /**
+         * 此回调表示：sdk内部录音机识别到用户开始输入声音。
+         */
+        @Override
+        public void onBeginOfSpeech() {
+
         }
 
         @Override
         public void onEndOfSpeech() {
-            appendResult("\n识别结束");
+//            appendResult("\n识别结束");
+
+            if (bakerRecognizer != null) {
+                bakerRecognizer.stopAsr();
+            }
+
+            Message message = Message.obtain();
+            message.what = 0;
+            handler.sendMessage(message);
         }
 
         @Override
@@ -185,11 +239,26 @@ public class AsrMicActivity extends BakerBaseActivity {
     };
 
     private void setParams() {
-        String text = spinner.getText().toString().trim();
+        String text = editDomain.getText().toString().trim();
         if (!TextUtils.isEmpty(text)) {
             domain = text;
         }
+        //音频采样率
+        bakerRecognizer.setSampleRate(sample);
+        //模型名称 默认值=中文通用模型 "common"
         bakerRecognizer.setDomain(domain);
+        //true: 加标点，默认值
+        bakerRecognizer.setAddPct(true);
+        //配置的热词组的id，有就设置，没有就不设置
+//        bakerRecognizer.setHotwordid("");
+        //asr个性化模型的id，有就设置，没有就不设置
+//        bakerRecognizer.setDiylmid("");
+        //开启服务器端vad 静音检测， 默认是关闭false
+        bakerRecognizer.setEnable_vad(true);
+        //当enable_vad为true时有效，表示允许的最大开始静音时长，不设置就使用默认值
+//        bakerRecognizer.setMax_begin_silence(600);
+        //当enable_vad为true时有效，表示允许的最大结束静音时长，不设置就使用默认值
+//        bakerRecognizer.setMax_end_silence(600);
     }
 
     private void changeVolumeImg(int volume) {

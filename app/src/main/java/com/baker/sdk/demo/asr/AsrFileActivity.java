@@ -35,6 +35,7 @@ import com.baker.sdk.demo.longasr.LongAsrFileActivity;
 import com.baker.speech.asr.BakerRecognizer;
 import com.baker.speech.asr.base.BakerRecognizerCallback;
 import com.baker.speech.asr.bean.BakerException;
+import com.baker.speech.asr.bean.BakerResponse;
 import com.blankj.utilcode.util.UriUtils;
 
 import java.io.File;
@@ -45,7 +46,7 @@ import java.util.List;
  * @author hsj55
  */
 public class AsrFileActivity extends BakerBaseActivity {
-    private static String TAG = AsrFileActivity.class.getName();
+    private static final String TAG = AsrFileActivity.class.getName();
     private SharedPreferences mSharedPreferences;
 
     private TextView resultTv, pathTv;
@@ -210,7 +211,7 @@ public class AsrFileActivity extends BakerBaseActivity {
             recognizer.setAddPct(true);
             if (path.toLowerCase().endsWith("wav")) {
                 recognizer.setAudioFormat("wav");
-            } else if (path.toLowerCase().endsWith("pcm")){
+            } else if (path.toLowerCase().endsWith("pcm")) {
                 recognizer.setAudioFormat("pcm");
             }
             //模型名称，必须填写公司购买的语言模型，默认为common
@@ -219,6 +220,18 @@ public class AsrFileActivity extends BakerBaseActivity {
                 domain = text;
             }
             recognizer.setDomain(domain);
+            //true: 加标点，默认值
+            recognizer.setAddPct(true);
+            //配置的热词组的id，有就设置，没有就不设置
+//        recognizer.setHotwordid("");
+            //asr个性化模型的id，有就设置，没有就不设置
+//        recognizer.setDiylmid("");
+            //开启服务器端vad 静音检测， 默认是关闭false
+            recognizer.setEnable_vad(true);
+            //当enable_vad为true时有效，表示允许的最大开始静音时长，不设置就使用默认值
+//        recognizer.setMax_begin_silence(600);
+            //当enable_vad为true时有效，表示允许的最大结束静音时长，不设置就使用默认值
+//        recognizer.setMax_end_silence(600);
             //*********************************结束设置参数****************************
             recognizer.start();
             ThreadPoolUtil.execute(new Runnable() {
@@ -249,7 +262,7 @@ public class AsrFileActivity extends BakerBaseActivity {
         recognizer.end();
     }
 
-    private BakerRecognizerCallback callBack = new BakerRecognizerCallback() {
+    private final BakerRecognizerCallback callBack = new BakerRecognizerCallback() {
         @Override
         public void onReadyOfSpeech() {
             resultTv.setText("");
@@ -262,18 +275,26 @@ public class AsrFileActivity extends BakerBaseActivity {
         }
 
         @Override
-        public void onResult(List<String> nbest, List<String> uncertain, boolean isLast, String traceId) {
-            if (nbest != null && nbest.size() > 0) {
-                appendResult(nbest.get(0));
+        public void onResult(BakerResponse response) {
+            if (response != null) {
+                if (response.getNbest() != null && response.getNbest().size() > 0) {
+                    appendResult(response.getNbest().get(0));
+                }
             }
-            if (isLast) {
-                handler.sendEmptyMessage(0);
-            }
+        }
+
+        /**
+         * 此回调表示：sdk内部录音机识别到用户开始输入声音。
+         */
+        @Override
+        public void onBeginOfSpeech() {
+
         }
 
         @Override
         public void onEndOfSpeech() {
-            appendResult("\n识别结束");
+//            appendResult("\n识别结束");
+            handler.sendEmptyMessage(0);
         }
 
         @Override

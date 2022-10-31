@@ -24,7 +24,7 @@ public abstract class BakerMediaCallback implements SynthesizerCallback, BaseMed
     }
 
     @Override
-    public void onBinaryReceived(byte[] data, String audioType, String interval, boolean endFlag) {
+    public void onBinaryReceived(byte[] data, String audioType, String interval,  String interval_x, boolean endFlag) {
 //        if (endFlag) {
 //            //是最后一帧
 //            if (data != null && data.length > 0) {

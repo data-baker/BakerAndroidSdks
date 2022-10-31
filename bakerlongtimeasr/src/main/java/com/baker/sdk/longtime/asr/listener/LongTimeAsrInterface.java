@@ -16,6 +16,8 @@ public interface LongTimeAsrInterface {
     void setSampleRate(int rate);
     void setAddPct(boolean addPct);
     void setDomain(String domain);
+    void setHotWordId(String id);
+    void setDiylmid(String id);
     void setUrl(String url);
     void startAsr();
     void stopAsr();

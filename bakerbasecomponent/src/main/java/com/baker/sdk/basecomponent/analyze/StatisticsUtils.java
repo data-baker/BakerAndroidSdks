@@ -30,7 +30,7 @@ public class StatisticsUtils {
     private static final String URL_POST_SUBMIT = "https://sdkinfo.data-baker.com:8677/sdk-submit/sdk-info/sign-upload";
     private static SharedPreferences mSharedPreferences;
     private static String time;
-    private static String SP_STATISTICS_FLAG_KEY_EVERY_DAY = "sp_statistics_flag_key_every_day";
+    private static final String SP_STATISTICS_FLAG_KEY_EVERY_DAY = "sp_statistics_flag_key_every_day";
 
     @SuppressLint({"CommitPrefEdits", "SimpleDateFormat"})
     public static void statistics(Context context, String myTag) {

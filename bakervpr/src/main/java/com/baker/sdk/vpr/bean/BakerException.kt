@@ -20,7 +20,7 @@ class BakerException : IOException {
         this.code = code
     }
 
-    constructor(e: Exception?) {}
+    constructor(e: Exception?)
 
     override fun toString(): String {
         return "BakerException{" +

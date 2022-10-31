@@ -18,6 +18,8 @@ import com.baker.sdk.longtime.asr.bean.LongTimeAsrResponse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,15 +38,17 @@ import static com.baker.sdk.longtime.asr.base.BakerPrivateConstants.bufferSizeFo
 public class EventManagerMultiNet implements EventManager {
     private EventManager mOwner;
     private WebSocketClient webSocketClient;
-    private LongTimeAsrBaseParams baseParams = new LongTimeAsrBaseParams();
-    private LongTimeAsrParams longTimeAsrParams = new LongTimeAsrParams();
-    private AtomicInteger mIdx = new AtomicInteger(-1);
+    private final AtomicInteger mIdx = new AtomicInteger(-1);
     private boolean isLast = false;
     private String webSocketUrl;
     private int sampleRate = 16000;
     private boolean addPct = true;
     private String domain = "common";
     private String audioFormat = "pcm";
+    //配置的热词组的id
+    private String hotwordid = "";
+    //asr个性化模型的id
+    private String diylmid = "";
 
     //1=sdk麦克风录音 2=接收字节流
     private int type;
@@ -63,11 +67,15 @@ public class EventManagerMultiNet implements EventManager {
             case "net.start":
                 if (!TextUtils.isEmpty(params)) {
                     LongTimeAsrParams asrParams = GsonConverter.fromJson(params, LongTimeAsrParams.class);
-                    audioFormat = asrParams.getAudio_format();
+                    type = asrParams.getType();
+                    if (type == 2) {
+                        audioFormat = asrParams.getAudio_format();
+                    }
                     sampleRate = asrParams.getSample_rate();
                     addPct = asrParams.isAdd_pct();
                     domain = asrParams.getDomain();
-                    type = asrParams.getType();
+                    hotwordid = asrParams.getHotwordid();
+                    diylmid = asrParams.getDiylmid();
                 }
                 if (webSocketClient == null) {
                     if (!TextUtils.isEmpty(webSocketUrl)) {
@@ -76,9 +84,6 @@ public class EventManagerMultiNet implements EventManager {
                         webSocketClient = new WebSocketClient(baseUrl);
                     }
                 }
-//                time_connect = System.currentTimeMillis();
-//                show = true;
-//                first = true;
                 webSocketClient.start(listener);
                 mIdx.set(-1);
                 isLast = false;
@@ -95,57 +100,55 @@ public class EventManagerMultiNet implements EventManager {
         }
     }
 
-//    private long time_connect;
-//    private long time_send;
-//    private boolean show = true;
-//    private boolean first = true;
-//    private long time_last;
-
     private void send() {
         try {
+            Map<String, Object> hashMapParams = new HashMap<>();
+
+            hashMapParams.put("version", "1.0");
+            Map<String, Object> longAsrParams = new HashMap<>();
+
             mIdx.addAndGet(1);
             byte[] data = BakerPrivateConstants.dataQueue.poll(300, TimeUnit.MILLISECONDS);
             if (data == null) {
                 data = new byte[]{0, 0};
             }
-            longTimeAsrParams.setAudio_data(Base64.encodeToString(data, Base64.NO_WRAP));
-            if (type == 2) {
-                longTimeAsrParams.setAudio_format(audioFormat);
+            longAsrParams.put("audio_data", Base64.encodeToString(data, Base64.NO_WRAP));
+            longAsrParams.put("audio_format", audioFormat);
+            longAsrParams.put("sample_rate", sampleRate);
+            longAsrParams.put("add_pct", addPct);
+            longAsrParams.put("domain", domain);
+            //配置的热词组的id
+            if (!TextUtils.isEmpty(hotwordid)) {
+                longAsrParams.put("hotwordid", hotwordid);
             }
-            longTimeAsrParams.setSample_rate(sampleRate);
-            longTimeAsrParams.setAdd_pct(addPct);
-            longTimeAsrParams.setDomain(domain);
+            //asr个性化模型的id
+            if (!TextUtils.isEmpty(diylmid)) {
+                longAsrParams.put("diylmid", diylmid);
+            }
             if (data == null || data.length < bufferSizeForUpload) {
-//                Log.d("hsj", "Req_idx = -1 服务器");
-                longTimeAsrParams.setReq_idx(mIdx.get() * -1);
+                longAsrParams.put("req_idx", mIdx.get() * -1);
                 isLast = true;
 //                time_last = System.currentTimeMillis();
             } else {
-//                Log.d("hsj", "data.length = " + data.length);
-                longTimeAsrParams.setReq_idx(mIdx.get());
+                longAsrParams.put("req_idx", mIdx.get());
             }
-//            Log.d("hsj", "上传id:" + longTimeAsrParams.getReq_idx());
+
             if (webSocketClient != null) {
                 String token;
                 if (!TextUtils.isEmpty(webSocketUrl)) {
                     token = "default";
                 } else {
-//                    token = BakerHttpConstants.getAuthorInfoByClientId(BakerPrivateConstants.clientId).getAccessToken();
                     token = BakerPrivateConstants.token;
                     if (TextUtils.isEmpty(token)) {
                         onFault(BakerLongTimeAsrConstants.ERROR_CODE_INIT_FAILED_TOKEN_FAULT, "The token of long time asr sdk is null.");
                         return;
                     }
                 }
-                baseParams.setAccess_token(token);
-                baseParams.setAsr_params(longTimeAsrParams);
-                String params = GsonConverter.toJson(baseParams);
+                hashMapParams.put("asr_params", longAsrParams);
+                hashMapParams.put("access_token", token);
+                String params = GsonConverter.toJson(hashMapParams);
 //                Log.d("hsj","上传id：" + longTimeAsrParams.getReq_idx() + ", 已运行：" + (System.currentTimeMillis() - time));
                 if (webSocketClient.getWebSocket() != null) {
-//                    if (first) {
-//                        time_send = System.currentTimeMillis();
-//                        first = false;
-//                    }
                     webSocketClient.getWebSocket().send(params);
                 }
             }
@@ -155,7 +158,7 @@ public class EventManagerMultiNet implements EventManager {
         }
     }
 
-    private WebSocketListener listener = new WebSocketListener() {
+    private final WebSocketListener listener = new WebSocketListener() {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
             //1=sdk麦克风录音 2=接收字节流
@@ -193,15 +196,6 @@ public class EventManagerMultiNet implements EventManager {
 //                            Log.d("waste_time", "尾包耗时：" + (System.currentTimeMillis() - time_last));
 //                        }
                         EventManagerMessagePool.offer(mOwner, "asr.partial", text);
-//                        if (!isLast) {
-//                            EventManagerMessagePool.offer(mOwner, "asr.partial", stringBuilder.toString() + response.getAsr_text());
-//                            if ("true".equals(response.getSentence_end())) {
-//                                stringBuilder.append(response.getAsr_text());
-//                            }
-//                        } else {
-//                            EventManagerMessagePool.offer(mOwner, "asr.finish", stringBuilder.toString() + response.getAsr_text());
-//                            webSocket.close(1001, null);
-//                        }
                     } else {
                         onFault(String.valueOf(response.getCode()), "trace_id is " + response.getTrace_id() + ", " + response.getMessage());
                         webSocket.close(1001, null);
@@ -224,7 +218,7 @@ public class EventManagerMultiNet implements EventManager {
 
     };
 
-    private StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
 
     private void onFault(String code, String message) {
         EventManagerMessagePool.offer(mOwner, "net.error", GsonConverter.toJson(new LongTimeAsrError(code, message)));
