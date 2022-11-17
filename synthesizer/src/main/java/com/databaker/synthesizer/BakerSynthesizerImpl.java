@@ -204,26 +204,22 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         ttsParams.put("voice_name", voiceName);
         ttsParams.put("language", language);
         ttsParams.put("domain", "1");
-        if (speed != 0)
-            ttsParams.put("speed", String.valueOf(speed));
-        if (volume != 0)
-            ttsParams.put("volume", String.valueOf(volume));
-        if (pitch != 0)
-            ttsParams.put("pitch", String.valueOf(pitch));
+        ttsParams.put("speed", String.valueOf(speed));
+        ttsParams.put("volume", String.valueOf(volume));
+        ttsParams.put("pitch", String.valueOf(pitch));
         ttsParams.put("audiotype", String.valueOf(audioType));
-        if (rate != 0)
-            ttsParams.put("rate", String.valueOf(rate));
+        ttsParams.put("rate", String.valueOf(rate));
         ttsParams.put("interval", String.valueOf(enableTimestamp));
         if (enableTimestamp == 1) {
             ttsParams.put("enable_subtitles", String.valueOf(enable_subtitles));
         }
-        if (silence>0){
+        if (silence > 0) {
             ttsParams.put("silence", String.valueOf(silence));
         }
-        if (spectrum>0){
+        if (spectrum > 0) {
             ttsParams.put("spectrum", String.valueOf(spectrum));
         }
-        if (spectrum_8k>0){
+        if (spectrum_8k > 0) {
             ttsParams.put("spectrum_8k", String.valueOf(spectrum_8k));
         }
 
