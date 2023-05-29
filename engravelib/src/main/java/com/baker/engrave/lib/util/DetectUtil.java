@@ -11,6 +11,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -33,15 +34,17 @@ import omrecorder.Recorder;
  * Create by hsj55
  * 2020/3/6
  */
+
 public class DetectUtil {
+
     private static BaseNetCallback baseNetCallback;
     private static Recorder mRecorder;
     private static Context mContext;
     private static AudioManager mAudioManager;
     private static AudioFocusRequest mFocusRequest;
     private static TelephonyManager mTelephonyManager;
-    private static final File mAudioFile = new File(Environment.getExternalStorageDirectory() +
-            File.separator + "DecibelDetection" + File.separator + "AudioTemporaryCache.pcm");
+    //private static final File mAudioFile = new File(Environment.getExternalStorageDirectory() + File.separator + "DecibelDetection" + File.separator + "AudioTemporaryCache.pcm");
+    private static File mAudioFile;
     //记录当前显示的分贝值
     private static int decibels = 0;
     //保存所有分贝值，用来计算平均值
@@ -49,6 +52,13 @@ public class DetectUtil {
     //显示最终分贝
     private static boolean isLast;
     private static boolean recording = false;
+
+    public static File getAudioFile() {
+        if (mContext != null && mAudioFile == null) {
+            mAudioFile = new File(mContext.getFilesDir() + File.separator + "DecibelDetection" + File.separator + "AudioTemporaryCache.pcm");
+        }
+        return mAudioFile;
+    }
 
     public static void setCallback(Context context, BaseNetCallback callback) {
         mContext = context;
@@ -153,20 +163,20 @@ public class DetectUtil {
 
     @NonNull
     private static File file() {
-        if (mAudioFile.exists()) {
-            mAudioFile.delete();
+        if (getAudioFile().exists()) {
+            getAudioFile().delete();
         }
         try {
-            if (!mAudioFile.getParentFile().exists()) {
-                mAudioFile.getParentFile().mkdirs();
+            if (!getAudioFile().getParentFile().exists()) {
+                getAudioFile().getParentFile().mkdirs();
             }
-            if (!mAudioFile.exists()) {
-                mAudioFile.createNewFile();
+            if (!getAudioFile().exists()) {
+                getAudioFile().createNewFile();
             }
         } catch (IOException e) {
             baseNetCallback.netDetectError(VoiceEngraveConstants.ERROR_CODE_FILE, "create detect file error: " + e.getMessage());
         }
-        return mAudioFile;
+        return getAudioFile();
     }
 
     private static void getAudioFocus() {
