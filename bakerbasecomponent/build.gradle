@@ -21,6 +21,11 @@ android {
         }
     }
 
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lib-base-component-${variant.buildType.name}-${android.defaultConfig.versionName}.aar"
+        }
+    }
 }
 
 dependencies {

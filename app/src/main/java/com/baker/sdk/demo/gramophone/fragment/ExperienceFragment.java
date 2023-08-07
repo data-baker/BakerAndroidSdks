@@ -98,20 +98,17 @@ public class ExperienceFragment extends BaseFragment implements MouldRecyclerVie
          */
         @Override
         public void mouldList(final List<Mould> list) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (list != null && list.size() > 0) {
-                        mouldList.clear();
-                        mouldList.addAll(list);
-                        adapter.notifyDataSetChanged();
-                        tvNullTip.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                    } else {
-                        tvNullTip.setVisibility(View.VISIBLE);
-                        tvNullTip.setText(getResources().getString(R.string.string_listen_experience_null));
-                        recyclerView.setVisibility(View.GONE);
-                    }
+            getActivity().runOnUiThread(() -> {
+                if (list != null && list.size() > 0) {
+                    mouldList.clear();
+                    mouldList.addAll(list);
+                    adapter.notifyDataSetChanged();
+                    tvNullTip.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    tvNullTip.setVisibility(View.VISIBLE);
+                    tvNullTip.setText(getResources().getString(R.string.string_listen_experience_null));
+                    recyclerView.setVisibility(View.GONE);
                 }
             });
         }

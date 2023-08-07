@@ -1,17 +1,12 @@
 package com.baker.engrave.lib.net;
 
-import com.baker.engrave.lib.BuildConfig;
-import com.baker.engrave.lib.util.HLogger;
+
 import com.google.gson.Gson;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;

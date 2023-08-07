@@ -40,9 +40,11 @@ public class AudioTrackPlayerActivity extends BakerBaseActivity {
         mSharedPreferences = getSharedPreferences(Constants.SP_TABLE_NAME, Context.MODE_PRIVATE);
 
         editText = findViewById(R.id.edit_content);
-        //初始化sdk
-        bakerSynthesizer = new BakerSynthesizer(this, sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID),
+        // 初始化sdk
+         bakerSynthesizer = new BakerSynthesizer(this, sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID),
                 sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
+
+
         bakerSynthesizer.setDebug(this, true);
         audioTrackPlayer = new AudioTrackPlayer();
     }
@@ -62,12 +64,7 @@ public class AudioTrackPlayerActivity extends BakerBaseActivity {
          */
         @Override
         public void onSynthesisCompleted() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ((TextView) findViewById(R.id.tv_test)).setText("合成完成");
-                }
-            });
+            runOnUiThread(() -> ((TextView) findViewById(R.id.tv_test)).setText("合成完成"));
             Log.i("info", "合成完成");
         }
 
@@ -93,7 +90,7 @@ public class AudioTrackPlayerActivity extends BakerBaseActivity {
          * T表示interval类型，0：默认值，1：声母，2：韵母，3：儿化韵母，4：英文，5：#3静音
          */
         @Override
-        public void onBinaryReceived(byte[] data, String audioType, String interval,  String interval_x, boolean endFlag) {
+        public void onBinaryReceived(byte[] data, String audioType, String interval, String interval_x, boolean endFlag) {
 //            HLogger.d("data.length==" + data.length + ", interval=" + interval);
             audioTrackPlayer.setAudioData(data);
         }
@@ -122,8 +119,8 @@ public class AudioTrackPlayerActivity extends BakerBaseActivity {
         }
         /**********************以下是必填参数**************************/
         //设置要转为语音的合成文本
-//        bakerSynthesizer.setText(editText.getText().toString().trim());
-        bakerSynthesizer.setText("西安市今天白天到夜间，阴，温度16到11摄氏度，东北风4级");
+        bakerSynthesizer.setText(editText.getText().toString().trim());
+//        bakerSynthesizer.setText("西安市今天白天到夜间，阴，温度16到11摄氏度，东北风4级");
         //设置返回数据的callback
         bakerSynthesizer.setBakerCallback(bakerCallback);
         //设置发音人声音名称，默认：Lingling

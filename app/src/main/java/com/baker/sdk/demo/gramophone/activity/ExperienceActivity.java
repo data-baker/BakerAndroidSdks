@@ -81,28 +81,19 @@ public class ExperienceActivity extends BakerBaseActivity implements SeekBar.OnS
         });
 
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                disMissProgressDialog();
-                return false;
-            }
+        mediaPlayer.setOnErrorListener((mediaPlayer, i, i1) -> {
+            disMissProgressDialog();
+            return false;
         });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                seekBar.setProgress(100);
-                handler.sendEmptyMessageDelayed(103, 200);
-                stopPlay();
-            }
+        mediaPlayer.setOnCompletionListener(mediaPlayer -> {
+            seekBar.setProgress(100);
+            handler.sendEmptyMessageDelayed(103, 200);
+            stopPlay();
         });
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                disMissProgressDialog();
-                ExperienceActivity.this.mediaPlayer.start();
-                updateSeekBar();
-            }
+        mediaPlayer.setOnPreparedListener(mediaPlayer -> {
+            disMissProgressDialog();
+            ExperienceActivity.this.mediaPlayer.start();
+            updateSeekBar();
         });
     }
 

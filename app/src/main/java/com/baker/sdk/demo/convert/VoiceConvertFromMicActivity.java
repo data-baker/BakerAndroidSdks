@@ -36,6 +36,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
     private VoiceConvertManager convertManager;
     private static BakerPlayer audioTrackPlayer;
     private Switch aSwitch;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 recordConvert();
             }
         });
@@ -101,7 +103,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     tvTip.setVisibility(View.VISIBLE);
                 } else {
                     tvTip.setVisibility(View.INVISIBLE);
@@ -110,6 +112,7 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
         });
     }
 
+    private boolean isFirstPackage;
     private final VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
         @Override
         public void onReady() {
@@ -137,6 +140,10 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
 
         @Override
         public void onAudioOutput(byte[] audioArray, boolean isLast, String traceId) {
+            if (isFirstPackage) {
+                Log.e("TAG--->", "首包消耗时间：" + (System.currentTimeMillis() - startTime));
+                isFirstPackage = false;
+            }
             Log.e("VoiceConvertActivity", "onAudioOutput(), isLast = " + isLast + ", traceId = " + traceId);
             audioTrackPlayer.setData(audioArray, isLast);
 
@@ -243,7 +250,8 @@ public class VoiceConvertFromMicActivity extends BakerBaseActivity {
             //开始录音转换
             btnRecord.setEnabled(false);
             btnRecord.setText("正在连接服务器...");
-
+            isFirstPackage = true;
+            startTime = System.currentTimeMillis();
             //清除掉播放器之前的缓存数据
             audioTrackPlayer.clean();
             convertManager.startFromMic(callBack);

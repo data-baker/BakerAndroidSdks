@@ -1,7 +1,10 @@
 package com.databaker.synthesizer.net.okhttp;
 
 
+import android.util.Log;
+
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.baker.sdk.basecomponent.writelog.WriteLog;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +34,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(baseUrl)
                 .build();
+        Log.e("TAG--->url", "url:" + baseUrl);
     }
 
     public WebSocketClient(int timeOut) {
@@ -41,6 +45,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(baseUrl)
                 .build();
+        Log.e("TAG--->url", "url:" + baseUrl);
     }
 
     public WebSocketClient(String url) {
@@ -50,6 +55,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(url)
                 .build();
+        Log.e("TAG--->url", "url:" + url);
     }
 
     public WebSocketClient(int timeOut, String url) {
@@ -60,6 +66,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(url)
                 .build();
+        Log.e("TAG--->url", "url:" + url);
     }
 
     public WebSocket getWebSocket() {

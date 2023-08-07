@@ -177,6 +177,12 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
 
         @Override
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
+            try {
+                WriteLog.writeLogs("onFailure==" + t.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if (webSocketClient != null && webSocketClient.getCancelSocket() != null && !webSocket.equals(webSocketClient.getCancelSocket())) {
                 onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_ERROR_INFO, t.getMessage()));
                 webSocket.close(1001, null);
