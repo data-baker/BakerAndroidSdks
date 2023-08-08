@@ -331,17 +331,14 @@ public class LongAsrFileActivity extends BakerBaseActivity {
     }
 
     private void appendResult(final String str) {
-        resultTv.post(new Runnable() {
-            @Override
-            public void run() {
-                resultTv.setText(str);
-                int scrollAmount = resultTv.getLayout().getLineTop(resultTv.getLineCount())
-                        - resultTv.getHeight();
-                if (scrollAmount > 0)
-                    resultTv.scrollTo(0, scrollAmount + 30);
-                else
-                    resultTv.scrollTo(0, 0);
-            }
+        resultTv.post(() -> {
+            resultTv.setText(str);
+            int scrollAmount = resultTv.getLayout().getLineTop(resultTv.getLineCount())
+                    - resultTv.getHeight();
+            if (scrollAmount > 0)
+                resultTv.scrollTo(0, scrollAmount + 30);
+            else
+                resultTv.scrollTo(0, 0);
         });
     }
 

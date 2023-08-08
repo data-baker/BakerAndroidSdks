@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.baker.sdk.demo">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -10,12 +17,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BakerAndroidSdks"
+        android:requestForegroundServiceExemption="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".gramophone.activity.ExperienceActivity"></activity>
-        <activity android:name=".gramophone.activity.ConfirmActivity" />
-        <activity android:name=".gramophone.activity.EngraveActivity" />
-        <activity android:name=".gramophone.activity.DbDetectionActivity" />
-        <activity android:name=".gramophone.GramophoneActivity" />
+        <activity
+            android:name=".gramophone.activity.ExperienceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gramophone.activity.ConfirmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gramophone.activity.EngraveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gramophone.activity.DbDetectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gramophone.GramophoneActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".convert.VoiceConvertFromFileActivity"
             android:screenOrientation="portrait" />
@@ -58,6 +76,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,12 +85,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

@@ -5,15 +5,16 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.tool_version
 
     defaultConfig {
         applicationId "com.baker.vpr.demo"
-        minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
 
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

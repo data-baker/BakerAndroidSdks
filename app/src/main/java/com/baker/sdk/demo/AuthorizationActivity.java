@@ -53,8 +53,6 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
                     }
-                    etClientId.setText("82bf72b1d19e4397bfd3cf37d542e910");
-                    etClientSecret.setText("2ab86ad68beb4285a99f0f7783692f79");
                     break;
                 case "asr_online":
                     setTitle("语音识别授权");
@@ -78,15 +76,12 @@ public class AuthorizationActivity extends BakerBaseActivity {
                 case "voice_convert":
                     //声音转换 获取token
                     setTitle("声音转换");
-                    //
-                    etClientId.setText("124c18404c7c47cbb4ceca5d92eb2c72");
-                    etClientSecret.setText("711d81016f6f4f0ba094ee96b5ce03d6");
-                 /*   if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID))) {
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID))) {
                         etClientId.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID));
                     }
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET));
-                    }*/
+                    }
                     break;
                 case "gramophone":
                     //声音转换 获取token

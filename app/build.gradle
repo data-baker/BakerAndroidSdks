@@ -3,15 +3,16 @@ plugins {
 }
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.tool_version
 
     defaultConfig {
         applicationId "com.baker.sdk.demo"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

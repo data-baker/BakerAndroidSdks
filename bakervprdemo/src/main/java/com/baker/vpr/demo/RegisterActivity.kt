@@ -64,11 +64,11 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     }
 
     private fun initData() {
-        mRecordName = intent.getStringExtra(Constants.sp_key_recorder_name)
-        mRecordScore = intent.getStringExtra(Constants.sp_key_recorder_score)
+        mRecordName = intent.getStringExtra(Constants.sp_key_recorder_name)?:""
+        mRecordScore = intent.getStringExtra(Constants.sp_key_recorder_score)?:""
         mFrom = intent.getIntExtra(Constants.register_get_from, 1)
         if (mFrom == 2) {
-            registerid = intent.getStringExtra(Constants.sp_key_recorder_registerid)
+            registerid = intent.getStringExtra(Constants.sp_key_recorder_registerid)?:""
             mBinding.tvTextPosition.text = "$mRecordName : $registerid"
         } else {
             requestRegisterId()
@@ -355,8 +355,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
      * 获取文件保存路径
      */
     private fun getSaveFilePath(): File {
-//        val file = File(this.filesDir.absoluteFile, "audio")
-        val file = File(Environment.getExternalStorageDirectory().path+"/audio")
+        val file = File(filesDir.path+"/audio")
         if (!file.exists()) {
             file.mkdirs()
         }
