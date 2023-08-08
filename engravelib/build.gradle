@@ -21,6 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lib-baker-engrave-${variant.buildType.name}-${android.defaultConfig.versionName}.aar"
+        }
+    }
 
 }
 

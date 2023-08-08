@@ -27,6 +27,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lib-baker-vpr-${variant.buildType.name}-${android.defaultConfig.versionName}.aar"
+        }
+    }
+
 }
 
 dependencies {
