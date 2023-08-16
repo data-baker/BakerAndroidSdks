@@ -98,55 +98,52 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      * 试听播放
      */
     public void startPlay(final int currentIndex, final PlayListener listener) {
-        runOnWorkerThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HLogger.d("startPlay");
-                    RecordResult recordResult = mRecordList.get(currentIndex);
-                    String filePath = recordResult.getFilePath();
-                    int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-                            AudioFormat.CHANNEL_OUT_MONO,
-                            AudioFormat.ENCODING_PCM_16BIT);
-                    AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                            SAMPLE_RATE,
-                            AudioFormat.CHANNEL_OUT_MONO,
-                            AudioFormat.ENCODING_PCM_16BIT,
-                            iMinBufSize, AudioTrack.MODE_STREAM);
-                    audioTrack.play();
-                    Source source = Okio.source(new File(filePath));
-                    BufferedSource buffer = Okio.buffer(source);
-                    byte[] tempBytes = new byte[iMinBufSize];
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.playStart();
-                        }
-                    });
-                    isPlaying = true;
-                    for (int len; (len = buffer.read(tempBytes)) != -1; ) {
-                        if (isPlaying) {
-                            audioTrack.write(tempBytes, 0, len);
-                        } else {
-                            break;
-                        }
+        runOnWorkerThread(() -> {
+            try {
+                HLogger.d("startPlay");
+                RecordResult recordResult = mRecordList.get(currentIndex);
+                String filePath = recordResult.getFilePath();
+                int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
+                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT);
+                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                        SAMPLE_RATE,
+                        AudioFormat.CHANNEL_OUT_MONO,
+                        AudioFormat.ENCODING_PCM_16BIT,
+                        iMinBufSize, AudioTrack.MODE_STREAM);
+                audioTrack.play();
+                Source source = Okio.source(new File(filePath));
+                BufferedSource buffer = Okio.buffer(source);
+                byte[] tempBytes = new byte[iMinBufSize];
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.playStart();
                     }
-                    HLogger.i("播放完毕");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.playEnd(); //回调
-                        }
-                    });
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.playError(e);
-                        }
-                    });
+                });
+                isPlaying = true;
+                for (int len; (len = buffer.read(tempBytes)) != -1; ) {
+                    if (isPlaying) {
+                        audioTrack.write(tempBytes, 0, len);
+                    } else {
+                        break;
+                    }
                 }
+                HLogger.i("播放完毕");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.playEnd(); //回调
+                    }
+                });
+            } catch (final Exception e) {
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.playError(e);
+                    }
+                });
             }
         });
     }

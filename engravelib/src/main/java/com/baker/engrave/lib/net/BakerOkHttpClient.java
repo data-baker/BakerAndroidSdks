@@ -1,12 +1,16 @@
 package com.baker.engrave.lib.net;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
@@ -22,36 +26,31 @@ import okhttp3.Response;
  * 2020/3/5
  */
 public class BakerOkHttpClient {
-    private static OkHttpClient mHttpClient;
+    private OkHttpClient mHttpClient;
+    private final String LOG_TAG = "HttpUtils>>>";
+    private final String LOG_DIVIDER = "||=================================================================";
 
     private BakerOkHttpClient() {
         if (mHttpClient == null) {
-
-//            if (BuildConfig.DEBUG) {
-//                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-//                    @Override
-//                    public void log(@NotNull String s) {
-//                        HLogger.v(s);
-//                    }
-//                });
-//                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//                mHttpClient = new OkHttpClient().newBuilder()
-//                        .retryOnConnectionFailure(true)
-//                        .connectTimeout(120, TimeUnit.SECONDS)
-//                        .callTimeout(120, TimeUnit.SECONDS)
-//                        .readTimeout(120, TimeUnit.SECONDS)
-//                        .addInterceptor(new TokenInterceptor())
-//                        .addInterceptor(loggingInterceptor)
-//                        .build();
-//            } else {
-                mHttpClient = new OkHttpClient().newBuilder()
-                        .retryOnConnectionFailure(true)
-                        .connectTimeout(120, TimeUnit.SECONDS)
-                        .callTimeout(120, TimeUnit.SECONDS)
-                        .readTimeout(120, TimeUnit.SECONDS)
-                        .addInterceptor(new TokenInterceptor())
-                        .build();
-//            }
+            mHttpClient = new OkHttpClient().newBuilder()
+                    .retryOnConnectionFailure(true)
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .callTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .addInterceptor(new TokenInterceptor())
+                    .addInterceptor(new CurlLogInterceptor())
+                    .addInterceptor(new HttpLoggingInterceptor(message -> {
+                        if (message.contains("--> END") || message.contains("<-- END")) {
+                            Log.e(LOG_TAG, "||  " + message);
+                            Log.e(LOG_TAG, LOG_DIVIDER);
+                        } else if (message.contains("-->") || message.contains("<--")) {
+                            Log.e(LOG_TAG, LOG_DIVIDER);
+                            Log.e(LOG_TAG, "||  " + message);
+                        } else {
+                            Log.e(LOG_TAG, "||  " + message);
+                        }
+                    }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build();
         }
     }
 
