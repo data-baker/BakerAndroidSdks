@@ -9,9 +9,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.ContentTextCallback;
@@ -21,6 +19,9 @@ import com.baker.engrave.lib.callback.MouldCallback;
 import com.baker.engrave.lib.callback.PlayListener;
 import com.baker.engrave.lib.callback.RecordCallback;
 import com.baker.engrave.lib.callback.UploadRecordsCallback;
+import com.baker.engrave.lib.callback.innner.DetectCallbackImpl;
+import com.baker.engrave.lib.callback.innner.NetCallbackImpl;
+import com.baker.engrave.lib.callback.innner.RecordCallbackImpl;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.util.BaseUtil;
 import com.baker.engrave.lib.util.DetectUtil;
@@ -29,8 +30,9 @@ import com.baker.engrave.lib.util.RecordUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okio.BufferedSource;
 import okio.Okio;
@@ -41,67 +43,144 @@ import okio.Source;
  */
 public class BakerVoiceEngraver implements BaseNetCallback {
 
-    /**
-     * 录音结果总条数
-     */
-    private static final List<RecordResult> mRecordList = new ArrayList<>();
-    /**
-     * 当前录音index
-     */
-    private static int currentIndex = 0;
+
+    /*================================================== 单例实现 Start ==================================================*/
+    private BakerVoiceEngraver() { }
+
+    private static final class HolderClass {
+        private static final BakerVoiceEngraver instance = new BakerVoiceEngraver();
+    }
+
+    public static BakerVoiceEngraver getInstance() {
+        return HolderClass.instance;
+    }
+    /*================================================== 单例实现 End  ==================================================*/
 
 
+    /*================================================== 获取所需对象 Start ==================================================*/
+    private ExecutorService workService;
+    private Handler mHandler;
+
+    private void runOnWorkerThread(Runnable runnable) {
+        if (workService == null) {
+            workService = Executors.newSingleThreadExecutor();
+        }
+        workService.execute(runnable);
+    }
+
+    private void runOnUiThread(Runnable runnable) {
+        if (mHandler == null) {
+            mHandler = new Handler(Looper.getMainLooper());
+        }
+        mHandler.post(runnable);
+    }
+
+    private NetCallbackImpl netCallback;
+
+    private NetCallbackImpl getNetCallBack() {
+        if (netCallback == null) {
+            netCallback = new NetCallbackImpl();
+        }
+        return netCallback;
+    }
+
+    private RecordCallbackImpl recordUtilCallback;
+
+    private RecordCallbackImpl getRecordCallBack() {
+        if (recordUtilCallback == null) {
+            recordUtilCallback = new RecordCallbackImpl();
+        }
+        return recordUtilCallback;
+    }
+
+    private DetectCallbackImpl detectUtilCallBack;
+
+    private DetectCallbackImpl getDetectCallBack() {
+        if (detectUtilCallBack == null) {
+            detectUtilCallBack = new DetectCallbackImpl();
+        }
+        return detectUtilCallBack;
+    }
+    /*================================================== 获取所需对象 End ==================================================*/
+
+
+    //当前录音index
+    private int currentIndex = 0;
     private Context mContext;
-    private static String mClientId;
-    private static String mClientSecret;
-    private static String mQueryID;
-    private static String mSessionId;
-    private ContentTextCallback contentTextCallback;
-    private DetectCallback detectCallback;
-    private RecordCallback recordCallback;
-    private UploadRecordsCallback uploadRecordsCallback;
-    private MouldCallback mouldCallback;
-
-    public static List<RecordResult> getRecordList() {
-        return mRecordList;
-    }
-
-    public static int getCurrentIndex() {
-        return currentIndex;
-    }
-
-    public static String getClientId() {
-        return mClientId;
-    }
-
-    public static String getClientSecret() {
-        return mClientSecret;
-    }
-
-    private BakerVoiceEngraver() {
-    }
-
-
-    public boolean isRecord(int index) {
-        return getRecordList().get(index).isPass();
-    }
+    private String mClientId;
+    private String mClientSecret;
+    private String mQueryID;
 
 
     private final int SAMPLE_RATE = 16000;
     private boolean isPlaying = false;
 
+    public List<RecordResult> getRecordList() {
+        return getNetCallBack().getRecordList();
+    }
+
+    /**
+     * 获取 当前录制条目的下标
+     *
+     * @return index
+     */
+    @Override
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    /**
+     * 获取 ClientId
+     *
+     * @return ClientId
+     */
+    @Override
+    public String getClientId() {
+        return mClientId;
+    }
+
+    /**
+     * 获取ClientSecret
+     *
+     * @return ClientSecret
+     */
+    @Override
+    public String getClientSecret() {
+        return mClientSecret;
+    }
+
+    /**
+     * 查询当前下标条目是否录制
+     *
+     * @param index 下标
+     * @return 是否录制
+     */
+    @Override
+    public boolean isRecord(int index) {
+        return getRecordList().get(index).isPass();
+    }
+
+
+    /**
+     * 停止试听播放
+     */
+    @Override
     public void stopPlay() {
         isPlaying = false;
     }
 
     /**
-     * 试听播放
+     * 播放已录制条目试听
+     *
+     * @param currentIndex 需要播放的条目的下标
+     * @param listener     播放状态监听
      */
+    @Override
     public void startPlay(final int currentIndex, final PlayListener listener) {
         runOnWorkerThread(() -> {
             try {
                 HLogger.d("startPlay");
-                RecordResult recordResult = mRecordList.get(currentIndex);
+                RecordResult recordResult = getRecordList().get(currentIndex);
                 String filePath = recordResult.getFilePath();
                 int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
                         AudioFormat.CHANNEL_OUT_MONO,
@@ -115,12 +194,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                 Source source = Okio.source(new File(filePath));
                 BufferedSource buffer = Okio.buffer(source);
                 byte[] tempBytes = new byte[iMinBufSize];
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.playStart();
-                    }
-                });
+                runOnUiThread(listener::playStart);
                 isPlaying = true;
                 for (int len; (len = buffer.read(tempBytes)) != -1; ) {
                     if (isPlaying) {
@@ -130,88 +204,60 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                     }
                 }
                 HLogger.i("播放完毕");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.playEnd(); //回调
-                    }
-                });
+                //回调
+                runOnUiThread(listener::playEnd);
             } catch (final Exception e) {
                 e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.playError(e);
-                    }
-                });
+                runOnUiThread(() -> listener.playError(e));
             }
         });
     }
 
-    private void runOnWorkerThread(Runnable runnable) {
-        new Thread(runnable).start();
-    }
-
-    private void runOnUiThread(Runnable runnable) {
-        new Handler(Looper.getMainLooper()).post(runnable);
-    }
-
-
-    private static final class HolderClass {
-        private static final BakerVoiceEngraver instance = new BakerVoiceEngraver();
-    }
-
-    public static BakerVoiceEngraver getInstance() {
-        return HolderClass.instance;
-    }
-
+    /**
+     * 初始化SDK
+     *
+     * @param context      上下文
+     * @param clientId     clientid
+     * @param clientSecret secret
+     * @param queryID      querid
+     * @param listener     回调方法
+     */
+    @Override
     public void initSDK(Context context, String clientId, String clientSecret, String queryID, final InitListener listener) {
         mContext = context;
         mClientId = clientId;
         mClientSecret = clientSecret;
         mQueryID = queryID;
 
-        NetUtil.setNetCallback(this);
-        DetectUtil.setCallback(mContext, this);
-        RecordUtil.setNetCallback(mContext, this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = null;
-                try {
-                    token = NetUtil.requestToken();
-                    if (token == null || token.isEmpty()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (listener != null) {
-                                    listener.onInitError(new NullPointerException("token is null"));
-                                }
-                            }
-                        });
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (listener != null) {
-                                    listener.onInitSuccess();
-                                }
-                            }
-                        });
-                    }
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (listener != null) {
-                                listener.onInitError(e);
-                            }
+        NetUtil.setNetCallback(getNetCallBack());
+        DetectUtil.setCallback(mContext, getDetectCallBack());
+        RecordUtil.setRecordUtilCallback(mContext, getRecordCallBack());
+        runOnWorkerThread(() -> {
+            String token;
+            try {
+                token = NetUtil.requestToken();
+                if (token == null || token.isEmpty()) {
+                    runOnUiThread(() -> {
+                        if (listener != null) {
+                            listener.onInitError(new NullPointerException("token is null"));
+                        }
+                    });
+                } else {
+                    runOnUiThread(() -> {
+                        if (listener != null) {
+                            listener.onInitSuccess();
                         }
                     });
                 }
+            } catch (final IOException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    if (listener != null) {
+                        listener.onInitError(e);
+                    }
+                });
             }
-        }).start();
+        });
     }
 
     /**
@@ -219,6 +265,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @param queryID
      */
+    @Override
     public void setQueryId(String queryID) {
         mQueryID = queryID;
     }
@@ -226,6 +273,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     /**
      * 提供文本内容接口。
      */
+    @Override
     public void getTextList() {
         NetUtil.getTextList();
     }
@@ -233,6 +281,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     /**
      * 开启环境检测
      */
+    @Override
     public int startDBDetection() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -249,6 +298,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     /**
      * 根据token申请创建模型的MID
      */
+    @Override
     public void getVoiceMouldId() {
         NetUtil.getVoiceMouldId(mQueryID);
     }
@@ -259,25 +309,30 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @param contentIndex 录音文本下标
      */
+    @Override
     public int startRecord(int contentIndex) {
         currentIndex = contentIndex;
         HLogger.e("---1");
-        if (TextUtils.isEmpty(mSessionId)) {
+        if (TextUtils.isEmpty(getNetCallBack().getSessionId())) {
             return 0;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 HLogger.e("---2");
-                RecordUtil.startRecord(mSessionId, mRecordList.get(contentIndex).getAudioText());
+                RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
                 return 2;
             } else {
                 return 1;
             }
         }
-        RecordUtil.startRecord(mSessionId, mRecordList.get(contentIndex).getAudioText());
+        RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
         return 2;
     }
 
+    /**
+     * 结束录制
+     */
+    @Override
     public void endRecord() {
         RecordUtil.endRecordAndStartRecognize();
     }
@@ -285,14 +340,16 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     /**
      * 非正常结束录制
      */
+    @Override
     public void recordInterrupt() {
-        NetUtil.recordInterrupt(mSessionId);
+        NetUtil.recordInterrupt(getNetCallBack().getSessionId());
         RecordUtil.stopRecord();
     }
 
     /**
      * 声音合成时所需token。
      */
+    @Override
     public String getToken() {
         try {
             return NetUtil.requestToken();
@@ -307,17 +364,18 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @return false 不满足条件|未录制完成
      */
+    @Override
     public boolean finishRecords(String phone, String notifyUrl) {
         //判断是否都录制完毕
         boolean isAllRecordOver = true;
-        for (RecordResult recordResult : mRecordList) {
+        for (RecordResult recordResult : getRecordList()) {
             if (!recordResult.isPass()) {
                 isAllRecordOver = false;
                 break;
             }
         }
         if (isAllRecordOver) {
-            NetUtil.finishRecords(mSessionId, phone, notifyUrl);
+            NetUtil.finishRecords(getNetCallBack().getSessionId(), phone, notifyUrl);
             return true;
         } else {
             return false;
@@ -327,6 +385,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     /**
      * 根据mouldId查询mould信息回调
      */
+    @Override
     public void getMouldInfo(String mouldId) {
         NetUtil.getMouldInfo(mouldId);
     }
@@ -338,6 +397,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      * @param limit
      * @param queryId
      */
+    @Override
     public void getMouldList(int page, int limit, String queryId) {
         NetUtil.getMouldList(page, limit, queryId);
     }
@@ -347,10 +407,9 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @param callback
      */
+    @Override
     public void setContentTextCallback(ContentTextCallback callback) {
-        if (callback != null) {
-            contentTextCallback = callback;
-        }
+        getNetCallBack().setContentTextCallback(callback);
     }
 
     /**
@@ -358,10 +417,9 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @param callback
      */
+    @Override
     public void setDetectCallback(DetectCallback callback) {
-        if (callback != null) {
-            detectCallback = callback;
-        }
+        getDetectCallBack().setDetectCallback(callback);
     }
 
     /**
@@ -370,9 +428,8 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      * @param callback
      */
     public void setRecordCallback(RecordCallback callback) {
-        if (callback != null) {
-            recordCallback = callback;
-        }
+        getNetCallBack().setRecordCallback(callback);
+        getRecordCallBack().setRecordCallback(callback);
     }
 
     /**
@@ -380,154 +437,19 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      *
      * @param callback
      */
+    @Override
     public void setUploadRecordsCallback(UploadRecordsCallback callback) {
-        if (callback != null) {
-            uploadRecordsCallback = callback;
-        }
+        getNetCallBack().setUploadRecordsCallback(callback);
     }
 
+
+    @Override
     public void setMouldCallback(MouldCallback callback) {
-        if (callback != null) {
-            mouldCallback = callback;
-        }
-    }
-
-    private void onFault(int errorCode, String errorMsg) {
-//        WriteLog.writeLogs("发生错误：errorCode=" + errorCode + ",errorMsg=" + errorMsg);
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + errorMsg);
+        getNetCallBack().setMouldCallback(callback);
     }
 
     @Override
-    public void netTokenError(int errorCode, String message) {
-        Log.e("BakerVoiceEngraver", "error happened: " + errorCode + ", " + message);
-    }
+    public void setRecordSessionId(String sessionId) {
 
-    @Override
-    public void token(String token) {
-        if (!TextUtils.isEmpty(token)) {
-        }
-    }
-
-
-    @Override
-    public void recordTextList(String[] recordTextList) {
-        if (recordTextList != null && contentTextCallback != null) {
-            HLogger.d("取到了text，text.length=" + recordTextList.length);
-            mRecordList.clear();
-            for (String text : recordTextList) {
-                RecordResult recordResult = new RecordResult(text, 0, false);
-                mRecordList.add(recordResult);
-            }
-            contentTextCallback.contentTextList(recordTextList);
-        }
-    }
-
-    @Override
-    public void netContentTextError(int errorCode, String message) {
-        onFault(errorCode, message);
-        if (contentTextCallback != null) {
-            contentTextCallback.onContentTextError(errorCode, message);
-        }
-    }
-
-    @Override
-    public void dbDetecting(int value) {
-        if (detectCallback != null) {
-            detectCallback.dbDetecting(value);
-        }
-    }
-
-    @Override
-    public void dbDetectionResult(boolean result, int value) {
-        HLogger.i("result=" + result + ", value=" + value);
-        if (detectCallback != null) {
-            detectCallback.dbDetectionResult(result, value);
-        }
-    }
-
-    @Override
-    public void netDetectError(int errorCode, String message) {
-        onFault(errorCode, message);
-        if (detectCallback != null) {
-            detectCallback.onDetectError(errorCode, message);
-        }
-    }
-
-    @Override
-    public void voiceSessionId(String sessionId) {
-        if (!TextUtils.isEmpty(sessionId)) {
-            mSessionId = sessionId;
-        }
-    }
-
-    /**
-     * 录音中、识别中、识别结果回调。
-     *
-     * @param typeCode        typeCode=1，录音中 typeCode=2，识别中 typeCode=3，最终结果：通过  typeCode=4，最终结果：不通过
-     * @param recognizeResult 识别率
-     */
-    @Override
-    public void recordsResult(int typeCode, int recognizeResult) {
-        if (recordCallback != null) {
-            HLogger.e("---5");
-            recordCallback.recordsResult(typeCode, recognizeResult);
-        }
-    }
-
-    @Override
-    public void recordVolume(int volume) {
-        if (recordCallback != null) {
-            recordCallback.recordVolume(volume);
-        }
-    }
-
-    @Override
-    public void netRecordError(int errorCode, String message) {
-        onFault(errorCode, message);
-        if (recordCallback != null) {
-            recordCallback.onRecordError(errorCode, message);
-        }
-    }
-
-    @Override
-    public void uploadRecordsResult(boolean result) {
-        if (uploadRecordsCallback != null) {
-            String mouldId = null;
-            if (!TextUtils.isEmpty(mSessionId)) {
-                mouldId = mSessionId.substring(0, mSessionId.length() - 13);
-                HLogger.e("截取后mouldId：" + mouldId);
-            }
-            uploadRecordsCallback.uploadRecordsResult(result, mouldId);
-        }
-    }
-
-    @Override
-    public void onUploadError(int errorCode, String message) {
-        onFault(errorCode, message);
-        if (uploadRecordsCallback != null) {
-            uploadRecordsCallback.onUploadError(errorCode, message);
-        }
-    }
-
-    @Override
-    public void mouldInfo(Mould mould) {
-        if (mouldCallback != null) {
-            mouldCallback.mouldInfo(mould);
-        }
-    }
-
-    @Override
-    public void mouldList(List<Mould> list) {
-        if (mouldCallback != null) {
-            mouldCallback.mouldList(list);
-        }
-    }
-
-    @Override
-    public void onMouldError(int errorCode, String message) {
-        onFault(errorCode, message);
-        if (mouldCallback != null) {
-            mouldCallback.onMouldError(errorCode, message);
-        }
     }
 }

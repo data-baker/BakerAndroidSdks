@@ -1,7 +1,13 @@
 package com.baker.engrave.lib.callback;
 
-import com.baker.engrave.lib.bean.Mould;
+import android.content.Context;
 
+import com.baker.engrave.lib.bean.Mould;
+import com.baker.engrave.lib.bean.RecordResult;
+import com.baker.engrave.lib.net.NetUtil;
+import com.baker.engrave.lib.util.RecordUtil;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -9,98 +15,167 @@ import java.util.List;
  * 2020/3/5
  */
 public interface BaseNetCallback {
+
+
+
     /**
-     * 错误信息回调
+     * 获取当前录制句子的下表
      *
-     * @param errorCode
-     * @param message
+     * @return 当前下标
      */
-     void netTokenError(int errorCode, String message);
-
-     void token(String mToken);
-
-     void recordTextList(String[] recordTextList);
-
-     void netContentTextError(int errorCode, String message);
+    int getCurrentIndex();
 
     /**
-     * 环境检测中结果反馈
+     * 获取ClientId
      *
-     * @param value
+     * @return
      */
-     void dbDetecting(int value);
+    String getClientId();
 
     /**
-     * 环境检测最终结果反馈
-     * result=true，表示检测通过。value是检测通过的分贝值。
-     * result=false，表示检测未通过。value是检测未通过的分贝值。
+     * 获取Secret
      *
-     * @param result
-     * @param value
+     * @return
      */
-     void dbDetectionResult(boolean result, int value);
-
-     void netDetectError(int errorCode, String message);
+    String getClientSecret();
 
     /**
-     * MouldID的回调
+     * 初始化id
      *
-     * @param sessionId
+     * @param context      上下文
+     * @param clientId     clientid
+     * @param clientSecret secret
+     * @param queryID      querid
+     * @param listener     回调方法
      */
-     void voiceSessionId(String sessionId);
+    void initSDK(Context context, String clientId, String clientSecret, String queryID, final InitListener listener);
 
     /**
-     * 录音中、识别中、识别结果回调。
-     * typeCode=1，录音中
-     * typeCode=2，识别中
-     * typeCode=3，最终结果
+     * 设置QueryId
      *
-     * @param typeCode
-     * @param recognizeResult
+     * @param queryID
      */
-     void recordsResult(int typeCode, int recognizeResult);
+    void setQueryId(String queryID);
 
     /**
-     * 录音过程中，会将声音分贝值实时返回
-     * @param volume
+     * 提供文本内容接口。
      */
-     void recordVolume(int volume);
-
-     void netRecordError(int errorCode, String message);
+    void getTextList();
 
     /**
-     * 提交成功回调。
-     * result=true,表示成功。
-     * result=false,表示失败。
+     * 开启环境检测
+     */
+    int startDBDetection();
+
+    void getVoiceMouldId();
+
+
+    /**
+     * 开启录音
      *
-     * @param result
+     * @param contentIndex 录音文本下标
      */
-     void uploadRecordsResult(boolean result);
+    int startRecord(int contentIndex);
+
+
     /**
-     * 错误信息回调
      *
-     * @param errorCode
-     * @param message
      */
-     void onUploadError(int errorCode, String message);
+    void endRecord();
+
+    /**
+     * 非正常结束录制
+     */
+    void recordInterrupt();
+
+    /**
+     * 声音合成时所需token。
+     */
+    String getToken();
+
+    /**
+     * 录制完成，提交确认信息，模型开始训练
+     *
+     * @return false 不满足条件|未录制完成
+     */
+    boolean finishRecords(String phone, String notifyUrl);
 
     /**
      * 根据mouldId查询mould信息回调
-     * @param mould
      */
-     void mouldInfo(Mould mould);
+    void getMouldInfo(String mouldId);
 
     /**
      * 根据queryId分页查询mould信息回调
-     * @param list
+     *
+     * @param page
+     * @param limit
+     * @param queryId
      */
-     void mouldList(List<Mould> list);
+    void getMouldList(int page, int limit, String queryId);
+
+
 
     /**
-     * 错误信息回调
-     *
-     * @param errorCode
-     * @param message
+     * 查询未完成的session回话
      */
-     void onMouldError(int errorCode, String message);
+    void setRecordSessionId(String sessionId);
+
+
+    /**
+     * 设置回调录音文本
+     *
+     * @param callback
+     */
+    void setContentTextCallback(ContentTextCallback callback);
+
+
+    /**
+     * 噪音检测相关回调
+     *
+     * @param callback
+     */
+    void setDetectCallback(DetectCallback callback);
+
+
+    /**
+     * 当前条目是否录制
+     *
+     * @param index
+     * @return
+     */
+    boolean isRecord(int index);
+
+    /**
+     * 停止播放
+     */
+    void stopPlay();
+
+    /**
+     * 试听播放
+     *
+     * @param currentIndex 需要播放的条目
+     * @param listener     播放状态监听
+     */
+    void startPlay(final int currentIndex, final PlayListener listener);
+
+
+    /**
+     * 录音上传及识别回调
+     *
+     * @param callback
+     */
+    void setRecordCallback(RecordCallback callback);
+
+    /**
+     * 开启训练回调
+     *
+     * @param callback
+     */
+    void setUploadRecordsCallback(UploadRecordsCallback callback);
+
+    void setMouldCallback(MouldCallback callback);
+
+
+
 }

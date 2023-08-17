@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import com.baker.engrave.lib.VoiceEngraveConstants;
 import com.baker.engrave.lib.callback.BaseNetCallback;
+import com.baker.engrave.lib.callback.innner.DetectUtilCallBack;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +38,7 @@ import omrecorder.Recorder;
 
 public class DetectUtil {
 
-    private static BaseNetCallback baseNetCallback;
+    private static DetectUtilCallBack detectUtilCallBack;
     private static Recorder mRecorder;
     private static Context mContext;
     private static AudioManager mAudioManager;
@@ -60,9 +61,9 @@ public class DetectUtil {
         return mAudioFile;
     }
 
-    public static void setCallback(Context context, BaseNetCallback callback) {
+    public static void setCallback(Context context, DetectUtilCallBack callback) {
         mContext = context;
-        baseNetCallback = callback;
+        detectUtilCallBack = callback;
     }
 
     private static final CountDownTimer timer = new CountDownTimer(3250, 250) {
@@ -94,16 +95,16 @@ public class DetectUtil {
                     HLogger.e("i=" + i);
                     sum += i;
                 }
-                if (baseNetCallback != null) {
-                    baseNetCallback.dbDetectionResult(false, sum / highList.size());
+                if (detectUtilCallBack != null) {
+                    detectUtilCallBack.dbDetectionResult(false, sum / highList.size());
                 }
             } else {
                 int sum = 0;
                 for (Integer i : lowList) {
                     sum += i;
                 }
-                if (baseNetCallback != null) {
-                    baseNetCallback.dbDetectionResult(true, sum / lowList.size());
+                if (detectUtilCallBack != null) {
+                    detectUtilCallBack.dbDetectionResult(true, sum / lowList.size());
                 }
             }
         }
@@ -122,8 +123,8 @@ public class DetectUtil {
                     public void onAudioChunkPulled(AudioChunk audioChunk) {
                         decibels = (int) audioChunk.maxAmplitude();
                         if (decibels > 20 && !isLast) {
-                            if (baseNetCallback != null) {
-                                baseNetCallback.dbDetecting(decibels);
+                            if (detectUtilCallBack != null) {
+                                detectUtilCallBack.dbDetecting(decibels);
                             }
                         }
                     }
@@ -148,8 +149,8 @@ public class DetectUtil {
             mRecorder.stopRecording();
             reset();
         } catch (Exception e) {
-            if (baseNetCallback != null) {
-                baseNetCallback.netDetectError(VoiceEngraveConstants.ERROR_CODE_STOP_DETECT, "stop detect error: " + e.getMessage());
+            if (detectUtilCallBack != null) {
+                detectUtilCallBack.netDetectError(VoiceEngraveConstants.ERROR_CODE_STOP_DETECT, "stop detect error: " + e.getMessage());
             }
         }
     }
@@ -174,7 +175,7 @@ public class DetectUtil {
                 getAudioFile().createNewFile();
             }
         } catch (IOException e) {
-            baseNetCallback.netDetectError(VoiceEngraveConstants.ERROR_CODE_FILE, "create detect file error: " + e.getMessage());
+            detectUtilCallBack.netDetectError(VoiceEngraveConstants.ERROR_CODE_FILE, "create detect file error: " + e.getMessage());
         }
         return getAudioFile();
     }
@@ -230,8 +231,8 @@ public class DetectUtil {
                     if (timer != null) {
                         timer.cancel();
                     }
-                    if (baseNetCallback != null && recording) {
-                        baseNetCallback.netDetectError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Detect interruption due to abnormality");
+                    if (detectUtilCallBack != null && recording) {
+                        detectUtilCallBack.netDetectError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Detect interruption due to abnormality");
                     }
                     stopRecording();
                     break;
@@ -248,8 +249,8 @@ public class DetectUtil {
                 if (timer != null) {
                     timer.cancel();
                 }
-                if (baseNetCallback != null && recording) {
-                    baseNetCallback.netDetectError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Detect interruption due to abnormality");
+                if (detectUtilCallBack != null && recording) {
+                    detectUtilCallBack.netDetectError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Detect interruption due to abnormality");
                 }
                 stopRecording();
             }

@@ -21,6 +21,7 @@ import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.bean.RecordingCheckDto;
 import com.baker.engrave.lib.bean.RecordingSocketBean;
 import com.baker.engrave.lib.callback.BaseNetCallback;
+import com.baker.engrave.lib.callback.innner.RecordUtilCallback;
 import com.baker.engrave.lib.net.NetConstants;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.net.WebSocketClient;
@@ -57,16 +58,16 @@ public class RecordUtil {
 
     private static File mAudioFile = new File(Environment.getExternalStorageDirectory()
             + File.separator + "RecordingCollection" + File.separator + "audio.pcm");
-    private static BaseNetCallback netCallback;
+    private static RecordUtilCallback recordUtilCallback;
     private static String mSessionId, mContentText;
     private static boolean recording = false;
     private static final List<RecordingSocketBean.ParamBean> rerecords = new ArrayList<>();//重录的时候告诉后台
     private static WebSocket mWebSocket;
     private static boolean isFirst = true; //是否是ws第一次发送
 
-    public static void setNetCallback(Context context, BaseNetCallback netCallback) {
+    public static void setRecordUtilCallback(Context context,RecordUtilCallback recordUtilCallback) {
         mContext = context;
-        RecordUtil.netCallback = netCallback;
+        RecordUtil.recordUtilCallback = recordUtilCallback;
     }
 
     private static Thread mThread = null;//子线程去发送socket
@@ -77,9 +78,9 @@ public class RecordUtil {
      */
     public static void startRecord(String mouldId, String contentText) {
         String pathname = Environment.getExternalStorageDirectory()
-                + File.separator + "RecordingCollection" + File.separator + "audio" + BakerVoiceEngraver.getCurrentIndex() + ".pcm";
+                + File.separator + "RecordingCollection" + File.separator + "audio" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
         mAudioFile = new File(pathname);
-        RecordResult recordResult = BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex());
+        RecordResult recordResult = BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex());
         recordResult.setFilePath(pathname);
         recording = true;
         HLogger.e("---3-startRecord");
@@ -92,8 +93,8 @@ public class RecordUtil {
             public void onAudioChunkPulled(AudioChunk audioChunk) {
                 HLogger.v("正在录音...");
                 byte[] bytes = audioChunk.toBytes();
-                if (netCallback != null) {
-                    netCallback.recordVolume((int) audioChunk.maxAmplitude());
+                if (recordUtilCallback != null) {
+                    recordUtilCallback.recordVolume((int) audioChunk.maxAmplitude());
                 }
                 try {
                     if (isFirst) {
@@ -117,10 +118,10 @@ public class RecordUtil {
         mWebSocket = WebSocketClient.getInstance().newWebSocket(new RecordingWebSocketListener());
 
         mRecorder.startRecording();
-        if (netCallback != null) {
+        if (recordUtilCallback != null) {
             HLogger.e("---4");
             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-            netCallback.recordsResult(1, 0);
+            recordUtilCallback.recordsResult(1, 0);
         }
     }
 
@@ -128,7 +129,7 @@ public class RecordUtil {
         try {
             mRecorder.stopRecording();
             linkedBlockingDeque.put(new PcmBean(2, new byte[1]));
-            netCallback.recordsResult(typeCode, 0);
+            recordUtilCallback.recordsResult(typeCode, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,7 +143,7 @@ public class RecordUtil {
             mRecorder.stopRecording();
             linkedBlockingDeque.put(new PcmBean(2, new byte[1]));
             //发送最后一帧，开始识别
-            netCallback.recordsResult(2, 0);
+            recordUtilCallback.recordsResult(2, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -190,14 +191,14 @@ public class RecordUtil {
                     //上传
                     endRecordAndStartRecognize();
                     HLogger.i("onMessage 识别结果");
-                    if (netCallback != null) {
+                    if (recordUtilCallback != null) {
                         if (data.getPassStatus() == 1) {
                             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-                            netCallback.recordsResult(3, (int) data.getPercent());
-                            BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(true);
+                            recordUtilCallback.recordsResult(3, (int) data.getPercent());
+                            BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(true);
                         } else {
-                            netCallback.recordsResult(4, (int) data.getPercent());
-                            BakerVoiceEngraver.getRecordList().get(BakerVoiceEngraver.getCurrentIndex()).setPass(BuildConfig.DEBUG);
+                            recordUtilCallback.recordsResult(4, (int) data.getPercent());
+                            BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(BuildConfig.DEBUG);
                         }
                         webSocket.close(1000, "正常关闭");
                     }
@@ -297,23 +298,23 @@ public class RecordUtil {
         try {
             mRecorder.stopRecording();
             reset();
-            if (!mSessionId.equals(sessionId) && netCallback != null) {
-                netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_MOULD_DIFFERENT, "the mouldId is different.");
+            if (!mSessionId.equals(sessionId) && recordUtilCallback != null) {
+                recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_MOULD_DIFFERENT, "the mouldId is different.");
                 return;
             }
-            if (!mContentText.equals(contentText) && netCallback != null) {
-                netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_TEXT_DIFFERENT, "the contentText is different.");
+            if (!mContentText.equals(contentText) && recordUtilCallback != null) {
+                recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_TEXT_DIFFERENT, "the contentText is different.");
                 return;
             }
             //上传
-            if (netCallback != null) {
+            if (recordUtilCallback != null) {
                 //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-                netCallback.recordsResult(2, 0);
+                recordUtilCallback.recordsResult(2, 0);
             }
 //            NetUtil.uploadRecords(sessionId, contentText, mAudioFile);
         } catch (Exception e) {
-            if (netCallback != null) {
-                netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_STOP_RECORD, "stop record error: " + e.getMessage());
+            if (recordUtilCallback != null) {
+                recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_STOP_RECORD, "stop record error: " + e.getMessage());
             }
         }
     }
@@ -322,18 +323,18 @@ public class RecordUtil {
      * @deprecated
      */
     public static void reUploadRecord(String sessionId, String contentText) {
-        if (!mSessionId.equals(sessionId) && netCallback != null) {
-            netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_MOULD_DIFFERENT, "the mouldId is different.");
+        if (!mSessionId.equals(sessionId) && recordUtilCallback != null) {
+            recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_MOULD_DIFFERENT, "the mouldId is different.");
             return;
         }
-        if (!mContentText.equals(contentText) && netCallback != null) {
-            netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_TEXT_DIFFERENT, "the contentText is different.");
+        if (!mContentText.equals(contentText) && recordUtilCallback != null) {
+            recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_TEXT_DIFFERENT, "the contentText is different.");
             return;
         }
         //上传
-        if (netCallback != null) {
+        if (recordUtilCallback != null) {
             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-            netCallback.recordsResult(2, 0);
+            recordUtilCallback.recordsResult(2, 0);
         }
 //        NetUtil.uploadRecords(sessionId, contentText, mAudioFile);
     }
@@ -358,7 +359,7 @@ public class RecordUtil {
                 mAudioFile.createNewFile();
             }
         } catch (IOException e) {
-            netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_FILE, "create record file error: " + e.getMessage());
+            recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_FILE, "create record file error: " + e.getMessage());
         }
         return mAudioFile;
     }
@@ -411,8 +412,8 @@ public class RecordUtil {
                 case TelephonyManager.CALL_STATE_RINGING:
                     HLogger.e("电话进来了");
                     //电话响铃的状态
-                    if (netCallback != null && recording) {
-                        netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
+                    if (recordUtilCallback != null && recording) {
+                        recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
                     }
                     stopRecord();
                     break;
@@ -426,8 +427,8 @@ public class RecordUtil {
         public void onAudioFocusChange(int i) {
             if (i == AudioManager.AUDIOFOCUS_LOSS) {
                 HLogger.e("失去了焦点");
-                if (netCallback != null && recording) {
-                    netCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
+                if (recordUtilCallback != null && recording) {
+                    recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
                 }
                 stopRecord();
             }

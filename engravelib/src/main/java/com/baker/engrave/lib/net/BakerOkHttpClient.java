@@ -3,6 +3,8 @@ package com.baker.engrave.lib.net;
 
 import android.util.Log;
 
+import com.baker.engrave.lib.net.interceptor.CurlLogInterceptor;
+import com.baker.engrave.lib.net.interceptor.HttpLoggingInterceptor;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -26,7 +28,22 @@ import okhttp3.Response;
  * 2020/3/5
  */
 public class BakerOkHttpClient {
-    private OkHttpClient mHttpClient;
+
+    private volatile static BakerOkHttpClient instance = null;
+
+    private OkHttpClient mHttpClient = null;
+
+    public static BakerOkHttpClient getInstance() {
+        if (null == instance) {
+            synchronized (BakerOkHttpClient.class) {
+                if (null == instance) {
+                    instance = new BakerOkHttpClient();
+                }
+            }
+        }
+        return instance;
+    }
+
     private final String LOG_TAG = "HttpUtils>>>";
     private final String LOG_DIVIDER = "||=================================================================";
 
@@ -54,14 +71,6 @@ public class BakerOkHttpClient {
         }
     }
 
-    private static final class HolderClass {
-        private static final BakerOkHttpClient client = new BakerOkHttpClient();
-    }
-
-    public static BakerOkHttpClient getInstance() {
-        return HolderClass.client;
-    }
-
 
     public Request createGetRequest(String url) {
         //添加请求头
@@ -70,7 +79,8 @@ public class BakerOkHttpClient {
                 .build();
     }
 
-    //        添加请求体
+
+    //添加请求体
     public Request createPostRequest(String url, ConcurrentHashMap<String, Object> params, ConcurrentHashMap<String, String> headers) {
         RequestBody requestBody;
         if (params != null) {
@@ -90,6 +100,8 @@ public class BakerOkHttpClient {
                 headers(mHeaderBuild.build())
                 .build();
     }
+
+
 
     public Request createMultiPostRequest(String url, ConcurrentHashMap<String, String> params, ConcurrentHashMap<String, String> headers, File file) {
         MultipartBody.Builder builder = new MultipartBody.Builder();

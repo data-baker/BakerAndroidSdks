@@ -8,6 +8,7 @@ import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.MouldList;
 import com.baker.engrave.lib.bean.TokenResp;
 import com.baker.engrave.lib.callback.BaseNetCallback;
+import com.baker.engrave.lib.callback.innner.NetCallback;
 import com.baker.engrave.lib.util.HLogger;
 import com.google.gson.Gson;
 
@@ -35,7 +36,7 @@ import okhttp3.ResponseBody;
  * 2020/3/5
  */
 public class NetUtil {
-    private static BaseNetCallback netCallback;
+    private static NetCallback netCallback;
     private static String mToken = "";
     private static final Gson gson = new Gson();
     private static String[] recordTextList;
@@ -44,13 +45,14 @@ public class NetUtil {
     private static final int TYPE_RECORD = 3;
     private static final int TYPE_MOULD = 4;
 
-    public static void setNetCallback(BaseNetCallback callback) {
+    public static void setNetCallback(NetCallback callback) {
         netCallback = callback;
     }
 
     public static String getClientId() {
-        return BakerVoiceEngraver.getClientId();
+        return BakerVoiceEngraver.getInstance().getClientId();
     }
+
 
     public static String getToken() {
         return mToken;
@@ -63,21 +65,16 @@ public class NetUtil {
     public static String requestToken() throws IOException {
         HLogger.i("getToken()");
         BakerOkHttpClient client = BakerOkHttpClient.getInstance();
-//        try {
-            Response response = client.execute(client.createGetRequest(String.format(NetConstants.URL_GET_TOKEN,
-                    BakerVoiceEngraver.getClientSecret(),
-                    BakerVoiceEngraver.getClientId())));
-            ResponseBody body = response.body();
-            String string = Objects.requireNonNull(body).string();
-            TokenResp resp = new Gson().fromJson(string, TokenResp.class);
-            mToken = resp.getAccess_token();
-            return mToken;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            onFault(TYPE_TOKEN, VoiceEngraveConstants.NORMAL_ERROR, "token 请求失败");
-//            return "";
-//        }
+        Response response = client.execute(client.createGetRequest(String.format(NetConstants.URL_GET_TOKEN,
+                BakerVoiceEngraver.getInstance().getClientSecret(),
+                BakerVoiceEngraver.getInstance().getClientId())));
+        ResponseBody body = response.body();
+        String string = Objects.requireNonNull(body).string();
+        TokenResp resp = new Gson().fromJson(string, TokenResp.class);
+        mToken = resp.getAccess_token();
+        return mToken;
     }
+
 
     /**
      * 获取录音文本
@@ -245,6 +242,7 @@ public class NetUtil {
         });
     }
 
+
     /**
      * 根据mouldId查询mould状态信息
      */
@@ -292,6 +290,7 @@ public class NetUtil {
             }
         });
     }
+
 
     /**
      * 根据queryId查询mould状态信息
@@ -357,6 +356,7 @@ public class NetUtil {
         });
     }
 
+
     private static void onFault(int type, int errorCode, String errorMessage) {
         if (netCallback != null) {
             if (type == TYPE_TOKEN) {
@@ -376,14 +376,14 @@ public class NetUtil {
         String nounce, timestamp, signature;
         ConcurrentHashMap<String, String> headers = new ConcurrentHashMap<>();
         headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("clientId", BakerVoiceEngraver.getClientId());
+        headers.put("clientId", BakerVoiceEngraver.getInstance().getClientId());
         headers.put("token", mToken);
         nounce = String.valueOf(NetUtil.random6num());
         timestamp = String.valueOf(System.currentTimeMillis() / 1000);
 
         Map<String, String> params = new HashMap<>();
         params.put("token", mToken);
-        params.put("clientId", BakerVoiceEngraver.getClientId());
+        params.put("clientId", BakerVoiceEngraver.getInstance().getClientId());
         params.put("nounce", nounce);
         params.put("timestamp", timestamp);
         signature = genSignature(NetConstants.VERSION, nounce, params);
