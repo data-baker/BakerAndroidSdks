@@ -25,7 +25,7 @@ import com.baker.engrave.lib.callback.innner.RecordCallbackImpl;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.util.BaseUtil;
 import com.baker.engrave.lib.util.DetectUtil;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 import com.baker.engrave.lib.util.RecordUtil;
 
 import java.io.File;
@@ -45,7 +45,8 @@ public class BakerVoiceEngraver implements BaseNetCallback {
 
 
     /*================================================== 单例实现 Start ==================================================*/
-    private BakerVoiceEngraver() { }
+    private BakerVoiceEngraver() {
+    }
 
     private static final class HolderClass {
         private static final BakerVoiceEngraver instance = new BakerVoiceEngraver();
@@ -179,17 +180,11 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     public void startPlay(final int currentIndex, final PlayListener listener) {
         runOnWorkerThread(() -> {
             try {
-                HLogger.d("startPlay");
+                LogUtil.d("startPlay");
                 RecordResult recordResult = getRecordList().get(currentIndex);
                 String filePath = recordResult.getFilePath();
-                int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE,
-                        AudioFormat.CHANNEL_OUT_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT);
-                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                        SAMPLE_RATE,
-                        AudioFormat.CHANNEL_OUT_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT,
-                        iMinBufSize, AudioTrack.MODE_STREAM);
+                int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
                 audioTrack.play();
                 Source source = Okio.source(new File(filePath));
                 BufferedSource buffer = Okio.buffer(source);
@@ -203,7 +198,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                         break;
                     }
                 }
-                HLogger.i("播放完毕");
+                LogUtil.i("播放完毕");
                 //回调
                 runOnUiThread(listener::playEnd);
             } catch (final Exception e) {
@@ -312,13 +307,13 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     @Override
     public int startRecord(int contentIndex) {
         currentIndex = contentIndex;
-        HLogger.e("---1");
+        LogUtil.e("---1");
         if (TextUtils.isEmpty(getNetCallBack().getSessionId())) {
             return 0;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                HLogger.e("---2");
+                LogUtil.e("---2");
                 RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
                 return 2;
             } else {

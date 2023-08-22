@@ -1,7 +1,7 @@
 package com.baker.engrave.lib.callback.innner;
 
 import com.baker.engrave.lib.callback.DetectCallback;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 
 public class DetectCallbackImpl implements DetectUtilCallBack{
 
@@ -13,7 +13,7 @@ public class DetectCallbackImpl implements DetectUtilCallBack{
 
     @Override
     public void dbDetectionResult(boolean result, int value) {
-        HLogger.i("result=" + result + ", value=" + value);
+        LogUtil.i("result=" + result + ", value=" + value);
         if (detectCallback != null) {
             detectCallback.dbDetectionResult(result, value);
         }
@@ -28,7 +28,7 @@ public class DetectCallbackImpl implements DetectUtilCallBack{
 
     @Override
     public void netDetectError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
         if (detectCallback != null) {
             detectCallback.onDetectError(errorCode, message);
         }

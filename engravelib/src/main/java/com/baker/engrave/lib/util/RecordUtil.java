@@ -56,8 +56,7 @@ public class RecordUtil {
     private static TelephonyManager mTelephonyManager;
     private static Recorder mRecorder;
 
-    private static File mAudioFile = new File(Environment.getExternalStorageDirectory()
-            + File.separator + "RecordingCollection" + File.separator + "audio.pcm");
+    private static File mAudioFile = new File(Environment.getExternalStorageDirectory() + File.separator + "RecordingCollection" + File.separator + "audio.pcm");
     private static RecordUtilCallback recordUtilCallback;
     private static String mSessionId, mContentText;
     private static boolean recording = false;
@@ -65,7 +64,7 @@ public class RecordUtil {
     private static WebSocket mWebSocket;
     private static boolean isFirst = true; //是否是ws第一次发送
 
-    public static void setRecordUtilCallback(Context context,RecordUtilCallback recordUtilCallback) {
+    public static void setRecordUtilCallback(Context context, RecordUtilCallback recordUtilCallback) {
         mContext = context;
         RecordUtil.recordUtilCallback = recordUtilCallback;
     }
@@ -75,38 +74,35 @@ public class RecordUtil {
 
     /**
      * 开始录音
+     * String pathname = Environment.getExternalStorageDirectory() + File.separator + "RecordingCollection" + File.separator + "audio" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
      */
     public static void startRecord(String mouldId, String contentText) {
-        String pathname = Environment.getExternalStorageDirectory()
-                + File.separator + "RecordingCollection" + File.separator + "audio" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
+        String pathname = mContext.getFilesDir() + File.separator + "RecordingCollection" + File.separator + "audio-" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
         mAudioFile = new File(pathname);
         RecordResult recordResult = BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex());
         recordResult.setFilePath(pathname);
         recording = true;
-        HLogger.e("---3-startRecord");
+        LogUtil.e("---3-startRecord");
         mSessionId = mouldId;
         mContentText = contentText;
         isFirst = true;
         linkedBlockingDeque.clear();
-        mRecorder = OmRecorder.pcm(new PullTransport.Default(mic(), new PullTransport.OnAudioChunkPulledListener() {
-            @Override
-            public void onAudioChunkPulled(AudioChunk audioChunk) {
-                HLogger.v("正在录音...");
-                byte[] bytes = audioChunk.toBytes();
-                if (recordUtilCallback != null) {
-                    recordUtilCallback.recordVolume((int) audioChunk.maxAmplitude());
+        mRecorder = OmRecorder.pcm(new PullTransport.Default(mic(), audioChunk -> {
+            LogUtil.v("正在录音...");
+            byte[] bytes = audioChunk.toBytes();
+            if (recordUtilCallback != null) {
+                recordUtilCallback.recordVolume((int) audioChunk.maxAmplitude());
+            }
+            try {
+                if (isFirst) {
+                    isFirst = false;
+                    linkedBlockingDeque.put(new PcmBean(0, bytes));
+                } else {
+                    linkedBlockingDeque.put(new PcmBean(1, bytes));
                 }
-                try {
-                    if (isFirst) {
-                        isFirst = false;
-                        linkedBlockingDeque.put(new PcmBean(0, bytes));
-                    } else {
-                        linkedBlockingDeque.put(new PcmBean(1, bytes));
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    HLogger.e("linkedBlockingDeque.put ERROR!!" + e.getMessage());
-                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                LogUtil.e("linkedBlockingDeque.put ERROR!!" + e.getMessage());
             }
         }), file());
 
@@ -119,9 +115,9 @@ public class RecordUtil {
 
         mRecorder.startRecording();
         if (recordUtilCallback != null) {
-            HLogger.e("---4");
+            LogUtil.e("---4");
             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-            recordUtilCallback.recordsResult(1, 0);
+            recordUtilCallback.recordsResult(1, "0");
         }
     }
 
@@ -129,7 +125,7 @@ public class RecordUtil {
         try {
             mRecorder.stopRecording();
             linkedBlockingDeque.put(new PcmBean(2, new byte[1]));
-            recordUtilCallback.recordsResult(typeCode, 0);
+            recordUtilCallback.recordsResult(typeCode, "0");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +139,7 @@ public class RecordUtil {
             mRecorder.stopRecording();
             linkedBlockingDeque.put(new PcmBean(2, new byte[1]));
             //发送最后一帧，开始识别
-            recordUtilCallback.recordsResult(2, 0);
+            recordUtilCallback.recordsResult(2, "0");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -169,20 +165,20 @@ public class RecordUtil {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, Response response) {
             //通道打开，首次发送数据
-            HLogger.i("首次接收数据:" + response.toString());
+            LogUtil.i("首次接收数据:" + response.toString());
         }
 
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-            HLogger.i("onMessage 服务器返回值" + text);
+            LogUtil.i("onMessage 服务器返回值" + text);
             //服务器返回值
             RecordingCheckDto recordingCheckDto = new Gson().fromJson(text, RecordingCheckDto.class);
-            HLogger.i("onMessage 服务器返回值xx" + recordingCheckDto.toString());
+            LogUtil.i("onMessage 服务器返回值xx" + recordingCheckDto.toString());
             if ("20000".equals(recordingCheckDto.getCode())) {
                 RecordingSocketBean.AudioBean data = recordingCheckDto.getData();
                 if (data.getType() == 0) {
                     //开始录音
-                    HLogger.i("onMessage 开始上传线程");
+                    LogUtil.i("onMessage 开始上传线程");
                     audioBean = data;
                     newThread();
                     if (mThread != null)
@@ -190,21 +186,21 @@ public class RecordUtil {
                 } else if (data.getType() == 1) {
                     //上传
                     endRecordAndStartRecognize();
-                    HLogger.i("onMessage 识别结果");
+                    LogUtil.i("onMessage 识别结果");
                     if (recordUtilCallback != null) {
                         if (data.getPassStatus() == 1) {
                             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-                            recordUtilCallback.recordsResult(3, (int) data.getPercent());
+                            recordUtilCallback.recordsResult(3, String.valueOf(data.getPercent()));
                             BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(true);
                         } else {
-                            recordUtilCallback.recordsResult(4, (int) data.getPercent());
+                            recordUtilCallback.recordsResult(4, String.valueOf(data.getPercent()));
                             BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(BuildConfig.DEBUG);
                         }
                         webSocket.close(1000, "正常关闭");
                     }
                 }
             } else if (NetConstants.RESULT_CODE_TOKEN_EXPIRE.equals(recordingCheckDto.getCode() + "")) {
-                HLogger.i("onMessage token失效");
+                LogUtil.i("onMessage token失效");
                 webSocket.close(1000, "Token expired");
                 try {
                     NetUtil.requestToken();
@@ -216,7 +212,7 @@ public class RecordUtil {
                     e.printStackTrace();
                 }
             } else {
-                HLogger.i("onMessage 服务器异常");
+                LogUtil.i("onMessage 服务器异常");
                 webSocket.close(1000, "Token expired");
             }
         }
@@ -231,7 +227,7 @@ public class RecordUtil {
         public void onFailure(@NotNull WebSocket webSocket, Throwable t, Response response) {
             //返回错误信息
             t.printStackTrace();
-            HLogger.e("返回错误信息 " + t);
+            LogUtil.e("返回错误信息 " + t);
             endRecord(4);
         }
     }
@@ -244,7 +240,7 @@ public class RecordUtil {
                 super.run();
                 //不停止录音，并且队列有数据就持续发送
                 while (true) {
-                    HLogger.d("-----上传音频的子线程-----");
+                    LogUtil.d("-----上传音频的子线程-----");
                     try {
                         PcmBean pcmBean = linkedBlockingDeque.take();
                         if (pcmBean.state == 2) {
@@ -265,13 +261,13 @@ public class RecordUtil {
     private static int countUploadAudioIndex = 0;//上传音频buffer的计数
 
     private static void sendPcm(byte[] pcm, int state) {
-        HLogger.i("发送中--1--" + pcm.length + "state" + state + "\n" + Base64.encodeToString(pcm, Base64.NO_WRAP));
+        LogUtil.i("发送中--1--" + pcm.length + "state" + state + "\n" + Base64.encodeToString(pcm, Base64.NO_WRAP));
         String data = "";
         audioBean.setStatus(state);
         audioBean.setInfo(Base64.encodeToString(pcm, Base64.NO_WRAP));
         audioBean.setSequence(countUploadAudioIndex);
         data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText), audioBean)));
-        HLogger.d("wsReq: " + data);
+        LogUtil.d("wsReq: " + data);
         countUploadAudioIndex++;
         mWebSocket.send((data));
     }
@@ -284,7 +280,7 @@ public class RecordUtil {
             reset();
         } catch (Exception e) {
             e.printStackTrace();
-            HLogger.e(e.getMessage());
+            LogUtil.e(e.getMessage());
         }
     }
 
@@ -309,7 +305,7 @@ public class RecordUtil {
             //上传
             if (recordUtilCallback != null) {
                 //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-                recordUtilCallback.recordsResult(2, 0);
+                recordUtilCallback.recordsResult(2, "0");
             }
 //            NetUtil.uploadRecords(sessionId, contentText, mAudioFile);
         } catch (Exception e) {
@@ -334,7 +330,7 @@ public class RecordUtil {
         //上传
         if (recordUtilCallback != null) {
             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-            recordUtilCallback.recordsResult(2, 0);
+            recordUtilCallback.recordsResult(2, "0");
         }
 //        NetUtil.uploadRecords(sessionId, contentText, mAudioFile);
     }
@@ -410,7 +406,7 @@ public class RecordUtil {
                     //电话通话的状态
                     break;
                 case TelephonyManager.CALL_STATE_RINGING:
-                    HLogger.e("电话进来了");
+                    LogUtil.e("电话进来了");
                     //电话响铃的状态
                     if (recordUtilCallback != null && recording) {
                         recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
@@ -426,7 +422,7 @@ public class RecordUtil {
         @Override
         public void onAudioFocusChange(int i) {
             if (i == AudioManager.AUDIOFOCUS_LOSS) {
-                HLogger.e("失去了焦点");
+                LogUtil.e("失去了焦点");
                 if (recordUtilCallback != null && recording) {
                     recordUtilCallback.netRecordError(VoiceEngraveConstants.ERROR_CODE_INTERRUPT, "Recording interruption due to abnormality");
                 }

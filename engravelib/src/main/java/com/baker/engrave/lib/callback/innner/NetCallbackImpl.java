@@ -8,7 +8,7 @@ import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.MouldCallback;
 import com.baker.engrave.lib.callback.RecordCallback;
 import com.baker.engrave.lib.callback.UploadRecordsCallback;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class NetCallbackImpl implements NetCallback {
     @Override
     public void recordTextList(String[] recordTextList) {
         if (recordTextList != null && contentTextCallback != null) {
-            HLogger.d("取到了text，text.length=" + recordTextList.length);
+            LogUtil.d("取到了text，text.length=" + recordTextList.length);
             mRecordList.clear();
             for (String text : recordTextList) {
                 RecordResult recordResult = new RecordResult(text, 0, false);
@@ -79,7 +79,7 @@ public class NetCallbackImpl implements NetCallback {
             String mouldId = null;
             if (!TextUtils.isEmpty(mSessionId)) {
                 mouldId = mSessionId.substring(0, mSessionId.length() - 13);
-                HLogger.e("截取后mouldId：" + mouldId);
+                LogUtil.e("截取后mouldId：" + mouldId);
             }
             uploadRecordsCallback.uploadRecordsResult(result, mouldId);
         }
@@ -101,12 +101,12 @@ public class NetCallbackImpl implements NetCallback {
 
     @Override
     public void netTokenError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
     }
 
     @Override
     public void netRecordError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
         if (recordCallback != null) {
             recordCallback.onRecordError(errorCode, message);
         }
@@ -114,7 +114,7 @@ public class NetCallbackImpl implements NetCallback {
 
     @Override
     public void netContentTextError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
         if (contentTextCallback != null) {
             contentTextCallback.onContentTextError(errorCode, message);
         }
@@ -122,7 +122,7 @@ public class NetCallbackImpl implements NetCallback {
 
     @Override
     public void onMouldError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
         if (mouldCallback != null) {
             mouldCallback.onMouldError(errorCode, message);
         }

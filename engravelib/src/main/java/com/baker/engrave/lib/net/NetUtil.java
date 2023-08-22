@@ -9,7 +9,7 @@ import com.baker.engrave.lib.bean.MouldList;
 import com.baker.engrave.lib.bean.TokenResp;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.innner.NetCallback;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +63,7 @@ public class NetUtil {
      * 同步执行
      */
     public static String requestToken() throws IOException {
-        HLogger.i("getToken()");
+        LogUtil.i("getToken()");
         BakerOkHttpClient client = BakerOkHttpClient.getInstance();
         Response response = client.execute(client.createGetRequest(String.format(NetConstants.URL_GET_TOKEN,
                 BakerVoiceEngraver.getInstance().getClientSecret(),
@@ -80,7 +80,7 @@ public class NetUtil {
      * 获取录音文本
      */
     public static void getTextList() {
-        HLogger.i("getTextList()");
+        LogUtil.i("getTextList()");
         if (recordTextList != null) {
             if (netCallback != null) {
                 netCallback.recordTextList(recordTextList);
@@ -99,7 +99,7 @@ public class NetUtil {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     String result = response.body().string();
-                    HLogger.d("response=" + result);
+                    LogUtil.d("response=" + result);
                     JSONObject jsonObject = new JSONObject(result);
                     String resultCode = jsonObject.getString("code");
                     if ("20000".equals(resultCode)) {
@@ -128,7 +128,7 @@ public class NetUtil {
      */
     public static void getVoiceMouldId(String queryId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
-        HLogger.e("queryId=" + queryId);
+        LogUtil.e("queryId=" + queryId);
         if (!TextUtils.isEmpty(queryId)) {
             params.put("queryId", queryId);
         }
@@ -141,7 +141,7 @@ public class NetUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 try {
                     String result = response.body().string();
                     JSONObject jsonObject = new JSONObject(result);
@@ -153,7 +153,7 @@ public class NetUtil {
                         } else {
                             JSONObject jsonData = new JSONObject(resultStatus);
                             String sessionId = jsonData.getString("sessionId");
-                            HLogger.i("获取sessionId成功：" + sessionId);
+                            LogUtil.i("获取sessionId成功：" + sessionId);
                             if (!TextUtils.isEmpty(sessionId)) {
                                 if (netCallback != null) {
                                     netCallback.voiceSessionId(sessionId);
@@ -178,7 +178,7 @@ public class NetUtil {
      */
     public static void recordInterrupt(String sessionId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
-        HLogger.e("sessionId=" + sessionId);
+        LogUtil.e("sessionId=" + sessionId);
         if (!TextUtils.isEmpty(sessionId)) {
             params.put("sessionId", sessionId);
         }
@@ -203,7 +203,7 @@ public class NetUtil {
      */
     public static void finishRecords(String sessionId, String phone, String notifyUrl) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
-        HLogger.e("sessionId=" + sessionId + ",phone=" + phone);
+        LogUtil.e("sessionId=" + sessionId + ",phone=" + phone);
         params.put("sessionId", sessionId);
         if (!TextUtils.isEmpty(phone)) {
             params.put("mobilePhone", phone);
@@ -223,7 +223,7 @@ public class NetUtil {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     String result = response.body().string();
-                    HLogger.e("response=" + result);
+                    LogUtil.e("response=" + result);
                     JSONObject jsonObject = new JSONObject(result);
                     String resultCode = jsonObject.getString("code");
                     if ("20000".equals(resultCode)) {
@@ -248,7 +248,7 @@ public class NetUtil {
      */
     public static void getMouldInfo(String mouldId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
-        HLogger.e("mouldId=" + mouldId);
+        LogUtil.e("mouldId=" + mouldId);
         if (!TextUtils.isEmpty(mouldId)) {
             params.put("modelId", mouldId);
         } else {
@@ -267,7 +267,7 @@ public class NetUtil {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     String result = response.body().string();
-                    HLogger.e("result=" + result);
+                    LogUtil.e("result=" + result);
                     JSONObject jsonObject = new JSONObject(result);
                     String resultCode = jsonObject.getString("code");
                     if ("20000".equals(resultCode)) {
@@ -297,7 +297,7 @@ public class NetUtil {
      */
     public static void getMouldList(int page, int limit, String queryId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
-        HLogger.e("page=" + page + ", limit=" + limit + ", queryId=" + queryId);
+        LogUtil.e("page=" + page + ", limit=" + limit + ", queryId=" + queryId);
         if (page < 1) {
             onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_PARAM_NULL, "getMouldList, the value of page is illegal.");
             return;
@@ -328,7 +328,7 @@ public class NetUtil {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
                     String result = response.body().string();
-                    HLogger.e("result = " + result);
+                    LogUtil.e("result = " + result);
                     JSONObject jsonObject = new JSONObject(result);
                     String resultCode = jsonObject.getString("code");
                     if ("20000".equals(resultCode)) {
@@ -372,7 +372,7 @@ public class NetUtil {
     }
 
     public static ConcurrentHashMap<String, String> getHeaders() {
-        HLogger.i("getHeaders()");
+        LogUtil.i("getHeaders()");
         String nounce, timestamp, signature;
         ConcurrentHashMap<String, String> headers = new ConcurrentHashMap<>();
         headers.put("Content-Type", "application/json; charset=utf-8");
@@ -421,12 +421,10 @@ public class NetUtil {
     public static int random6num() {
         int intFlag = (int) (Math.random() * 1000000);
         String flag = String.valueOf(intFlag);
-        if (flag.length() == 6 && flag.charAt(0) == '9') {
-            return intFlag;
-        } else {
+        if (flag.length() != 6 || flag.charAt(0) != '9') {
             intFlag = intFlag + 100000;
-            return intFlag;
         }
+        return intFlag;
     }
 
     public static String md5(String string) {

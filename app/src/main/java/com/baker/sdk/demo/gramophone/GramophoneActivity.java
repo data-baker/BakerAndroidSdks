@@ -1,7 +1,5 @@
 package com.baker.sdk.demo.gramophone;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -9,9 +7,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
 
 import com.baker.engrave.lib.BakerVoiceEngraver;
+import com.baker.engrave.lib.callback.InitListener;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
@@ -20,7 +18,6 @@ import com.baker.sdk.demo.gramophone.fragment.HomeFragment;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.UUID;
 
 public class GramophoneActivity extends BakerBaseActivity {
     private SharedPreferences mSharedPreferences;
@@ -41,7 +38,17 @@ public class GramophoneActivity extends BakerBaseActivity {
 
         //初始化复刻SDK
         BakerVoiceEngraver.getInstance().initSDK(GramophoneActivity.this, sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_ID),
-                sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this),null);
+                sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
+                    @Override
+                    public void onInitSuccess() {
+
+                    }
+
+                    @Override
+                    public void onInitError(Exception e) {
+
+                    }
+                });
     }
 
     private void initView() {
@@ -50,25 +57,23 @@ public class GramophoneActivity extends BakerBaseActivity {
         homeFragment = new HomeFragment();
         experienceFragment = new ExperienceFragment();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment = null;
-                switch (menuItem.getItemId()) {
-                    case R.id.action_home:
-                        fragment = homeFragment;
-                        break;
-                    case R.id.action_experience:
-                        fragment = experienceFragment;
-                        break;
-                }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            Fragment fragment = null;
+            switch (menuItem.getItemId()) {
+                case R.id.action_home:
+                    fragment = homeFragment;
+                    break;
+                case R.id.action_experience:
+                    fragment = experienceFragment;
+                    break;
             }
+            fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+            return true;
         });
         bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 
+    //"
     private String sharedPreferencesGet(String mKey) {
         if (mSharedPreferences != null && !TextUtils.isEmpty(mKey)) {
             return mSharedPreferences.getString(mKey, "");

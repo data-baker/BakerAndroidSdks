@@ -68,13 +68,10 @@ public class ExperienceFragment extends BaseFragment implements MouldRecyclerVie
         public void onMouldError(int errorCode, String message) {
             Log.e("ExperienceFragment", "errorCode==" + errorCode + ", message=" + message);
             try {
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvNullTip.setVisibility(View.VISIBLE);
-                        tvNullTip.setText("网络请求出错啦\n请点我刷新重试");
-                        recyclerView.setVisibility(View.GONE);
-                    }
+                requireActivity().runOnUiThread(() -> {
+                    tvNullTip.setVisibility(View.VISIBLE);
+                    tvNullTip.setText("网络请求出错啦\n请点我刷新重试");
+                    recyclerView.setVisibility(View.GONE);
                 });
             } catch (Exception e) {
                 e.printStackTrace();

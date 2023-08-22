@@ -1,7 +1,7 @@
 package com.baker.engrave.lib.net;
 
 import com.baker.engrave.lib.bean.BaseRespForNoData;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,7 @@ public class TokenInterceptor implements Interceptor {
         BaseRespForNoData resp = new Gson().fromJson(responseBody.string(), BaseRespForNoData.class);
         if (resp != null && NetConstants.RESULT_CODE_TOKEN_EXPIRE.equals(resp.getCode())) {
             //Token失效
-            HLogger.d("token 失效了");
+            LogUtil.d("token 失效了");
             //请求token
             NetUtil.requestToken();
             ConcurrentHashMap<String, String> headers = NetUtil.getHeaders();

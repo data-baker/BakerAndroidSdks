@@ -174,6 +174,7 @@ public interface BaseNetCallback {
      */
     void setUploadRecordsCallback(UploadRecordsCallback callback);
 
+
     void setMouldCallback(MouldCallback callback);
 
 

@@ -1,7 +1,5 @@
 package com.baker.sdk.demo.gramophone.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.callback.DetectCallback;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
+
+
+// 心即理,心外无物 - 知行合一 - 致良知 - 大智慧
+
 
 public class DbDetectionActivity extends BakerBaseActivity implements DetectCallback {
     private final String TAG = "DbDetectionActivity";
@@ -26,9 +27,7 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db_detection);
         setTitle(R.string.string_step_1);
-
         initView();
-
         BakerVoiceEngraver.getInstance().setDetectCallback(this);
     }
 
@@ -41,25 +40,21 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.engrave_start:
-                //0=默认状态，检测未通过。1=检测通过，可以复刻。
-                if (BTN_TYPE == 0) {
-                    //返回结果=1，开启检测成功。否则开启检测失败，最有可能的原因是没有麦克风、写SD卡权限。
-                    int resultCode = BakerVoiceEngraver.getInstance().startDBDetection();
-                    if (resultCode != 1) {
-                        Log.d(TAG, "开启失败");
-                    } else {
-                        btnStartEngrave.setEnabled(false);
-                        tvDetectTip.setText("环境噪音检测中，请稍候...");
-                    }
+        if (view.getId() == R.id.engrave_start) {
+            //0=默认状态，检测未通过。1=检测通过，可以复刻。
+            if (BTN_TYPE == 0) {
+                //返回结果=1，开启检测成功。否则开启检测失败，最有可能的原因是没有麦克风、写SD卡权限。
+                int resultCode = BakerVoiceEngraver.getInstance().startDBDetection();
+                if (resultCode != 1) {
+                    Log.d(TAG, "开启失败");
                 } else {
-                    startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
-                    finish();
+                    btnStartEngrave.setEnabled(false);
+                    tvDetectTip.setText("环境噪音检测中，请稍候...");
                 }
-                break;
-            default:
-                break;
+            } else {
+                startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
+                finish();
+            }
         }
     }
 
@@ -90,19 +85,16 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
 
     @Override
     public void onDetectError(final int errorCode, final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (errorCode == 90013) {
-                    //因音频焦点丢失或电话等异常中断检测
-                    btnStartEngrave.setEnabled(true);
-                    tvDetectValue.setText("0 db");
-                    BTN_TYPE = 0;
-                    tvDetectTip.setText("检测中断啦，请再试一次吧");
-                    btnStartEngrave.setText("重新检测");
-                } else {
-                    Toast.makeText(DbDetectionActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
+        runOnUiThread(() -> {
+            if (errorCode == 90013) {
+                //因音频焦点丢失或电话等异常中断检测
+                btnStartEngrave.setEnabled(true);
+                tvDetectValue.setText("0 db");
+                BTN_TYPE = 0;
+                tvDetectTip.setText("检测中断啦，请再试一次吧");
+                btnStartEngrave.setText("重新检测");
+            } else {
+                Toast.makeText(DbDetectionActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
     }

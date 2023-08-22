@@ -11,7 +11,7 @@ public interface RecordCallback {
      * @param typeCode        1:录音中  2：识别中 3：成功 4：失败
      * @param recognizeResult 识别率，百分比，例如70 就是70%的意思
      */
-    void recordsResult(int typeCode, int recognizeResult);
+    void recordsResult(int typeCode, String recognizeResult);
 
     /**
      * 录音过程中，会将声音分贝值实时返回

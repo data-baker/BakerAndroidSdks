@@ -93,7 +93,7 @@ public class EngraveActivity extends BakerBaseActivity {
              */
             @SuppressLint("SetTextI18n")
             @Override
-            public void recordsResult(int typeCode, int recognizeResult) {
+            public void recordsResult(int typeCode, String recognizeResult) {
                 runOnUiThread(() -> {
                     log("---6");
                     if (typeCode == 1) {

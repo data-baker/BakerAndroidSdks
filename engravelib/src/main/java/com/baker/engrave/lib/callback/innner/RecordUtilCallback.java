@@ -14,7 +14,7 @@ public interface RecordUtilCallback {
      * @param typeCode
      * @param recognizeResult
      */
-    void recordsResult(int typeCode, int recognizeResult);
+    void recordsResult(int typeCode, String recognizeResult);
 
     void netRecordError(int errorCode, String message);
 }

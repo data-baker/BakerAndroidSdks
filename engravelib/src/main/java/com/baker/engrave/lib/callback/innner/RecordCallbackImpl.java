@@ -1,7 +1,7 @@
 package com.baker.engrave.lib.callback.innner;
 
 import com.baker.engrave.lib.callback.RecordCallback;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 
 public class RecordCallbackImpl implements RecordUtilCallback {
     private RecordCallback recordCallback;
@@ -18,16 +18,16 @@ public class RecordCallbackImpl implements RecordUtilCallback {
     }
 
     @Override
-    public void recordsResult(int typeCode, int recognizeResult) {
+    public void recordsResult(int typeCode, String recognizeResult) {
         if (recordCallback != null) {
-            HLogger.e("---5");
+            LogUtil.e("---5");
             recordCallback.recordsResult(typeCode, recognizeResult);
         }
     }
 
     @Override
     public void netRecordError(int errorCode, String message) {
-        HLogger.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
+        LogUtil.e("发生错误：errorCode=" + errorCode + ",errorMsg=" + message);
         if (recordCallback != null) {
             recordCallback.onRecordError(errorCode, message);
         }

@@ -1,18 +1,11 @@
 package com.baker.engrave.lib.net;
 
-import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.bean.RecordingSocketBean;
-import com.baker.engrave.lib.util.HLogger;
+import com.baker.engrave.lib.util.LogUtil;
 import com.baker.engrave.lib.util.WebSocketUtil;
 import com.google.gson.Gson;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -22,7 +15,6 @@ import okhttp3.WebSocketListener;
 
 public class WebSocketClient {
 
-    private WebSocket webSocket;
 
     private WebSocketClient() {
     }
@@ -42,11 +34,11 @@ public class WebSocketClient {
     public void newClient(RecordingSocketBean.ParamBean paramBean, RecordingSocketBean.AudioBean audioBean) {
         String data = "";
         data = new Gson().toJson(WebSocketUtil.formatParameters(paramBean, audioBean));
-        HLogger.d("newClient " + data);
+        LogUtil.d("newClient " + data);
         HttpUrl httpUrl = HttpUrl.parse(NetConstants.BASE_URL + "/websocket/" + NetConstants.VERSION)
                 .newBuilder()
                 .addQueryParameter("data", URLEncoder.encode(data)).
-                        build();
+                build();
         String url = httpUrl.toString().replace("http://", "ws://").replace("https://", "wss://");
         request = new Request.Builder().url(url).build();
 //        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -60,8 +52,6 @@ public class WebSocketClient {
 //                .addInterceptor(loggingInterceptor)
                 .build();
     }
-
-
 
 
     public WebSocket newWebSocket(WebSocketListener webSocketListener) {

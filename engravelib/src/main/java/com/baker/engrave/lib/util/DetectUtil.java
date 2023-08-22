@@ -69,7 +69,7 @@ public class DetectUtil {
     private static final CountDownTimer timer = new CountDownTimer(3250, 250) {
         @Override
         public void onTick(long l) {
-            HLogger.d("__5" + decibels);
+            LogUtil.d("__5" + decibels);
             if (decibels > 0)
                 decibelsList.add(decibels);
         }
@@ -77,7 +77,7 @@ public class DetectUtil {
         @Override
         public void onFinish() {
             isLast = true;
-            HLogger.d("__6");
+            LogUtil.d("__6");
             stopRecording();
             decibelsList.add(decibels);
             List<Integer> highList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class DetectUtil {
             if (highList.size() > 2) {
                 int sum = 0;
                 for (Integer i : highList) {
-                    HLogger.e("i=" + i);
+                    LogUtil.e("i=" + i);
                     sum += i;
                 }
                 if (detectUtilCallBack != null) {
@@ -117,15 +117,11 @@ public class DetectUtil {
         recording = true;
         isLast = false;
         mRecorder = OmRecorder.pcm(
-                new PullTransport.Default(mic(), new PullTransport.OnAudioChunkPulledListener() {
-
-                    @Override
-                    public void onAudioChunkPulled(AudioChunk audioChunk) {
-                        decibels = (int) audioChunk.maxAmplitude();
-                        if (decibels > 20 && !isLast) {
-                            if (detectUtilCallBack != null) {
-                                detectUtilCallBack.dbDetecting(decibels);
-                            }
+                new PullTransport.Default(mic(), audioChunk -> {
+                    decibels = (int) audioChunk.maxAmplitude();
+                    if (decibels > 20 && !isLast) {
+                        if (detectUtilCallBack != null) {
+                            detectUtilCallBack.dbDetecting(decibels);
                         }
                     }
                 }), file());
@@ -226,7 +222,7 @@ public class DetectUtil {
                     //电话通话的状态
                     break;
                 case TelephonyManager.CALL_STATE_RINGING:
-                    HLogger.e("电话进来了:" + recording);
+                    LogUtil.e("电话进来了:" + recording);
                     //电话响铃的状态
                     if (timer != null) {
                         timer.cancel();
@@ -245,7 +241,7 @@ public class DetectUtil {
         @Override
         public void onAudioFocusChange(int i) {
             if (i == AudioManager.AUDIOFOCUS_LOSS) {
-                HLogger.e("失去了焦点:" + recording);
+                LogUtil.e("失去了焦点:" + recording);
                 if (timer != null) {
                     timer.cancel();
                 }
