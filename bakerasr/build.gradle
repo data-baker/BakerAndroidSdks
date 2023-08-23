@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.tool_version
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+
+        versionCode build_versions.version_asr_code
+        versionName build_versions.version_asr_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lib-online-asr-${variant.buildType.name}-${android.defaultConfig.versionName}.aar"
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.15'
+    implementation project(path: ":bakerbasecomponent")
+    implementation project(path: ":bakerhttp")
+}

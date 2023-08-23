@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.tool_version
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+
+        versionCode build_versions.version_vpr_code
+        versionName build_versions.version_vpr_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "lib-baker-vpr-${variant.buildType.name}-${android.defaultConfig.versionName}.aar"
+        }
+    }
+
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+    implementation project(path: ':bakerhttp')
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.11'
+}
+repositories {
+    mavenCentral()
+}

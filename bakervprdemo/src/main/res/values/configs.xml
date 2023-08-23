@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="vpr_key">
+        <!--vpr fat 环境-->
+        <!--<item name="clientId">34956ce3e37a43d9a2f3d1a88df37d43</item>
+        <item name="clientSecret">87b78a20702e4604bccbce12b3920075</item>-->
+
+        <!--vpr uat环境-->
+        <item name="clientId">1b9f606f5cbd427d908b5e3181e840bc</item>
+        <item name="clientSecret">959c908cb25348adacc31418c3e67102</item>
+    </string-array>
+
+</resources>

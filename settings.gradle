@@ -1,0 +1,12 @@
+include ':app'
+include ':bakerasr'
+include ':bakerlongtimeasr'
+include ':bakerhttp'
+include ':bakerbasecomponent'
+include ':synthesizer'
+include ':voiceconvert'
+rootProject.name = "BakerAndroidSdks"
+include ':bakervpr'
+include ':bakervprdemo'
+include ':engravelib'
+

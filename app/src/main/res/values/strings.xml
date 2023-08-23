@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">标贝科技</string>
+    <string name="string_synthesis_play">合成播放</string>
+    <string name="string_stop">停止播放</string>
+    <string name="string_audio_track_player">SDK无播放器示例</string>
+    <string name="string_media_track_player">SDK含播放器示例</string>
+    <string name="string_play">开始合成播放</string>
+    <string name="string_pause">暂停/播放</string>
+    <string name="string_is_play">当前播放状态</string>
+    <string name="string_play_duration">获取播放进度</string>
+    <string name="string_duration">音频总长度</string>
+    <string name="string_sample">欢迎使用标贝智能合成语音服务！</string>
+<!--    <string name="string_sample">取得增值税发票的单位和个人可登录全国增值税发票查验平台(https://inv-veri.chinatax.gov.cn)，对新系统开具的增值税专用发票、增值税普通发票、机动车销售统一发票和增值税电子普通发票的发票信息进行查验。单位和个人通过网页浏览器首次登录平台时，应下载安装根目录证书文件，查看平台提供的发票查验操作说明。具体种类包括：(1)增值税专用发票;(2)增值税普通发票(折叠票)、增值税普通发票(卷票);(3)增值税电子普通发票(含收费公路通行费增值税电子普通发票);(4)机动车销售统一发票;(5)二手车销售统一发票。除上述发票类型以外的其他发票的查验途径可咨询开具发票所在地各省12366核实具体查询途径。</string>-->
+
+
+    <string name="string_welcome">欢迎体验</string>
+    <string name="string_baker_engrave">声音复刻技术</string>
+    <string name="string_voice_engrave">声音复刻</string>
+    <string name="string_listen_experience">试听体验</string>
+    <string name="string_listen_experience_null">试听体验\n当前无声音模型。</string>
+    <string name="string_step_1">第一步：环境检测</string>
+    <string name="string_step_2">第二步：录音上传</string>
+    <string name="string_step_3">第三步：开启训练</string>
+    <string name="string_content_total">共%d段</string>
+    <string name="string_recognize_success">太棒了，准确率：%d，请录制下一段吧。</string>
+    <string name="string_recognize_fail">识别率：%d，请重新录制本段。</string>
+    <string name="string_finish_record_tip">恭喜您，\n您已经完成了所有声音的录制。\n现在请点击下方按钮，\n开启声音模型的训练吧。\n训练成功后，\n您就可以体验到这项黑科技的\n惊喜啦。</string>
+    <string name="string_words_remind">字数：%s/200</string>
+
+</resources>

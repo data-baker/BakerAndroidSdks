@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion build_versions.compile_sdk
+    buildToolsVersion build_versions.tool_version
+
+    defaultConfig {
+        applicationId "com.baker.sdk.demo"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        def alias = "key0"
+        def password = "123456789"
+        def filePath = "debug.jks"  //签名文件路径 如：../faceprint.jks
+
+        debug {
+            keyAlias alias
+            keyPassword password
+            storeFile file(filePath)
+            storePassword(password)
+        }
+        release {
+            keyAlias alias
+            keyPassword password
+            storeFile file(filePath)
+            storePassword(password)
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    //implementation fileTree(dir: 'libs', include: ['*.aar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:synthesizer:2.0.15'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:voiceconvert:2.0.13'
+//    implementation 'com.github.data-baker.BakerAndroidSdks:engravelib:2.0.15'
+
+    implementation project(path: ':synthesizer')
+    implementation project(path: ":bakerbasecomponent")
+    implementation project(path: ":bakerhttp")
+    implementation project(path: ":bakerasr")
+    implementation project(path: ":bakerlongtimeasr")
+    implementation project(path: ':voiceconvert')
+    implementation project(path: ':engravelib')
+
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+
+    implementation 'pub.devrel:easypermissions:1.3.0'
+    //引入第三方封装的工具类包
+    implementation 'com.blankj:utilcodex:1.30.6'
+    implementation 'com.jaredrummler:material-spinner:1.3.1'
+}
