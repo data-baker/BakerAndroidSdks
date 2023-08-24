@@ -2,6 +2,7 @@ package com.baker.engrave.lib.callback.innner;
 
 import android.text.TextUtils;
 
+import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.ContentTextCallback;
@@ -47,10 +48,15 @@ public class NetCallbackImpl implements NetCallback {
 
     //录音结果总条数
     private final List<RecordResult> mRecordList = new ArrayList<>();
+    private ConfigBean bean;
 
 
     public List<RecordResult> getRecordList() {
         return mRecordList;
+    }
+
+    public ConfigBean getConfigData() {
+        return bean;
     }
 
     @Override
@@ -64,6 +70,11 @@ public class NetCallbackImpl implements NetCallback {
             }
             contentTextCallback.contentTextList(recordTextList);
         }
+    }
+
+    @Override
+    public void callBackConfig(ConfigBean bean) {
+        this.bean = bean;
     }
 
     @Override

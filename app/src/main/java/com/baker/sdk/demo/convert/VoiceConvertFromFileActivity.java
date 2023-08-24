@@ -272,14 +272,11 @@ public class VoiceConvertFromFileActivity extends BakerBaseActivity {
     }
 
     private void resumeState() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                btnFileRecord.setEnabled(true);
-                btnFileRecord.setText("根据文件转换声音");
-                btnPlay.setText("开始播放");
-                btnPlay.setEnabled(true);
-            }
+        runOnUiThread(() -> {
+            btnFileRecord.setEnabled(true);
+            btnFileRecord.setText("根据文件转换声音");
+            btnPlay.setText("开始播放");
+            btnPlay.setEnabled(true);
         });
     }
 

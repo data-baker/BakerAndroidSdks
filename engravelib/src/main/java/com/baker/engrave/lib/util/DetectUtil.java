@@ -53,6 +53,7 @@ public class DetectUtil {
     //显示最终分贝
     private static boolean isLast;
     private static boolean recording = false;
+    private static int mNoise;
 
     public static File getAudioFile() {
         if (mContext != null && mAudioFile == null) {
@@ -83,7 +84,7 @@ public class DetectUtil {
             List<Integer> highList = new ArrayList<>();
             List<Integer> lowList = new ArrayList<>();
             for (Integer i : decibelsList) {
-                if (i > 70) {
+                if (i > mNoise) {
                     highList.add(i);
                 } else {
                     lowList.add(i);
@@ -113,7 +114,8 @@ public class DetectUtil {
     /**
      * 开始录制
      */
-    public static void startRecording() {
+    public static void startRecording(int noise) {
+        mNoise = noise;
         recording = true;
         isLast = false;
         mRecorder = OmRecorder.pcm(

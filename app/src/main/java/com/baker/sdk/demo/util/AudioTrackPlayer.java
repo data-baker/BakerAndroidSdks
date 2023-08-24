@@ -32,28 +32,25 @@ public class AudioTrackPlayer {
             tempData = null;
         }
         playing = true;
-        ttsPlayerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (playing) {
-                    tempData = audioQueue.poll();
-                    if (tempData == null) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
-//                            Log.d(TAG, "audioTrack.play");
-                            audioTrack.play();
-                        }
-//                        Log.d(TAG, "audioTrack.write");
-                        audioTrack.write(tempData, 0, tempData.length);
+        ttsPlayerThread = new Thread(() -> {
+            while (playing) {
+                tempData = audioQueue.poll();
+                if (tempData == null) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                } else {
+                    if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
+//                            Log.d(TAG, "audioTrack.play");
+                        audioTrack.play();
+                    }
+//                        Log.d(TAG, "audioTrack.write");
+                    audioTrack.write(tempData, 0, tempData.length);
                 }
-//                Log.d(TAG, "playing thread end");
             }
+//                Log.d(TAG, "playing thread end");
         });
         ttsPlayerThread.start();
     }

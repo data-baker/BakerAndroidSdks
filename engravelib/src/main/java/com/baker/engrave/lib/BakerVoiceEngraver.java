@@ -22,6 +22,7 @@ import com.baker.engrave.lib.callback.UploadRecordsCallback;
 import com.baker.engrave.lib.callback.innner.DetectCallbackImpl;
 import com.baker.engrave.lib.callback.innner.NetCallbackImpl;
 import com.baker.engrave.lib.callback.innner.RecordCallbackImpl;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.util.BaseUtil;
 import com.baker.engrave.lib.util.DetectUtil;
@@ -111,7 +112,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     private String mClientId;
     private String mClientSecret;
     private String mQueryID;
-
+    private EngraverType type = EngraverType.Boutique;
 
     private final int SAMPLE_RATE = 16000;
     private boolean isPlaying = false;
@@ -119,6 +120,15 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     public List<RecordResult> getRecordList() {
         return getNetCallBack().getRecordList();
     }
+
+    public EngraverType getType() {
+        return type;
+    }
+
+    public void setType(EngraverType type) {
+        this.type = type;
+    }
+
 
     /**
      * 获取 当前录制条目的下标
@@ -280,13 +290,17 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     public int startDBDetection() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                DetectUtil.startRecording();
+                if (getNetCallBack().getConfigData() != null && getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold != 0) {
+                    DetectUtil.startRecording(getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold);
+                }
                 return 1;
             } else {
                 return 0;
             }
         }
-        DetectUtil.startRecording();
+        if (getNetCallBack().getConfigData() != null && getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold != 0) {
+            DetectUtil.startRecording(getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold);
+        }
         return 1;
     }
 
@@ -445,6 +459,11 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     @Override
     public void setMouldCallback(MouldCallback callback) {
         getNetCallBack().setMouldCallback(callback);
+    }
+
+    @Override
+    public void requestConfig() {
+        NetUtil.getConfigData();
     }
 
     /**

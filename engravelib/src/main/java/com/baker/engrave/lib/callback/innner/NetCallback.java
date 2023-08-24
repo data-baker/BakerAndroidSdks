@@ -1,5 +1,6 @@
 package com.baker.engrave.lib.callback.innner;
 
+import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
 
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 public interface NetCallback {
 
     void recordTextList(String[] recordTextList);
+
+    void callBackConfig(ConfigBean bean);
 
 
     void voiceSessionId(String sessionId);

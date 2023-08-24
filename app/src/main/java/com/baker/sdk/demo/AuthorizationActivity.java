@@ -101,8 +101,10 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET));
                     }
-                    etClientId.setText("df6527d33b644733a2b4e58de710fd9d");
-                    etClientSecret.setText("ca9c99132d3c4d2bb92501410ee21bd8");
+                    //etClientId.setText("df6527d33b644733a2b4e58de710fd9d");
+                    //etClientSecret.setText("ca9c99132d3c4d2bb92501410ee21bd8");
+                    etClientId.setText("1fed232b78b04eae9fa21b464d6d2db9");
+                    etClientSecret.setText("3e98fedaa8584ee193c2050423652066");
                     break;
                 default:
                     break;

@@ -177,6 +177,8 @@ public interface BaseNetCallback {
 
     void setMouldCallback(MouldCallback callback);
 
+    void requestConfig();
+
 
 
 }

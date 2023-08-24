@@ -2,17 +2,22 @@ package com.baker.engrave.lib.net;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.VoiceEngraveConstants;
+import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.MouldList;
 import com.baker.engrave.lib.bean.TokenResp;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.innner.NetCallback;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.engrave.lib.util.LogUtil;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -77,9 +82,46 @@ public class NetUtil {
 
 
     /**
+     * 获取配置信息
+     */
+
+    public static void getConfigData() {
+        LogUtil.i("getConfigData()");
+        ConcurrentHashMap<String, String> headers = getHeaders();
+        BakerOkHttpClient.getInstance().enqueue(BakerOkHttpClient.getInstance().createPostRequest(NetConstants.URL_GET_CONFIG, null, headers), new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                try {
+                    String result = response.body().string();
+                    JSONObject jsonObject = new JSONObject(result);
+                    String resultCode = jsonObject.getString("code");
+                    if ("20000".equals(resultCode)) {
+                        String dataString = jsonObject.getString("data");
+                        if (!TextUtils.isEmpty(dataString)) {
+                            ConfigBean bean = gson.fromJson(dataString, ConfigBean.class);
+                            if (netCallback != null) {
+                                netCallback.callBackConfig(bean);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * 获取录音文本
      */
     public static void getTextList() {
+        getConfigData();
         LogUtil.i("getTextList()");
         if (recordTextList != null) {
             if (netCallback != null) {
@@ -104,8 +146,9 @@ public class NetUtil {
                     String resultCode = jsonObject.getString("code");
                     if ("20000".equals(resultCode)) {
                         String resultData = jsonObject.getString("data");
-                        if (!TextUtils.isEmpty(resultData)) {
-                            recordTextList = resultData.split("#");
+                        String resultString = resultData.replaceAll("\r", "").replaceAll("\n", "");
+                        if (!TextUtils.isEmpty(resultString)) {
+                            recordTextList = resultString.split("#");
                             if (netCallback != null) {
                                 netCallback.recordTextList(recordTextList);
                             }
@@ -218,7 +261,7 @@ public class NetUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 try {
                     String result = response.body().string();
                     LogUtil.e("response=" + result);
@@ -262,7 +305,7 @@ public class NetUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 try {
                     String result = response.body().string();
                     LogUtil.e("result=" + result);
@@ -279,8 +322,7 @@ public class NetUtil {
                             onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getMouldInfo, mould data is null。");
                         }
                     } else {
-                        onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER,
-                                "getMouldInfo, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
+                        onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER, "getMouldInfo, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
                     }
                 } catch (Exception e) {
                     onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_RESPONSE, "getMouldInfo, 解析response出错：" + e.getMessage());
@@ -322,7 +364,7 @@ public class NetUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 try {
                     String result = response.body().string();
                     LogUtil.e("result = " + result);
@@ -375,6 +417,7 @@ public class NetUtil {
         headers.put("Content-Type", "application/json; charset=utf-8");
         headers.put("clientId", BakerVoiceEngraver.getInstance().getClientId());
         headers.put("token", mToken);
+        headers.put("modelType", BakerVoiceEngraver.getInstance().getType() == EngraverType.Common ? "1" : "2");
         nounce = String.valueOf(NetUtil.random6num());
         timestamp = String.valueOf(System.currentTimeMillis() / 1000);
 
