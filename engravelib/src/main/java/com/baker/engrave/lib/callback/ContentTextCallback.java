@@ -1,5 +1,9 @@
 package com.baker.engrave.lib.callback;
 
+import com.baker.engrave.lib.bean.RecordResult;
+
+import java.util.List;
+
 /**
  * 文本内容接口回调
  * Create by hsj55
@@ -11,7 +15,7 @@ public interface ContentTextCallback {
      *
      * @param strList
      */
-    void contentTextList(String[] strList);
+    void contentTextList(List<RecordResult> mRecordList);
 
     /**
      * 错误信息回调

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.RecordResult;
+import com.baker.engrave.lib.bean.RecordTextData;
 import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.MouldCallback;
 import com.baker.engrave.lib.callback.RecordCallback;
@@ -51,6 +52,7 @@ public class NetCallbackImpl implements NetCallback {
     private ConfigBean bean;
 
 
+
     public List<RecordResult> getRecordList() {
         return mRecordList;
     }
@@ -59,16 +61,34 @@ public class NetCallbackImpl implements NetCallback {
         return bean;
     }
 
+
+    @Override
+    public void callBackRecordList(ArrayList<RecordTextData> dataList) {
+        if (dataList != null) {
+            for (RecordTextData data : dataList) {
+                RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioUrl), data.audioUrl);
+                mRecordList.add(recordResult);
+            }
+            contentTextCallback.contentTextList(mRecordList);
+        }
+    }
+
     @Override
     public void recordTextList(String[] recordTextList) {
         if (recordTextList != null && contentTextCallback != null) {
             LogUtil.d("取到了text，text.length=" + recordTextList.length);
             mRecordList.clear();
-            for (String text : recordTextList) {
+            /*  for (String text : recordTextList) {
                 RecordResult recordResult = new RecordResult(text, 0, false);
                 mRecordList.add(recordResult);
-            }
-            contentTextCallback.contentTextList(recordTextList);
+            }*/
+            /*    if (dataList!=null){
+                for (RecordTextData data : dataList) {
+                    RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioPath));
+                    mRecordList.add(recordResult);
+                }
+                contentTextCallback.contentTextList(mRecordList);
+            }*/
         }
     }
 

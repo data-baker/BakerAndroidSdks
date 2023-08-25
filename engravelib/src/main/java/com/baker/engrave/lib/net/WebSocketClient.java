@@ -1,5 +1,7 @@
 package com.baker.engrave.lib.net;
 
+import android.util.Log;
+
 import com.baker.engrave.lib.bean.RecordingSocketBean;
 import com.baker.engrave.lib.net.interceptor.HttpLoggingInterceptor;
 import com.baker.engrave.lib.util.LogUtil;
@@ -29,6 +31,8 @@ public class WebSocketClient {
         return Singleton.socketClient;
     }
 
+    private final String LOG_TAG = "HttpUtils>>>";
+    private final String LOG_DIVIDER = "||=================================================================";
     private Request request;
     private OkHttpClient client;
 
@@ -36,17 +40,25 @@ public class WebSocketClient {
         String data = "";
         data = new Gson().toJson(WebSocketUtil.formatParameters(paramBean, audioBean));
         LogUtil.d("newClient " + data);
-        HttpUrl httpUrl = HttpUrl.parse(NetConstants.BASE_URL + "/websocket/" + NetConstants.VERSION)
+        HttpUrl httpUrl = HttpUrl.parse(NetConstants.BASE_URL + "/websocket/fuke/" + NetConstants.VERSION)
                 .newBuilder()
                 .addQueryParameter("data", URLEncoder.encode(data))
                 .build();
         String url = httpUrl.toString().replace("http://", "ws://").replace("https://", "wss://");
         LogUtil.e("url:" + url);
         request = new Request.Builder().url(url).build();
-        // HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(s -> HLogger.v("ws=>" + s));
-        // loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client = new OkHttpClient().newBuilder()
-                //         .addInterceptor(loggingInterceptor)
+                .addInterceptor(new HttpLoggingInterceptor(message -> {
+                    if (message.contains("--> END") || message.contains("<-- END")) {
+                        Log.e(LOG_TAG, "||  " + message);
+                        Log.e(LOG_TAG, LOG_DIVIDER);
+                    } else if (message.contains("-->") || message.contains("<--")) {
+                        Log.e(LOG_TAG, LOG_DIVIDER);
+                        Log.e(LOG_TAG, "||  " + message);
+                    } else {
+                        Log.e(LOG_TAG, "||  " + message);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
     }
 

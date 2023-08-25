@@ -1,5 +1,7 @@
 package com.baker.engrave.lib.bean;
 
+import java.util.Objects;
+
 /**
  * 识别结果
  */
@@ -9,6 +11,7 @@ public class RecordResult {
     private int recognitionRate = 0; //识别率
     private boolean isPass = false; //是否通过
     private String filePath = ""; //文件路径
+    private String audioUrl= "";
 
     @Override
     public String toString() {
@@ -30,6 +33,13 @@ public class RecordResult {
         this.audioText = audioText;
         this.recognitionRate = recognitionRate;
         this.isPass = isPass;
+    }
+
+    public RecordResult(String audioText, int recognitionRate, boolean isPass, String audioUrl) {
+        this.audioText = audioText;
+        this.recognitionRate = recognitionRate;
+        this.isPass = isPass;
+        this.audioUrl = audioUrl;
     }
 
     public String getAudioText() {
@@ -54,5 +64,13 @@ public class RecordResult {
 
     public void setPass(boolean pass) {
         isPass = pass;
+    }
+
+    public String getAudioUrl() {
+        return audioUrl;
+    }
+
+    public void setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
     }
 }

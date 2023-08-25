@@ -58,10 +58,17 @@ public class RecordingSocketBean {
         private String sessionId;
         private String originText;
         private String rerecordingFileName = "";//重录的文件名
+        private int index;
 
         public ParamBean(String sessionId, String originText) {
             this.sessionId = sessionId;
             this.originText = originText;
+        }
+
+        public ParamBean(String sessionId, String originText,  int index) {
+            this.sessionId = sessionId;
+            this.originText = originText;
+            this.index = index;
         }
 
         public ParamBean() {
@@ -137,6 +144,8 @@ public class RecordingSocketBean {
         private String info;
         private String redisKey;
         private int type;
+        private int index;
+        private String logId;
 
         public AudioBean() {
         }
@@ -226,6 +235,10 @@ public class RecordingSocketBean {
 
         public void setSequence(int sequence) {
             this.sequence = sequence;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
         }
 
         public String getInfo() {

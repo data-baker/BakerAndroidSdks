@@ -13,12 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baker.engrave.lib.BakerVoiceEngraver;
+import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.PlayListener;
 import com.baker.engrave.lib.callback.RecordCallback;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
+
+import java.util.List;
 
 public class EngraveActivity extends BakerBaseActivity {
     public static final String TAG = "EngraveActivity";
@@ -43,8 +46,10 @@ public class EngraveActivity extends BakerBaseActivity {
         //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
         //如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
         BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(EngraveActivity.this));
-        BakerVoiceEngraver.getInstance().getTextList(); //获取文本列表，回调在callback里
         BakerVoiceEngraver.getInstance().getVoiceMouldId(); //获取，不知道获取的啥
+
+       // BakerVoiceEngraver.getInstance().getTextList(); //获取文本列表，回调在callback里
+
     }
 
     private void initView() {
@@ -69,10 +74,16 @@ public class EngraveActivity extends BakerBaseActivity {
     private void initCallback() {
         //获取文本内容
         BakerVoiceEngraver.getInstance().setContentTextCallback(new ContentTextCallback() {
+
+
             @Override
-            public void contentTextList(String[] strList) {
+            public void contentTextList(List<RecordResult> mRecordList) {
                 runOnUiThread(() -> {
-                    if (strList != null) {
+                    if (mRecordList != null && mRecordList.size() > 0) {
+                        String[] strList =new String[mRecordList.size()];
+                        for (int i = 0; i < mRecordList.size(); i++) {
+                            strList[i]= mRecordList.get(i).getAudioText();
+                        }
                         contentTexts = strList;
                         tvIndex.setText(String.valueOf(currentIndex + 1));
                         tvTotal.setText(String.format(getString(R.string.string_content_total), contentTexts.length));

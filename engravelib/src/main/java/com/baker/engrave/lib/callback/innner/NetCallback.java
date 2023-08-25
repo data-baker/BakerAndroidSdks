@@ -2,10 +2,15 @@ package com.baker.engrave.lib.callback.innner;
 
 import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
+import com.baker.engrave.lib.bean.RecordTextData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface NetCallback {
+
+
+    void callBackRecordList(ArrayList<RecordTextData> dataList);
 
     void recordTextList(String[] recordTextList);
 

@@ -41,6 +41,7 @@ public class GramophoneActivity extends BakerBaseActivity {
                 sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
                     @Override
                     public void onInitSuccess() {
+                         //BakerVoiceEngraver.getInstance().setRecordSessionId("v0002d9eff36714fb05625de902ec985b011a99vkb1692949276039");
                         BakerVoiceEngraver.getInstance().requestConfig();
                     }
 

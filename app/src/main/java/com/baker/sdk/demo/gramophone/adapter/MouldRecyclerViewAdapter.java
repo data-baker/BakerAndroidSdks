@@ -32,7 +32,7 @@ public class MouldRecyclerViewAdapter extends RecyclerView.Adapter<MouldRecycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MouldHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MouldHolder holder,  int position) {
         if (moulds != null && moulds.size() > 0) {
             final Mould mould = moulds.get(position);
             holder.tvIndex.setText((position + 1) + "");

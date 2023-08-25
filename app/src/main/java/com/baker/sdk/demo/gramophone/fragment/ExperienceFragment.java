@@ -33,7 +33,7 @@ public class ExperienceFragment extends BaseFragment implements MouldRecyclerVie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_experience, container);
+        view = inflater.inflate(R.layout.fragment_experience, null);
         recyclerView = view.findViewById(R.id.recycler_view);
         tvNullTip = view.findViewById(R.id.tv_experience_null);
         tvNullTip.setOnClickListener(view -> BakerVoiceEngraver.getInstance().getMouldList(1, 50, SharedPreferencesUtil.getQueryId(requireContext())));

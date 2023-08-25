@@ -2,9 +2,11 @@ package com.baker.engrave.lib;
 
 import android.Manifest;
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -112,7 +114,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     private String mClientId;
     private String mClientSecret;
     private String mQueryID;
-    private EngraverType type = EngraverType.Boutique;
+    private EngraverType type = EngraverType.Common;
 
     private final int SAMPLE_RATE = 16000;
     private boolean isPlaying = false;
@@ -193,24 +195,38 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                 LogUtil.d("startPlay");
                 RecordResult recordResult = getRecordList().get(currentIndex);
                 String filePath = recordResult.getFilePath();
-                int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
-                audioTrack.play();
-                Source source = Okio.source(new File(filePath));
-                BufferedSource buffer = Okio.buffer(source);
-                byte[] tempBytes = new byte[iMinBufSize];
-                runOnUiThread(listener::playStart);
-                isPlaying = true;
-                for (int len; (len = buffer.read(tempBytes)) != -1; ) {
-                    if (isPlaying) {
-                        audioTrack.write(tempBytes, 0, len);
-                    } else {
-                        break;
+                if (!TextUtils.isEmpty(filePath)){
+                    int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+                    AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
+                    audioTrack.play();
+                    Source source = Okio.source(new File(filePath));
+                    BufferedSource buffer = Okio.buffer(source);
+                    byte[] tempBytes = new byte[iMinBufSize];
+                    runOnUiThread(listener::playStart);
+                    isPlaying = true;
+                    for (int len; (len = buffer.read(tempBytes)) != -1; ) {
+                        if (isPlaying) {
+                            audioTrack.write(tempBytes, 0, len);
+                        } else {
+                            break;
+                        }
+                    }
+                    LogUtil.i("播放完毕");
+                    //回调
+                    runOnUiThread(listener::playEnd);
+                }else {
+                    String audioUrl = recordResult.getAudioUrl();
+                    if (!TextUtils.isEmpty(audioUrl)){
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .setUsage(AudioAttributes.USAGE_MEDIA)
+                                .build());
+                        mediaPlayer.setDataSource(audioUrl);
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
                     }
                 }
-                LogUtil.i("播放完毕");
-                //回调
-                runOnUiThread(listener::playEnd);
             } catch (final Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() -> listener.playError(e));
@@ -309,7 +325,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      */
     @Override
     public void getVoiceMouldId() {
-        NetUtil.getVoiceMouldId(mQueryID);
+        NetUtil.getVoiceMouldId(mQueryID, getNetCallBack().getSessionId());
     }
 
 
@@ -473,6 +489,6 @@ public class BakerVoiceEngraver implements BaseNetCallback {
      */
     @Override
     public void setRecordSessionId(String sessionId) {
-
+        getNetCallBack().voiceSessionId(sessionId);
     }
 }

@@ -9,12 +9,15 @@ import com.baker.engrave.lib.VoiceEngraveConstants;
 import com.baker.engrave.lib.bean.ConfigBean;
 import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.MouldList;
+import com.baker.engrave.lib.bean.RecordTextData;
 import com.baker.engrave.lib.bean.TokenResp;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.innner.NetCallback;
 import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.engrave.lib.util.LogUtil;
 import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -25,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -168,12 +172,16 @@ public class NetUtil {
     /**
      * 根据token申请创建模型的MID
      */
-    public static void getVoiceMouldId(String queryId) {
+    public static void getVoiceMouldId(String queryId,String sessionId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
         LogUtil.e("queryId=" + queryId);
         if (!TextUtils.isEmpty(queryId)) {
             params.put("queryId", queryId);
         }
+        if (!TextUtils.isEmpty(sessionId)) {
+            params.put("sessionId", sessionId);
+        }
+        params.put("modelType", BakerVoiceEngraver.getInstance().getType() == EngraverType.Common ? "1" : "2");
         ConcurrentHashMap<String, String> headers = getHeaders();
         BakerOkHttpClient.getInstance().enqueue(BakerOkHttpClient.getInstance().createPostRequest(
                 NetConstants.URL_GET_MOULD_ID, params, headers), new Callback() {
@@ -203,6 +211,10 @@ public class NetUtil {
                             } else {
                                 onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, mouldId request failed, sessionId is null。");
                             }
+                            String sentenceListString = jsonData.getString("sentenceList");
+                            ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString,new TypeToken<ArrayList<RecordTextData>>() {}.getType());
+                            netCallback.callBackRecordList(dataList);
+
                         }
                     } else {
                         onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));

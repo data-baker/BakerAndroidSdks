@@ -160,17 +160,17 @@ public class RecordUtil {
 
     private static RecordingSocketBean.AudioBean audioBean;
     private static final LinkedBlockingDeque<PcmBean> linkedBlockingDeque = new LinkedBlockingDeque<>();//队列存放音频buffer，子线程取buffer去发送socket;退出activity时候发送state=-1来结束线程
-
+//logId
     private static class RecordingWebSocketListener extends WebSocketListener {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, Response response) {
             //通道打开，首次发送数据
-            LogUtil.i("首次接收数据:" + response.toString());
+            LogUtil.e("首次接收数据:" + response.toString());
         }
 
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-            LogUtil.i("onMessage 服务器返回值" + text);
+            LogUtil.e("onMessage 服务器返回值" + text);
             //服务器返回值
             RecordingCheckDto recordingCheckDto = new Gson().fromJson(text, RecordingCheckDto.class);
             LogUtil.i("onMessage 服务器返回值xx" + recordingCheckDto.toString());
@@ -266,7 +266,7 @@ public class RecordUtil {
         audioBean.setStatus(state);
         audioBean.setInfo(Base64.encodeToString(pcm, Base64.NO_WRAP));
         audioBean.setSequence(countUploadAudioIndex);
-        data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText), audioBean)));
+        data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText,BakerVoiceEngraver.getInstance().getCurrentIndex()), audioBean)));
         LogUtil.d("wsReq: " + data);
         countUploadAudioIndex++;
         mWebSocket.send((data));
