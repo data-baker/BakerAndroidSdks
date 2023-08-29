@@ -121,9 +121,9 @@ public class NetUtil {
         });
     }
 
-    /**
+  /*  *//**
      * 获取录音文本
-     */
+     *//*
     public static void getTextList() {
         getConfigData();
         LogUtil.i("getTextList()");
@@ -167,12 +167,12 @@ public class NetUtil {
                 }
             }
         });
-    }
+    }*/
 
     /**
      * 根据token申请创建模型的MID
      */
-    public static void getVoiceMouldId(String queryId,String sessionId) {
+    public static void getVoiceMouldId(String queryId, String sessionId) {
         ConcurrentHashMap<String, Object> params = new ConcurrentHashMap<>();
         LogUtil.e("queryId=" + queryId);
         if (!TextUtils.isEmpty(queryId)) {
@@ -212,9 +212,10 @@ public class NetUtil {
                                 onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, mouldId request failed, sessionId is null。");
                             }
                             String sentenceListString = jsonData.getString("sentenceList");
-                            ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString,new TypeToken<ArrayList<RecordTextData>>() {}.getType());
-                            netCallback.callBackRecordList(dataList);
-
+                            ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString, new TypeToken<ArrayList<RecordTextData>>() {}.getType());
+                            if (netCallback != null) {
+                                netCallback.callBackRecordList(dataList,sessionId);
+                            }
                         }
                     } else {
                         onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));

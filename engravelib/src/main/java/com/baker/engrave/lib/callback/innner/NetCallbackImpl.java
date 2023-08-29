@@ -63,34 +63,34 @@ public class NetCallbackImpl implements NetCallback {
 
 
     @Override
-    public void callBackRecordList(ArrayList<RecordTextData> dataList) {
+    public void callBackRecordList(ArrayList<RecordTextData> dataList,String sessionId) {
         if (dataList != null) {
             for (RecordTextData data : dataList) {
                 RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioUrl), data.audioUrl);
                 mRecordList.add(recordResult);
             }
-            contentTextCallback.contentTextList(mRecordList);
+            contentTextCallback.contentTextList(mRecordList,sessionId);
         }
     }
 
-    @Override
+  /*  @Override
     public void recordTextList(String[] recordTextList) {
         if (recordTextList != null && contentTextCallback != null) {
             LogUtil.d("取到了text，text.length=" + recordTextList.length);
             mRecordList.clear();
-            /*  for (String text : recordTextList) {
+            *//*  for (String text : recordTextList) {
                 RecordResult recordResult = new RecordResult(text, 0, false);
                 mRecordList.add(recordResult);
-            }*/
-            /*    if (dataList!=null){
+            }*//*
+            *//*    if (dataList!=null){
                 for (RecordTextData data : dataList) {
                     RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioPath));
                     mRecordList.add(recordResult);
                 }
                 contentTextCallback.contentTextList(mRecordList);
-            }*/
+            }*//*
         }
-    }
+    }*/
 
     @Override
     public void callBackConfig(ConfigBean bean) {

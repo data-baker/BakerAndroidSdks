@@ -1,7 +1,5 @@
 package com.baker.sdk.demo.gramophone.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -18,6 +16,7 @@ import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.callback.UploadRecordsCallback;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
+import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 
 public class ConfirmActivity extends BakerBaseActivity implements UploadRecordsCallback {
     private TextView tvTips, tvResult;
@@ -29,7 +28,6 @@ public class ConfirmActivity extends BakerBaseActivity implements UploadRecordsC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
         setTitle(R.string.string_step_3);
-
         initView();
         BakerVoiceEngraver.getInstance().setUploadRecordsCallback(this);
     }
@@ -53,16 +51,21 @@ public class ConfirmActivity extends BakerBaseActivity implements UploadRecordsC
                 customizeDialog.setTitle("请填写一个手机号，方便接收模型训练进度信息。");
                 customizeDialog.setView(dialogView);
                 customizeDialog.setPositiveButton("提交", (dialog, which) -> {
-                            EditText edit_text = dialogView.findViewById(R.id.phone);
-                            boolean result = BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
-                            if (!result) {
-                                Toast.makeText(this, "数据未全录制完成", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    EditText edit_text = dialogView.findViewById(R.id.phone);
+                    boolean result = BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
+                    if (!result) {
+                        Toast.makeText(this, "数据未全录制完成", Toast.LENGTH_SHORT).show();
+                    } else {
+                        PreferenceUtil.putString("sessionId", "");
+                    }
+                });
                 customizeDialog.setNegativeButton("跳过", (dialog, which) -> {
-                            EditText edit_text = dialogView.findViewById(R.id.phone);
-                            BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
-                        });
+                    EditText edit_text = dialogView.findViewById(R.id.phone);
+                    boolean result = BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
+                    if (result) {
+                        PreferenceUtil.putString("sessionId", "");
+                    }
+                });
                 customizeDialog.show();
             }
         }

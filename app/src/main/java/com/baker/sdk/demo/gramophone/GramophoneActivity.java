@@ -15,6 +15,7 @@ import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.gramophone.fragment.ExperienceFragment;
 import com.baker.sdk.demo.gramophone.fragment.HomeFragment;
+import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,7 +42,9 @@ public class GramophoneActivity extends BakerBaseActivity {
                 sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
                     @Override
                     public void onInitSuccess() {
-                         //BakerVoiceEngraver.getInstance().setRecordSessionId("v0002d9eff36714fb05625de902ec985b011a99vkb1692949276039");
+                        if (!TextUtils.isEmpty(PreferenceUtil.getString("sessionId", ""))) {
+                            BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString("sessionId", ""));
+                        }
                         BakerVoiceEngraver.getInstance().requestConfig();
                     }
 

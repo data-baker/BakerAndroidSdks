@@ -10,9 +10,9 @@ import java.util.List;
 public interface NetCallback {
 
 
-    void callBackRecordList(ArrayList<RecordTextData> dataList);
+    void callBackRecordList(ArrayList<RecordTextData> dataList,String sessionId);
 
-    void recordTextList(String[] recordTextList);
+    //void recordTextList(String[] recordTextList);
 
     void callBackConfig(ConfigBean bean);
 

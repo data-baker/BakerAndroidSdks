@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.ContentTextCallback;
@@ -25,18 +27,28 @@ import com.baker.engrave.lib.callback.innner.DetectCallbackImpl;
 import com.baker.engrave.lib.callback.innner.NetCallbackImpl;
 import com.baker.engrave.lib.callback.innner.RecordCallbackImpl;
 import com.baker.engrave.lib.configuration.EngraverType;
+import com.baker.engrave.lib.net.BakerOkHttpClient;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.util.BaseUtil;
 import com.baker.engrave.lib.util.DetectUtil;
 import com.baker.engrave.lib.util.LogUtil;
 import com.baker.engrave.lib.util.RecordUtil;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okio.BufferedSource;
 import okio.Okio;
 import okio.Source;
@@ -107,7 +119,6 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     }
     /*================================================== 获取所需对象 End ==================================================*/
 
-
     //当前录音index
     private int currentIndex = 0;
     private Context mContext;
@@ -127,10 +138,10 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         return type;
     }
 
+    @Override
     public void setType(EngraverType type) {
         this.type = type;
     }
-
 
     /**
      * 获取 当前录制条目的下标
@@ -195,10 +206,11 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                 LogUtil.d("startPlay");
                 RecordResult recordResult = getRecordList().get(currentIndex);
                 String filePath = recordResult.getFilePath();
-                if (!TextUtils.isEmpty(filePath)){
-                    int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-                    AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
-                    audioTrack.play();
+
+                int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
+                audioTrack.play();
+                if (!TextUtils.isEmpty(filePath)) {
                     Source source = Okio.source(new File(filePath));
                     BufferedSource buffer = Okio.buffer(source);
                     byte[] tempBytes = new byte[iMinBufSize];
@@ -214,18 +226,35 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                     LogUtil.i("播放完毕");
                     //回调
                     runOnUiThread(listener::playEnd);
-                }else {
-                    String audioUrl = recordResult.getAudioUrl();
-                    if (!TextUtils.isEmpty(audioUrl)){
-                        MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .setUsage(AudioAttributes.USAGE_MEDIA)
-                                .build());
-                        mediaPlayer.setDataSource(audioUrl);
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-                    }
+                } else {
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(recordResult.getAudioUrl())
+                            .build();
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            runOnUiThread(() -> listener.playError(e));
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            if (!response.isSuccessful()) {
+                                runOnUiThread(() -> listener.playError(new IOException("Unexpected code " + response)));
+                            }
+                            InputStream inputStream = new BufferedInputStream(response.body().byteStream());
+                            byte[] buffer = new byte[5120];
+                            audioTrack.play();
+                            int bytesRead;
+                            isPlaying = true;
+                            runOnUiThread(listener::playStart);
+                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                audioTrack.write(buffer, 0, bytesRead);
+                            }
+                            runOnUiThread(listener::playEnd);
+                            inputStream.close();
+                        }
+                    });
                 }
             } catch (final Exception e) {
                 e.printStackTrace();
@@ -291,40 +320,35 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         mQueryID = queryID;
     }
 
-    /**
+    /*  *//**
      * 提供文本内容接口。
-     */
+     *//*
     @Override
     public void getTextList() {
         NetUtil.getTextList();
     }
+*/
 
     /**
      * 开启环境检测
      */
     @Override
     public int startDBDetection() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                if (getNetCallBack().getConfigData() != null && getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold != 0) {
-                    DetectUtil.startRecording(getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold);
-                }
-                return 1;
-            } else {
-                return 0;
+        if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            if (getNetCallBack().getConfigData() != null && getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold != 0) {
+                DetectUtil.startRecording(getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold);
             }
+            return 1;
+        } else {
+            return 0;
         }
-        if (getNetCallBack().getConfigData() != null && getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold != 0) {
-            DetectUtil.startRecording(getNetCallBack().getConfigData().environmentalNoiseDetectionThreshold);
-        }
-        return 1;
     }
 
     /**
      * 根据token申请创建模型的MID
      */
     @Override
-    public void getVoiceMouldId() {
+    public void getSessionIdAndTexts() {
         NetUtil.getVoiceMouldId(mQueryID, getNetCallBack().getSessionId());
     }
 
@@ -341,17 +365,13 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         if (TextUtils.isEmpty(getNetCallBack().getSessionId())) {
             return 0;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                LogUtil.e("---2");
-                RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
-                return 2;
-            } else {
-                return 1;
-            }
+        if (BaseUtil.hasPermission(mContext, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            LogUtil.e("---2");
+            RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
+            return 2;
+        } else {
+            return 1;
         }
-        RecordUtil.startRecord(getNetCallBack().getSessionId(), getRecordList().get(contentIndex).getAudioText());
-        return 2;
     }
 
     /**

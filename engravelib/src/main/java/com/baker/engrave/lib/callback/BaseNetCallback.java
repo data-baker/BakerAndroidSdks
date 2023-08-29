@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.baker.engrave.lib.bean.Mould;
 import com.baker.engrave.lib.bean.RecordResult;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.engrave.lib.net.NetUtil;
 import com.baker.engrave.lib.util.RecordUtil;
 
@@ -15,7 +16,6 @@ import java.util.List;
  * 2020/3/5
  */
 public interface BaseNetCallback {
-
 
 
     /**
@@ -39,6 +39,7 @@ public interface BaseNetCallback {
      */
     String getClientSecret();
 
+
     /**
      * 初始化id
      *
@@ -57,17 +58,17 @@ public interface BaseNetCallback {
      */
     void setQueryId(String queryID);
 
-    /**
+    /* *//**
      * 提供文本内容接口。
-     */
-    void getTextList();
+     *//*
+    void getTextList();*/
 
     /**
      * 开启环境检测
      */
     int startDBDetection();
 
-    void getVoiceMouldId();
+    void getSessionIdAndTexts();
 
 
     /**
@@ -113,7 +114,6 @@ public interface BaseNetCallback {
      * @param queryId
      */
     void getMouldList(int page, int limit, String queryId);
-
 
 
     /**
@@ -177,8 +177,11 @@ public interface BaseNetCallback {
 
     void setMouldCallback(MouldCallback callback);
 
+
     void requestConfig();
 
+
+    void setType(EngraverType type);
 
 
 }
