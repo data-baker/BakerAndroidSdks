@@ -70,7 +70,6 @@ public class DetectUtil {
     private static final CountDownTimer timer = new CountDownTimer(3250, 250) {
         @Override
         public void onTick(long l) {
-            LogUtil.d("__5" + decibels);
             if (decibels > 0)
                 decibelsList.add(decibels);
         }
@@ -78,7 +77,6 @@ public class DetectUtil {
         @Override
         public void onFinish() {
             isLast = true;
-            LogUtil.d("__6");
             stopRecording();
             decibelsList.add(decibels);
             List<Integer> highList = new ArrayList<>();
@@ -93,7 +91,6 @@ public class DetectUtil {
             if (highList.size() > 2) {
                 int sum = 0;
                 for (Integer i : highList) {
-                    LogUtil.e("i=" + i);
                     sum += i;
                 }
                 if (detectUtilCallBack != null) {
@@ -212,8 +209,13 @@ public class DetectUtil {
         if (mTelephonyManager == null) {
             mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         }
-        //手动注册对PhoneStateListener中的listen_call_state状态进行监听
-        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        try {
+            //手动注册对PhoneStateListener中的listen_call_state状态进行监听
+            mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {

@@ -29,17 +29,22 @@ import com.baker.engrave.lib.callback.innner.RecordCallbackImpl;
 import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.engrave.lib.net.BakerOkHttpClient;
 import com.baker.engrave.lib.net.NetUtil;
+import com.baker.engrave.lib.util.BakerLogUpload;
 import com.baker.engrave.lib.util.BaseUtil;
 import com.baker.engrave.lib.util.DetectUtil;
+import com.baker.engrave.lib.util.ExceptionHandlerUtil;
 import com.baker.engrave.lib.util.LogUtil;
 import com.baker.engrave.lib.util.RecordUtil;
 
 import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -125,7 +130,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     private String mClientId;
     private String mClientSecret;
     private String mQueryID;
-    private EngraverType type = EngraverType.Common;
+    private EngraverType type = EngraverType.Boutique;
 
     private final int SAMPLE_RATE = 16000;
     private boolean isPlaying = false;
@@ -209,8 +214,10 @@ public class BakerVoiceEngraver implements BaseNetCallback {
 
                 int iMinBufSize = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
                 AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, SAMPLE_RATE, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, iMinBufSize, AudioTrack.MODE_STREAM);
-                audioTrack.play();
+
+
                 if (!TextUtils.isEmpty(filePath)) {
+                    audioTrack.play();
                     Source source = Okio.source(new File(filePath));
                     BufferedSource buffer = Okio.buffer(source);
                     byte[] tempBytes = new byte[iMinBufSize];
@@ -224,6 +231,8 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                         }
                     }
                     LogUtil.i("播放完毕");
+                    audioTrack.flush();
+                    audioTrack.stop();
                     //回调
                     runOnUiThread(listener::playEnd);
                 } else {
@@ -241,18 +250,40 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                         public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                             if (!response.isSuccessful()) {
                                 runOnUiThread(() -> listener.playError(new IOException("Unexpected code " + response)));
+                                return;
                             }
-                            InputStream inputStream = new BufferedInputStream(response.body().byteStream());
-                            byte[] buffer = new byte[5120];
                             audioTrack.play();
-                            int bytesRead;
                             isPlaying = true;
                             runOnUiThread(listener::playStart);
-                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                audioTrack.write(buffer, 0, bytesRead);
-                            }
+                            byte[] bytes = response.body().bytes();
+                            audioTrack.write(bytes, 0, bytes.length);
+                            audioTrack.stop();
+                            audioTrack.flush();
                             runOnUiThread(listener::playEnd);
-                            inputStream.close();
+
+                            /*  Source source = response.body().source();
+                            BufferedSource buffer = Okio.buffer(source);
+                            byte[] tempBytes = new byte[iMinBufSize];
+                            runOnUiThread(listener::playStart);
+                            isPlaying = true;
+                            for (int len; (len = buffer.read(tempBytes)) != -1; ) {
+                                if (isPlaying) {
+                                    audioTrack.write(tempBytes, 0, len);
+                                } else {
+                                    break;
+                                }
+                            }*/
+                            /* BufferedInputStream inputStream = new BufferedInputStream(response.body().byteStream());
+                            byte[] tempBytes = new byte[iMinBufSize];
+                            for (int len; (len = inputStream.read(tempBytes)) != -1; ) {
+                                if (isPlaying) {
+                                    PcmFileUtil.getInstance().write(tempBytes);
+                                    audioTrack.write(tempBytes, 0, len);
+                                } else {
+                                    break;
+                                }
+                            }*/
+
                         }
                     });
                 }
@@ -261,6 +292,12 @@ public class BakerVoiceEngraver implements BaseNetCallback {
                 runOnUiThread(() -> listener.playError(e));
             }
         });
+    }
+
+    private boolean isLog = true;
+
+    public void setLog(boolean log) {
+        isLog = log;
     }
 
     /**
@@ -278,6 +315,11 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         mClientId = clientId;
         mClientSecret = clientSecret;
         mQueryID = queryID;
+
+        if (isLog){
+            BakerLogUpload.getInstance().setContext(mContext);
+            ExceptionHandlerUtil.getInstance().init(mContext);
+        }
 
         NetUtil.setNetCallback(getNetCallBack());
         DetectUtil.setCallback(mContext, getDetectCallBack());
@@ -320,7 +362,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         mQueryID = queryID;
     }
 
-    /*  *//**
+    /**
      * 提供文本内容接口。
      *//*
     @Override
@@ -388,6 +430,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
     @Override
     public void recordInterrupt() {
         NetUtil.recordInterrupt(getNetCallBack().getSessionId());
+        getNetCallBack().voiceSessionId(null);
         RecordUtil.stopRecord();
     }
 
@@ -421,6 +464,7 @@ public class BakerVoiceEngraver implements BaseNetCallback {
         }
         if (isAllRecordOver) {
             NetUtil.finishRecords(getNetCallBack().getSessionId(), phone, notifyUrl);
+            getNetCallBack().voiceSessionId(null);
             return true;
         } else {
             return false;

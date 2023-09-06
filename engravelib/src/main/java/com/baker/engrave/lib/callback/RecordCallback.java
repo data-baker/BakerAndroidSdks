@@ -5,6 +5,7 @@ package com.baker.engrave.lib.callback;
  * 2020/3/4
  */
 public interface RecordCallback {
+
     /**
      * 录音中、识别中、识别结果回调。
      *
@@ -27,4 +28,5 @@ public interface RecordCallback {
      * @param message
      */
     void onRecordError(int errorCode, String message);
+
 }

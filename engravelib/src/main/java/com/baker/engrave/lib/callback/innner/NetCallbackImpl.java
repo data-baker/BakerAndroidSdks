@@ -52,7 +52,6 @@ public class NetCallbackImpl implements NetCallback {
     private ConfigBean bean;
 
 
-
     public List<RecordResult> getRecordList() {
         return mRecordList;
     }
@@ -61,15 +60,15 @@ public class NetCallbackImpl implements NetCallback {
         return bean;
     }
 
-
     @Override
-    public void callBackRecordList(ArrayList<RecordTextData> dataList,String sessionId) {
+    public void callBackRecordList(ArrayList<RecordTextData> dataList, String sessionId) {
         if (dataList != null) {
+            mRecordList.clear();
             for (RecordTextData data : dataList) {
                 RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioUrl), data.audioUrl);
                 mRecordList.add(recordResult);
             }
-            contentTextCallback.contentTextList(mRecordList,sessionId);
+            contentTextCallback.contentTextList(mRecordList, sessionId);
         }
     }
 
@@ -82,7 +81,7 @@ public class NetCallbackImpl implements NetCallback {
                 RecordResult recordResult = new RecordResult(text, 0, false);
                 mRecordList.add(recordResult);
             }*//*
-            *//*    if (dataList!=null){
+     *//*    if (dataList!=null){
                 for (RecordTextData data : dataList) {
                     RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioPath));
                     mRecordList.add(recordResult);
@@ -99,9 +98,7 @@ public class NetCallbackImpl implements NetCallback {
 
     @Override
     public void voiceSessionId(String sessionId) {
-        if (!TextUtils.isEmpty(sessionId)) {
-            mSessionId = sessionId;
-        }
+        mSessionId = sessionId;
     }
 
     @Override

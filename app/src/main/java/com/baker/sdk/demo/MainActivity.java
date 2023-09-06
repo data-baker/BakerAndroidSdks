@@ -21,7 +21,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     private final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE};
+            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

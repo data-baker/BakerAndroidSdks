@@ -50,13 +50,15 @@
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="26dp"
+            android:maxHeight="300dp"
+            android:minHeight="200dp"
             android:text=""
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_recognize_result"
@@ -129,7 +131,6 @@
                 android:textColor="@drawable/selector_text_button" />
 
         </LinearLayout>
-
 
 
     </LinearLayout>

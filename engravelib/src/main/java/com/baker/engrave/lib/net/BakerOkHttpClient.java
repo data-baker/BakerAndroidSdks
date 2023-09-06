@@ -44,6 +44,10 @@ public class BakerOkHttpClient {
         return instance;
     }
 
+    public OkHttpClient getHttpClient() {
+        return mHttpClient;
+    }
+
     private final String LOG_TAG = "HttpUtils>>>";
     private final String LOG_DIVIDER = "||=================================================================";
 
@@ -55,7 +59,7 @@ public class BakerOkHttpClient {
                     .callTimeout(120, TimeUnit.SECONDS)
                     .readTimeout(120, TimeUnit.SECONDS)
                     .addInterceptor(new TokenInterceptor())
-                    .addInterceptor(new CurlLogInterceptor())
+                  /*.addInterceptor(new CurlLogInterceptor())
                     .addInterceptor(new HttpLoggingInterceptor(message -> {
                         if (message.contains("--> END") || message.contains("<-- END")) {
                             Log.e(LOG_TAG, "||  " + message);
@@ -66,7 +70,7 @@ public class BakerOkHttpClient {
                         } else {
                             Log.e(LOG_TAG, "||  " + message);
                         }
-                    }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                    }).setLevel(HttpLoggingInterceptor.Level.BODY))*/
                     .build();
         }
     }

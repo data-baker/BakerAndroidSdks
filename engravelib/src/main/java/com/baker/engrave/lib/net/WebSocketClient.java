@@ -40,7 +40,7 @@ public class WebSocketClient {
         String data = "";
         data = new Gson().toJson(WebSocketUtil.formatParameters(paramBean, audioBean));
         LogUtil.d("newClient " + data);
-        HttpUrl httpUrl = HttpUrl.parse(NetConstants.BASE_URL + "/websocket/fuke/" + NetConstants.VERSION)
+        HttpUrl httpUrl = HttpUrl.parse(NetConstants.BASE_URL + "websocket/fuke/" + NetConstants.VERSION)
                 .newBuilder()
                 .addQueryParameter("data", URLEncoder.encode(data))
                 .build();
@@ -48,7 +48,7 @@ public class WebSocketClient {
         LogUtil.e("url:" + url);
         request = new Request.Builder().url(url).build();
         client = new OkHttpClient().newBuilder()
-                .addInterceptor(new HttpLoggingInterceptor(message -> {
+              /*  .addInterceptor(new HttpLoggingInterceptor(message -> {
                     if (message.contains("--> END") || message.contains("<-- END")) {
                         Log.e(LOG_TAG, "||  " + message);
                         Log.e(LOG_TAG, LOG_DIVIDER);
@@ -58,7 +58,7 @@ public class WebSocketClient {
                     } else {
                         Log.e(LOG_TAG, "||  " + message);
                     }
-                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))*/
                 .build();
     }
 

@@ -30,7 +30,8 @@ import com.baker.sdk.demo.base.BakerBaseActivity;
 import java.net.URLEncoder;
 
 public class ExperienceActivity extends BakerBaseActivity implements SeekBar.OnSeekBarChangeListener {
-    private final String TTS_MY_VOICE_URL = "https://openapi.data-baker.com/tts_hot_load?domain=1&volume=7&language=zh&audiotype=%s&voice_name=%s&access_token=%s&text=%s";
+   // private final String TTS_MY_VOICE_URL = "https://openapi.data-baker.com/tts_hot_load?domain=1&volume=7&language=zh&audiotype=%s&voice_name=%s&access_token=%s&text=%s";
+    private final String TTS_MY_VOICE_URL = "http://10.10.50.18:32016/tts_personal?domain=1&volume=7&language=zh&audiotype=%s&voice_name=%s&access_token=%s&text=%s";
     private TextView tvIndex, tvMouldId, tvWords;
     private EditText editText;
     private SeekBar seekBar;

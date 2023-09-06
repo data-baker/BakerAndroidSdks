@@ -62,9 +62,7 @@ public class ConfirmActivity extends BakerBaseActivity implements UploadRecordsC
                 customizeDialog.setNegativeButton("跳过", (dialog, which) -> {
                     EditText edit_text = dialogView.findViewById(R.id.phone);
                     boolean result = BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
-                    if (result) {
-                        PreferenceUtil.putString("sessionId", "");
-                    }
+                    PreferenceUtil.putString("sessionId", "");
                 });
                 customizeDialog.show();
             }

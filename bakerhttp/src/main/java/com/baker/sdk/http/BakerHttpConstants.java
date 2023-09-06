@@ -12,7 +12,8 @@ import java.util.List;
 public class BakerHttpConstants {
     //获取tts合成需要的token的url
    // public static final String URL_GET_TOKEN = "https://openapi.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
-    public static final String URL_GET_TOKEN = " http://10.10.50.23:9904/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
+  //  public static final String URL_GET_TOKEN = " http://10.10.50.23:9904/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
+    public static final String URL_GET_TOKEN = "https://openapitest.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
 
     private static final List<AuthorInfo> authorInfos = new ArrayList<>();
 

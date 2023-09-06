@@ -18,6 +18,7 @@ import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.PlayListener;
 import com.baker.engrave.lib.callback.RecordCallback;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
@@ -44,15 +45,13 @@ public class EngraveActivity extends BakerBaseActivity {
         setTitle(R.string.string_step_2);
 
         initView();
+        initData();
         //TODO 注意设置回调在调用对应方法之前。
         initCallback();
-        //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
-        //如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
-        BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(EngraveActivity.this));
-        BakerVoiceEngraver.getInstance().getSessionIdAndTexts(); //获取，不知道获取的啥
 
 
     }
+
 
     private void initView() {
         btnRecordStart = findViewById(R.id.record_start);
@@ -73,37 +72,31 @@ public class EngraveActivity extends BakerBaseActivity {
         imgRecording.setVisibility(View.INVISIBLE);
     }
 
+    private void initData() {
+        List<RecordResult> mRecordList = BakerVoiceEngraver.getInstance().getRecordList();
+        if (mRecordList != null && mRecordList.size() > 0) {
+            dataList.clear();
+            dataList.addAll(mRecordList);
+            for (int i = 0; i < dataList.size(); i++) {
+                if (dataList.get(i).isPass()) {
+                    currentIndex = (i + 1);
+                }
+            }
+            if (currentIndex <= dataList.size() - 1) {
+                tvIndex.setText(String.valueOf(currentIndex + 1));
+                tvContentText.setText(dataList.get(currentIndex).getAudioText());
+                tvTotal.setText(String.format(getString(R.string.string_content_total), dataList.size()));
+                tvContentText.setText(dataList.get(currentIndex).getAudioText());
+            } else {
+                startActivity(new Intent(EngraveActivity.this, ConfirmActivity.class));
+                finish();
+            }
+
+        }
+    }
+
     private void initCallback() {
-        //获取文本内容
-        BakerVoiceEngraver.getInstance().setContentTextCallback(new ContentTextCallback() {
-            @Override
-            public void contentTextList(List<RecordResult> mRecordList, String sessionId) {
-                runOnUiThread(() -> {
-                    if (!TextUtils.isEmpty(sessionId)) {
-                        PreferenceUtil.putString("sessionId", sessionId);
-                    }
-                    if (mRecordList != null && mRecordList.size() > 0) {
-                        dataList.clear();
-                        dataList.addAll(mRecordList);
-                        for (int i = 0; i < mRecordList.size(); i++) {
-                            if (mRecordList.get(i).isPass()) {
-                                currentIndex = (i + 1);
-                            }
-                        }
-                        tvIndex.setText(String.valueOf(currentIndex + 1));
-                        tvContentText.setText(mRecordList.get(currentIndex).getAudioText());
-                        tvTotal.setText(String.format(getString(R.string.string_content_total), mRecordList.size()));
-                        tvContentText.setText(mRecordList.get(currentIndex).getAudioText());
 
-                    }
-                });
-            }
-
-            @Override
-            public void onContentTextError(int errorCode, String message) {
-                Log.d(TAG, "onContentTextError errorCode = " + errorCode + " message = " + message);
-            }
-        });
         BakerVoiceEngraver.getInstance().setRecordCallback(new RecordCallback() {
             /*
              1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
@@ -111,6 +104,7 @@ public class EngraveActivity extends BakerBaseActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void recordsResult(int typeCode, String recognizeResult) {
+                Log.e("TAG--->", "typeCode:" + typeCode + "   recognizeResult:" + recognizeResult);
                 runOnUiThread(() -> {
                     log("---6");
                     if (typeCode == 1) {
@@ -128,7 +122,6 @@ public class EngraveActivity extends BakerBaseActivity {
                     } else if (typeCode == 3) {
                         tvTips.setVisibility(View.VISIBLE);
                         imgRecording.setVisibility(View.INVISIBLE);
-
                         startOrEnd = true;
                         tvTips.setText("太棒了，准确率：" + recognizeResult + "%，请录制下一段吧。");
                         toNext();
@@ -137,6 +130,13 @@ public class EngraveActivity extends BakerBaseActivity {
                         imgRecording.setVisibility(View.INVISIBLE);
                         startOrEnd = true;
                         tvTips.setText("识别率：" + recognizeResult + "%，请重新录制本段。");
+                        btnRecordStart.setEnabled(true);
+                        btnRecordStart.setText("重新录制");
+                    } else if (typeCode == 5) {
+                        tvTips.setVisibility(View.VISIBLE);
+                        imgRecording.setVisibility(View.INVISIBLE);
+                        startOrEnd = true;
+                        tvTips.setText(recognizeResult);
                         btnRecordStart.setEnabled(true);
                         btnRecordStart.setText("重新录制");
                     }
@@ -199,7 +199,6 @@ public class EngraveActivity extends BakerBaseActivity {
 
     private void updateView() {
         btnRecordStart.setEnabled(true);
-
         if (BakerVoiceEngraver.getInstance().isRecord(currentIndex)) {
             btnRecordStart.setText("重新录制");
         } else {
@@ -241,6 +240,7 @@ public class EngraveActivity extends BakerBaseActivity {
 
             @Override
             public void playEnd() {
+                log("试听结束");
                 Toast.makeText(EngraveActivity.this, "播放完毕", Toast.LENGTH_SHORT).show();
                 disMissProgressDialog();
             }

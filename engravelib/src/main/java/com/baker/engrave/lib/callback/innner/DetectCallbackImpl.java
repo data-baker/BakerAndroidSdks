@@ -13,7 +13,6 @@ public class DetectCallbackImpl implements DetectUtilCallBack{
 
     @Override
     public void dbDetectionResult(boolean result, int value) {
-        LogUtil.i("result=" + result + ", value=" + value);
         if (detectCallback != null) {
             detectCallback.dbDetectionResult(result, value);
         }

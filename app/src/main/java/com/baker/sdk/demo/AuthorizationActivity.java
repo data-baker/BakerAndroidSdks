@@ -34,7 +34,6 @@ public class AuthorizationActivity extends BakerBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorization);
-
         init();
     }
 
@@ -83,7 +82,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                 case "voice_convert":
                     //声音转换 获取token
                     setTitle("声音转换");
-                   if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID))) {
+                    if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID))) {
                         etClientId.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_ID));
                     }
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET))) {
@@ -101,10 +100,18 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET));
                     }
-                    //etClientId.setText("df6527d33b644733a2b4e58de710fd9d");
-                    //etClientSecret.setText("ca9c99132d3c4d2bb92501410ee21bd8");
-                    etClientId.setText("1fed232b78b04eae9fa21b464d6d2db9");
-                    etClientSecret.setText("3e98fedaa8584ee193c2050423652066");
+                    // 生产
+                    // etClientId.setText("df6527d33b644733a2b4e58de710fd9d");
+                    // etClientSecret.setText("ca9c99132d3c4d2bb92501410ee21bd8");
+                    // 沙盒
+                     etClientId.setText("163c3768d40c49a5affded6f2e9522a8");
+                     etClientSecret.setText("ba7f73aeac004377a3b80864be1641ca");
+
+                    //etClientId.setText("629aa665f92042859db3607a22c285f5");
+                    //etClientSecret.setText("bdaf58ceedad40d1a11440c02b2a65b4");
+                    // 测试
+                    // etClientId.setText("1fed232b78b04eae9fa21b464d6d2db9");
+                    // etClientSecret.setText("3e98fedaa8584ee193c2050423652066");
                     break;
                 default:
                     break;

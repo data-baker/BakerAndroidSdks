@@ -17,6 +17,7 @@ public class VoiceEngraveConstants {
     public static final int ERROR_CODE_DATA_NULL = 90005;
     //服务器返回错误的代码
     public static final int ERROR_CODE_FROM_SERVER = 90006;
+    public static final int ERROR_CODE_SESSION = 90014;
     //解析response出错
     public static final int ERROR_CODE_RESPONSE = 90007;
     //当前上传的录音的mouldId与录制的录音的mouldId不一致

@@ -49,44 +49,40 @@ public class BakerBaseActivity extends AppCompatActivity implements View.OnClick
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(BakerBaseActivity.this);
         normalDialog.setTitle("提示");
-        normalDialog.setMessage("如果退出了，录音信息就没有了哦。");
-        normalDialog.setPositiveButton("确定",
-                (dialog, which) -> {
+        normalDialog.setMessage("是否保存此次录音信息？");
+        normalDialog.setPositiveButton("确定", (dialog, which) -> finish());
+        normalDialog.setNegativeButton("取消", (dialog, which) -> {
                     PreferenceUtil.putString("sessionId","");
                     //非常建议在录音过程中异常退出的话，调用此方法通知服务器，这样的话会及时释放当前训练模型所占用的名额。
                     BakerVoiceEngraver.getInstance().recordInterrupt();
                     //关闭activity
                     finish();
                 });
-        normalDialog.setNegativeButton("返回",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
         // 显示
         normalDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showNormalDialog();
     }
 
     /**
      * 显示正在请求网络的进度条
      */
     public void showProgressDialog() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-                progressDialog = new Dialog(BakerBaseActivity.this, R.style.progress_dialog);
-                View view = View.inflate(BakerBaseActivity.this, R.layout.view_progress_dialog, null);
-                progressDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
-                progressDialog.setCancelable(false);
-                progressDialog.setContentView(view);
-                if (!isFinishing()) {
-                    progressDialog.show();
-                }
+        runOnUiThread(() -> {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+            progressDialog = new Dialog(BakerBaseActivity.this, R.style.progress_dialog);
+            View view = View.inflate(BakerBaseActivity.this, R.layout.view_progress_dialog, null);
+            progressDialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
+            progressDialog.setCancelable(false);
+            progressDialog.setContentView(view);
+            if (!isFinishing()) {
+                progressDialog.show();
             }
         });
     }

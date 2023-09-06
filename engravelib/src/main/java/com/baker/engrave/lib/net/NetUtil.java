@@ -14,6 +14,7 @@ import com.baker.engrave.lib.bean.TokenResp;
 import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.innner.NetCallback;
 import com.baker.engrave.lib.configuration.EngraverType;
+import com.baker.engrave.lib.util.BakerLogUpload;
 import com.baker.engrave.lib.util.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -187,7 +188,7 @@ public class NetUtil {
                 NetConstants.URL_GET_MOULD_ID, params, headers), new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_NET_WRONG, "getVoiceMouldId, " + e.getMessage());
+                onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_NET_WRONG, "getVoiceMouldId, " + e.getMessage());
             }
 
             @Override
@@ -199,7 +200,7 @@ public class NetUtil {
                     if ("20000".equals(resultCode)) {
                         String resultStatus = jsonObject.getString("data");
                         if (TextUtils.isEmpty(resultStatus)) {
-                            onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, data is null。");
+                            onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, data is null。");
                         } else {
                             JSONObject jsonData = new JSONObject(resultStatus);
                             String sessionId = jsonData.getString("sessionId");
@@ -209,7 +210,7 @@ public class NetUtil {
                                     netCallback.voiceSessionId(sessionId);
                                 }
                             } else {
-                                onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, mouldId request failed, sessionId is null。");
+                                onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, mouldId request failed, sessionId is null。");
                             }
                             String sentenceListString = jsonData.getString("sentenceList");
                             ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString, new TypeToken<ArrayList<RecordTextData>>() {}.getType());
@@ -217,11 +218,15 @@ public class NetUtil {
                                 netCallback.callBackRecordList(dataList,sessionId);
                             }
                         }
+                    }else if ("10008".equals(resultCode)){
+                        BakerVoiceEngraver.getInstance().setRecordSessionId("");
+                        onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_SESSION, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
                     } else {
-                        onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
+
+                        onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_FROM_SERVER, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
                     }
                 } catch (Exception e) {
-                    onFault(TYPE_RECORD, VoiceEngraveConstants.ERROR_CODE_RESPONSE, "getVoiceMouldId, 解析response出错：" + e.getMessage());
+                    onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_RESPONSE, "getVoiceMouldId, 解析response出错：" + e.getMessage());
                 }
             }
         });

@@ -2,15 +2,24 @@ package com.baker.sdk.demo.gramophone.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.baker.engrave.lib.BakerVoiceEngraver;
+import com.baker.engrave.lib.bean.RecordResult;
+import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.DetectCallback;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
+import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
+import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
+
+import java.util.List;
 
 
 // 心即理,心外无物 - 知行合一 - 致良知 - 大智慧
@@ -28,6 +37,7 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
         setContentView(R.layout.activity_db_detection);
         setTitle(R.string.string_step_1);
         initView();
+        initCallBack();
         BakerVoiceEngraver.getInstance().setDetectCallback(this);
     }
 
@@ -52,10 +62,39 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
                     tvDetectTip.setText("环境噪音检测中，请稍候...");
                 }
             } else {
-                startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
-                finish();
+                //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
+                BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(this));//如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
+                BakerVoiceEngraver.getInstance().setType(EngraverType.Common);
+                BakerVoiceEngraver.getInstance().getSessionIdAndTexts(); //获取，不知道获取的啥
             }
         }
+    }
+
+    public void initCallBack() {
+        //获取文本内容
+        BakerVoiceEngraver.getInstance().setContentTextCallback(new ContentTextCallback() {
+            @Override
+            public void contentTextList(List<RecordResult> mRecordList, String sessionId) {
+                runOnUiThread(() -> {
+                    if (!TextUtils.isEmpty(sessionId)) {
+                        PreferenceUtil.putString("sessionId", sessionId);
+                    }
+                    startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
+                    finish();
+                });
+            }
+
+            @Override
+            public void onContentTextError(int errorCode, String message) {
+                if (90014 == errorCode) {
+                    PreferenceUtil.putString("sessionId", "");
+                }
+                runOnUiThread(() -> {
+                    Toast.makeText(DbDetectionActivity.this, message + "", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onContentTextError errorCode = " + errorCode + " message = " + message);
+                });
+            }
+        });
     }
 
     @Override

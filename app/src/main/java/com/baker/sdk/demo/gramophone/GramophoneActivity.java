@@ -1,5 +1,6 @@
 package com.baker.sdk.demo.gramophone;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -10,13 +11,16 @@ import android.text.TextUtils;
 
 import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.callback.InitListener;
+import com.baker.engrave.lib.util.BakerLogUpload;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.base.Constants;
+
 import com.baker.sdk.demo.gramophone.fragment.ExperienceFragment;
 import com.baker.sdk.demo.gramophone.fragment.HomeFragment;
 import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
+import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -38,14 +42,12 @@ public class GramophoneActivity extends BakerBaseActivity {
         initView();
 
         //初始化复刻SDK
+        BakerVoiceEngraver.getInstance().setLog(false);
         BakerVoiceEngraver.getInstance().initSDK(GramophoneActivity.this, sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_ID),
                 sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
                     @Override
                     public void onInitSuccess() {
-                        if (!TextUtils.isEmpty(PreferenceUtil.getString("sessionId", ""))) {
-                            BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString("sessionId", ""));
-                        }
-                        BakerVoiceEngraver.getInstance().requestConfig();
+                        ToastUtils.showLong("授权成功");
                     }
 
                     @Override

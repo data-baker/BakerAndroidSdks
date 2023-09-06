@@ -8,6 +8,9 @@ import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
@@ -74,7 +77,6 @@ public class RecordUtil {
 
     /**
      * 开始录音
-     * String pathname = Environment.getExternalStorageDirectory() + File.separator + "RecordingCollection" + File.separator + "audio" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
      */
     public static void startRecord(String mouldId, String contentText) {
         String pathname = mContext.getFilesDir() + File.separator + "RecordingCollection" + File.separator + "audio-" + BakerVoiceEngraver.getInstance().getCurrentIndex() + ".pcm";
@@ -109,7 +111,7 @@ public class RecordUtil {
         getAudioFocus();
 
         //打开websocket链接
-        RecordingSocketBean.ParamBean paramBean = new RecordingSocketBean.ParamBean(mSessionId, mContentText);
+        RecordingSocketBean.ParamBean paramBean = new RecordingSocketBean.ParamBean(mSessionId, mContentText, BakerVoiceEngraver.getInstance().getCurrentIndex());
         WebSocketClient.getInstance().newClient(paramBean, new RecordingSocketBean.AudioBean(0, 0, ""));
         mWebSocket = WebSocketClient.getInstance().newWebSocket(new RecordingWebSocketListener());
 
@@ -160,12 +162,28 @@ public class RecordUtil {
 
     private static RecordingSocketBean.AudioBean audioBean;
     private static final LinkedBlockingDeque<PcmBean> linkedBlockingDeque = new LinkedBlockingDeque<>();//队列存放音频buffer，子线程取buffer去发送socket;退出activity时候发送state=-1来结束线程
-//logId
+    private static final Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (BakerVoiceEngraver.getInstance().getCurrentIndex() == msg.what) {
+                mWebSocket.close(1000, "超时关闭");
+                endRecordAndStartRecognize();
+                if (recordUtilCallback != null) {
+                    recordUtilCallback.recordsResult(5, "超时关闭");
+                }
+            }
+        }
+    };
+
     private static class RecordingWebSocketListener extends WebSocketListener {
+        Message msg = new Message();
         @Override
         public void onOpen(@NotNull WebSocket webSocket, Response response) {
             //通道打开，首次发送数据
             LogUtil.e("首次接收数据:" + response.toString());
+            msg.what = BakerVoiceEngraver.getInstance().getCurrentIndex();
+            mHandler.sendMessageDelayed(msg, 60000);
         }
 
         @Override
@@ -190,11 +208,11 @@ public class RecordUtil {
                     if (recordUtilCallback != null) {
                         if (data.getPassStatus() == 1) {
                             //1=录音中， 2=识别中， 3=最终结果：通过， 4=最终结果：不通过
-                            recordUtilCallback.recordsResult(3, String.valueOf(data.getPercent()));
                             BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(true);
+                            recordUtilCallback.recordsResult(3, String.valueOf(data.getPercent()));
                         } else {
+                            BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(false);
                             recordUtilCallback.recordsResult(4, String.valueOf(data.getPercent()));
-                            BakerVoiceEngraver.getInstance().getRecordList().get(BakerVoiceEngraver.getInstance().getCurrentIndex()).setPass(BuildConfig.DEBUG);
                         }
                         webSocket.close(1000, "正常关闭");
                     }
@@ -205,13 +223,16 @@ public class RecordUtil {
                 try {
                     NetUtil.requestToken();
                     //打开websocket链接
-                    RecordingSocketBean.ParamBean paramBean = new RecordingSocketBean.ParamBean(mSessionId, mContentText);
+                    RecordingSocketBean.ParamBean paramBean = new RecordingSocketBean.ParamBean(mSessionId, mContentText, BakerVoiceEngraver.getInstance().getCurrentIndex());
                     WebSocketClient.getInstance().newClient(paramBean, new RecordingSocketBean.AudioBean(0, 0, ""));
                     mWebSocket = WebSocketClient.getInstance().newWebSocket(new RecordingWebSocketListener());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
+                if (recordUtilCallback != null) {
+                    recordUtilCallback.recordsResult(5, recordingCheckDto.getMessage() + "");
+                }
                 LogUtil.i("onMessage 服务器异常");
                 webSocket.close(1000, "Token expired");
             }
@@ -220,6 +241,7 @@ public class RecordUtil {
         @Override
         public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
             super.onClosed(webSocket, code, reason);
+            mHandler.removeMessages(msg.what);
             endRecord(2);
         }
 
@@ -266,7 +288,7 @@ public class RecordUtil {
         audioBean.setStatus(state);
         audioBean.setInfo(Base64.encodeToString(pcm, Base64.NO_WRAP));
         audioBean.setSequence(countUploadAudioIndex);
-        data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText,BakerVoiceEngraver.getInstance().getCurrentIndex()), audioBean)));
+        data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText, BakerVoiceEngraver.getInstance().getCurrentIndex()), audioBean)));
         LogUtil.d("wsReq: " + data);
         countUploadAudioIndex++;
         mWebSocket.send((data));
@@ -394,8 +416,13 @@ public class RecordUtil {
         if (mTelephonyManager == null) {
             mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         }
-        //手动注册对PhoneStateListener中的listen_call_state状态进行监听
-        mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        try{
+            //手动注册对PhoneStateListener中的listen_call_state状态进行监听
+            mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }catch (SecurityException e){
+            e.printStackTrace();
+        }
+
     }
 
     private static final PhoneStateListener mPhoneStateListener = new PhoneStateListener() {
