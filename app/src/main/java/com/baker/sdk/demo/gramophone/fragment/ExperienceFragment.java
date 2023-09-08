@@ -87,7 +87,7 @@ public class ExperienceFragment extends BaseFragment implements MouldRecyclerVie
                     recyclerView.setVisibility(View.VISIBLE);
                 } else {
                     tvNullTip.setVisibility(View.VISIBLE);
-                    tvNullTip.setText(getResources().getString(R.string.string_listen_experience_null));
+                    tvNullTip.setText("试听体验\n当前无声音模型。");
                     recyclerView.setVisibility(View.GONE);
                 }
             });

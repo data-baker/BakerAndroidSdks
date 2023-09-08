@@ -18,6 +18,7 @@ import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
 import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
+import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.List;
 
@@ -64,12 +65,11 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
             } else {
                 //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
                 BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(this));//如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
-                BakerVoiceEngraver.getInstance().setType(EngraverType.Common);
+               // BakerVoiceEngraver.getInstance().setType(EngraverType.Common);
                 BakerVoiceEngraver.getInstance().getSessionIdAndTexts(); //获取，不知道获取的啥
             }
         }
     }
-
     public void initCallBack() {
         //获取文本内容
         BakerVoiceEngraver.getInstance().setContentTextCallback(new ContentTextCallback() {
@@ -77,7 +77,10 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
             public void contentTextList(List<RecordResult> mRecordList, String sessionId) {
                 runOnUiThread(() -> {
                     if (!TextUtils.isEmpty(sessionId)) {
-                        PreferenceUtil.putString("sessionId", sessionId);
+                        if (!sessionId.equals(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(),""))){
+                            Toast.makeText(DbDetectionActivity.this,"", Toast.LENGTH_LONG).show();
+                        }
+                        PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), sessionId);
                     }
                     startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
                     finish();
@@ -86,9 +89,6 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
 
             @Override
             public void onContentTextError(int errorCode, String message) {
-                if (90014 == errorCode) {
-                    PreferenceUtil.putString("sessionId", "");
-                }
                 runOnUiThread(() -> {
                     Toast.makeText(DbDetectionActivity.this, message + "", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onContentTextError errorCode = " + errorCode + " message = " + message);

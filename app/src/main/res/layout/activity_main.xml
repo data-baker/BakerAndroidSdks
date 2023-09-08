@@ -54,7 +54,15 @@
                 android:layout_height="70dp"
                 android:layout_marginTop="20dp"
                 android:onClick="voiceEngrave"
-                android:text="声音复刻"
+                android:text="普通复刻"
+                android:textSize="18sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="20dp"
+                android:onClick="voiceBoutiqueEngrave"
+                android:text="精品复刻"
                 android:textSize="18sp" />
 
             <Button

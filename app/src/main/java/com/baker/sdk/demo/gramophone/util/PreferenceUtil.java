@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 
+import com.baker.engrave.lib.BakerVoiceEngraver;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.sdk.demo.ProjectApplication;
 
 import java.util.ArrayList;
@@ -12,6 +14,13 @@ import java.util.List;
 public class PreferenceUtil {
     private static final String CONFIG = "app_config";
 
+    public static String getEngraverKey() {
+        if (BakerVoiceEngraver.getInstance().getType() == EngraverType.Boutique) {
+            return "boutique_session";
+        } else {
+            return "common_session";
+        }
+    }
 
     /**
      * 获取SharedPreferences实例对象

@@ -56,13 +56,13 @@ public class ConfirmActivity extends BakerBaseActivity implements UploadRecordsC
                     if (!result) {
                         Toast.makeText(this, "数据未全录制完成", Toast.LENGTH_SHORT).show();
                     } else {
-                        PreferenceUtil.putString("sessionId", "");
+                        PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), "");
                     }
                 });
                 customizeDialog.setNegativeButton("跳过", (dialog, which) -> {
                     EditText edit_text = dialogView.findViewById(R.id.phone);
                     boolean result = BakerVoiceEngraver.getInstance().finishRecords(edit_text.getText().toString().trim(), null);
-                    PreferenceUtil.putString("sessionId", "");
+                    PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), "");
                 });
                 customizeDialog.show();
             }

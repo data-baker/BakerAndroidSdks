@@ -82,6 +82,8 @@
             android:background="@mipmap/volume_1"
             android:visibility="visible" />
 
+
+
         <Button
             android:id="@+id/record_start"
             android:layout_width="match_parent"

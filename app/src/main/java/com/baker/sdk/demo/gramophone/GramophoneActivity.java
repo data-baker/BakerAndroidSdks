@@ -47,7 +47,9 @@ public class GramophoneActivity extends BakerBaseActivity {
                 sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
                     @Override
                     public void onInitSuccess() {
-                        ToastUtils.showLong("授权成功");
+                        runOnUiThread(() -> {
+                            ToastUtils.showLong("授权成功");
+                        });
                     }
 
                     @Override

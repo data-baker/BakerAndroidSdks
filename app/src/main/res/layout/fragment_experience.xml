@@ -6,7 +6,7 @@
         android:id="@+id/tv_experience_null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/string_listen_experience_null"
+        android:text="试听体验\n当前无声音模型。"
         android:gravity="center_horizontal"
         android:textColor="@color/colorPrimary"
         android:textSize="26sp"

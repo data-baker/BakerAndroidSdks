@@ -433,7 +433,7 @@ public class NetUtil {
         String nounce, timestamp, signature;
         ConcurrentHashMap<String, String> headers = new ConcurrentHashMap<>();
         headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("clientId", BakerVoiceEngraver.getInstance().getClientId());
+        headers.put("clientId", TextUtils.isEmpty(BakerVoiceEngraver.getInstance().getClientId())?"":BakerVoiceEngraver.getInstance().getClientId());
         headers.put("token", mToken);
         headers.put("modelType", BakerVoiceEngraver.getInstance().getType() == EngraverType.Common ? "1" : "2");
         nounce = String.valueOf(NetUtil.random6num());

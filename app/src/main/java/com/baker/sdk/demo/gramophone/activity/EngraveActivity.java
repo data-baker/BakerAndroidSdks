@@ -285,6 +285,10 @@ public class EngraveActivity extends BakerBaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        showNormalDialog();
+    }
 
     @Override
     public void onBack() {

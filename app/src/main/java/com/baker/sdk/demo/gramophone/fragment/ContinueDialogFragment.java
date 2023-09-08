@@ -43,14 +43,14 @@ public class ContinueDialogFragment extends AppCompatDialogFragment {
         tvTitle.setText("提示");
         tvContent.setText("是否继续录制");
         tvCancel.setOnClickListener(v -> {
-            PreferenceUtil.putString("sessionId", "");
+            PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), "");
             BakerVoiceEngraver.getInstance().setRecordSessionId("");
             BakerVoiceEngraver.getInstance().requestConfig();
             startActivity(new Intent(getActivity(), DbDetectionActivity.class));
             dismissAllowingStateLoss();
         });
         tvConfirm.setOnClickListener(v -> {
-            BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString("sessionId", ""));
+            BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), ""));
             BakerVoiceEngraver.getInstance().requestConfig();
             startActivity(new Intent(getActivity(), DbDetectionActivity.class));
             dismissAllowingStateLoss();

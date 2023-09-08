@@ -52,7 +52,7 @@ public class BakerBaseActivity extends AppCompatActivity implements View.OnClick
         normalDialog.setMessage("是否保存此次录音信息？");
         normalDialog.setPositiveButton("确定", (dialog, which) -> finish());
         normalDialog.setNegativeButton("取消", (dialog, which) -> {
-                    PreferenceUtil.putString("sessionId","");
+                    PreferenceUtil.putString(PreferenceUtil.getEngraverKey(),"");
                     //非常建议在录音过程中异常退出的话，调用此方法通知服务器，这样的话会及时释放当前训练模型所占用的名额。
                     BakerVoiceEngraver.getInstance().recordInterrupt();
                     //关闭activity
@@ -62,10 +62,7 @@ public class BakerBaseActivity extends AppCompatActivity implements View.OnClick
         normalDialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        showNormalDialog();
-    }
+
 
     /**
      * 显示正在请求网络的进度条

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.baker.engrave.lib.BakerVoiceEngraver;
+import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.sdk.demo.base.Constants;
 import com.baker.sdk.demo.tts.TtsActivity;
 
@@ -70,6 +72,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public void voiceEngrave(View view) {
         //声音复刻sdk 待迁移
         if (EasyPermissions.hasPermissions(this, permissions)) {
+            //已经打开权限
+            BakerVoiceEngraver.getInstance().setType(EngraverType.Common);
+            toAnOtherActivity("gramophone");
+        } else {
+            //没有打开相关权限、申请权限
+            EasyPermissions.requestPermissions(this, "需要获取您的权限", 1, permissions);
+        }
+    }
+
+    public void voiceBoutiqueEngrave(View view){
+        if (EasyPermissions.hasPermissions(this, permissions)) {
+            BakerVoiceEngraver.getInstance().setType(EngraverType.Boutique);
             //已经打开权限
             toAnOtherActivity("gramophone");
         } else {
