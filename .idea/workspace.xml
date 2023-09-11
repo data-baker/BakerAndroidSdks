@@ -14,8 +14,14 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/AuthorizationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/AuthorizationActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/engravelib/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/proguard-rules.pro" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakerhttp/src/main/java/com/baker/sdk/http/BakerHttpConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/bakerhttp/src/main/java/com/baker/sdk/http/BakerHttpConstants.java" afterDir="false" />
+>>>>>>> d480f2fefdd34e202448a4ca0fb9f2d9eb543842
       <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" afterDir="false" />
     </list>
@@ -24,7 +30,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[MGF4C19726009158]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/qingdianfan/.android/avd/Android-24.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
