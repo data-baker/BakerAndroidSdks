@@ -20,8 +20,10 @@ import com.baker.engrave.lib.callback.ContentTextCallback;
 import com.baker.engrave.lib.callback.PlayListener;
 import com.baker.engrave.lib.callback.RecordCallback;
 import com.baker.engrave.lib.configuration.EngraverType;
+import com.baker.engrave.lib.util.LogUtil;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
+import com.baker.sdk.demo.gramophone.fragment.SlientTimeDialog;
 import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
 
@@ -38,7 +40,7 @@ public class EngraveActivity extends BakerBaseActivity {
     private boolean startOrEnd = true;
     private ProgressDialog progressDialog;
     private List<RecordResult> dataList = new ArrayList<>();
-    private TextView tvDownTimer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,37 +56,13 @@ public class EngraveActivity extends BakerBaseActivity {
 
     }
 
-    int count;
-    private final CountDownTimer timer = new CountDownTimer(2000, 1000) {
-        @Override
-        public void onTick(long millisUntilFinished) {
-            runOnUiThread(() -> {
-                tvDownTimer.setText(String.valueOf(count));
-                count--;
-            });
-        }
-
-        @Override
-        public void onFinish() {
-            isButtonEnable = true;
-            if (isStart) {
-                imgRecording.setVisibility(View.VISIBLE);
-                tvTips.setVisibility(View.INVISIBLE);
-                tvDownTimer.setVisibility(View.GONE);
-            } else {
-                BakerVoiceEngraver.getInstance().endRecord();
-                tvDownTimer.setVisibility(View.GONE);
-            }
-        }
-    };
-
 
     private void initView() {
         btnRecordStart = findViewById(R.id.record_start);
         Button btnPre = findViewById(R.id.btnPre);
         Button btnNext = findViewById(R.id.btnNext);
         Button btnPlay = findViewById(R.id.btnPlay);
-        tvDownTimer = (TextView) findViewById(R.id.tv_down_timer);
+
 
         btnPre.setOnClickListener(this);
         btnNext.setOnClickListener(this);
@@ -97,8 +75,8 @@ public class EngraveActivity extends BakerBaseActivity {
         tvTips = findViewById(R.id.tv_recognize_result);
         tvTips.setVisibility(View.INVISIBLE);
         imgRecording = findViewById(R.id.img_recording);
-        imgRecording.setVisibility(View.GONE);
-        tvDownTimer.setVisibility(View.INVISIBLE);
+        imgRecording.setVisibility(View.INVISIBLE);
+
     }
 
     private void initData() {
@@ -359,11 +337,21 @@ public class EngraveActivity extends BakerBaseActivity {
 
     public void timerStart(boolean isStart) {
         isButtonEnable = false;
-        count = 2;
         this.isStart = isStart;
-        tvDownTimer.setVisibility(View.VISIBLE);
-        imgRecording.setVisibility(View.GONE);
-        timer.start();
+
+        imgRecording.setVisibility(View.INVISIBLE);
+        SlientTimeDialog dialog = new SlientTimeDialog();
+        dialog.setDismissListener(() -> {
+            isButtonEnable = true;
+            if (isStart) {
+                imgRecording.setVisibility(View.VISIBLE);
+                tvTips.setVisibility(View.INVISIBLE);
+
+            } else {
+                BakerVoiceEngraver.getInstance().endRecord();
+            }
+        });
+        dialog.show(getSupportFragmentManager(),"");
     }
 
 }

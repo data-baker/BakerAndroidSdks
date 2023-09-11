@@ -36,6 +36,7 @@ import omrecorder.Recorder;
  * 2020/3/6
  */
 
+
 public class DetectUtil {
 
     private static DetectUtilCallBack detectUtilCallBack;

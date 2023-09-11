@@ -125,6 +125,7 @@ public class RecordUtil {
 
     private static void endRecord(int typeCode) {
         try {
+            if (mRecorder == null) return;
             mRecorder.stopRecording();
             linkedBlockingDeque.put(new PcmBean(2, new byte[1]));
             recordUtilCallback.recordsResult(typeCode, "0");
@@ -178,6 +179,7 @@ public class RecordUtil {
 
     private static class RecordingWebSocketListener extends WebSocketListener {
         Message msg = new Message();
+
         @Override
         public void onOpen(@NotNull WebSocket webSocket, Response response) {
             //通道打开，首次发送数据
@@ -416,10 +418,10 @@ public class RecordUtil {
         if (mTelephonyManager == null) {
             mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         }
-        try{
+        try {
             //手动注册对PhoneStateListener中的listen_call_state状态进行监听
             mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
 

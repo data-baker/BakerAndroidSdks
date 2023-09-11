@@ -9,12 +9,12 @@ public class NetConstants {
     //获取token的url"http://10.10.20.107:9922"
 
     // 正式环境
-    //public static final String URL_GET_TOKEN = "https://openapi.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
-    // public static final String BASE_URL = "https://gramophone.data-baker.com/gramophone/";
+    public static final String URL_GET_TOKEN = "https://openapi.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
+     public static final String BASE_URL = "https://gramophone.data-baker.com/gramophone/";
 
     // 沙盒环境
-    public static final String URL_GET_TOKEN = "https://openapitest.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
-    public static final String BASE_URL = "https://gramophonetest.data-baker.com:9050/gramophone/";
+   // public static final String URL_GET_TOKEN = "https://openapitest.data-baker.com/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
+   // public static final String BASE_URL = "https://gramophonetest.data-baker.com:9050/gramophone/";
 
     // 生成环境
     // public static final String URL_GET_TOKEN = " http://10.10.50.23:9904/oauth/2.0/token?grant_type=client_credentials&client_secret=%s&client_id=%s";
