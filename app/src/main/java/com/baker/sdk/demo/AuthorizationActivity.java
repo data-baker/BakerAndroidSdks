@@ -53,8 +53,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
                     }
-                    etClientId.setText("82bf72b1d19e4397bfd3cf37d542e910");
-                    etClientSecret.setText("2ab86ad68beb4285a99f0f7783692f79");
+
                     break;
                 case "asr_online":
                     setTitle("语音识别授权");
@@ -64,8 +63,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_SECRET));
                     }
-                    etClientId.setText("0db2b34e21b942e68f14420d21bcddfe");
-                    etClientSecret.setText("325eb5ca07bf4b1c87dfa6192b8ccaa5");
+
                     break;
                 case "long_time_asr_online":
                     //体验长语音asr,授权tts获取token
@@ -76,8 +74,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET));
                     }
-                    etClientId.setText("16a4fca77a774da99086be973a707863");
-                    etClientSecret.setText("2b253a98ee9746509e1753f5876706ef");
+
                     break;
                 case "voice_convert":
                     //声音转换 获取token
@@ -88,8 +85,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET));
                     }
-                    etClientId.setText("124c18404c7c47cbb4ceca5d92eb2c72");
-                    etClientSecret.setText("711d81016f6f4f0ba094ee96b5ce03d6");
+
                     break;
                 case "gramophone":
                     //声音转换 获取token
@@ -100,18 +96,7 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET));
                     }
-                    // 生产
-                    // etClientId.setText("df6527d33b644733a2b4e58de710fd9d");
-                    // etClientSecret.setText("ca9c99132d3c4d2bb92501410ee21bd8");
-                    // 沙盒
-                     etClientId.setText("163c3768d40c49a5affded6f2e9522a8");
-                     etClientSecret.setText("ba7f73aeac004377a3b80864be1641ca");
-
-                    //etClientId.setText("629aa665f92042859db3607a22c285f5");
-                    //etClientSecret.setText("bdaf58ceedad40d1a11440c02b2a65b4");
-                    // 测试
-                    // etClientId.setText("1fed232b78b04eae9fa21b464d6d2db9");
-                    // etClientSecret.setText("3e98fedaa8584ee193c2050423652066");
+                  
                     break;
                 default:
                     break;

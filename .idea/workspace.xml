@@ -10,34 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2800e6e8-73dc-48e3-baec-1fd69cb0c0e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/fileChanges/last-build.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/fileContent/fileContent.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/SlientTimeDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/shape_toast_backgroud.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_slient_time.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bakerhttp/src/main/java/com/baker/sdk/http/BakerHttpConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/bakerhttp/src/main/java/com/baker/sdk/http/BakerHttpConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/DetectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/DetectUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -427,12 +401,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java</url>
-          <line>150</line>
+          <line>149</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java</url>
-          <line>155</line>
+          <line>154</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
