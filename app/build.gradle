@@ -70,8 +70,8 @@ dependencies {
 //    implementation 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.15'
 //    implementation 'com.github.data-baker.BakerAndroidSdks:synthesizer:2.0.15'
 //    implementation 'com.github.data-baker.BakerAndroidSdks:voiceconvert:2.0.13'
-   // implementation 'com.github.data-baker.BakerAndroidSdks:engravelib:2.1.0'
-   // implementation 'com.github.kailash09dabhi:OmRecorder:1.1.5'
+    implementation 'com.github.data-baker.BakerAndroidSdks:engravelib:2.1.0'
+    implementation 'com.github.kailash09dabhi:OmRecorder:1.1.5'
 
 
     implementation project(path: ':synthesizer')

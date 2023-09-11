@@ -117,6 +117,13 @@
  -keepclasseswithmembers class * {
      public <init>(android.content.Context, android.util.AttributeSet, int);
  }
+ -keeppackagenames com.baker.engrave.lib
+
+ # 枚举类不能被混淆
+ -keepclassmembers enum * {
+ public static **[] values();
+ public static ** valueOf(java.lang.String);
+ }
 
 -keepattributes Exceptions,InnerClasses,...
 
@@ -131,4 +138,4 @@
 -keep public class com.baker.engrave.lib.callback.UploadRecordsCallback{*;}
 -keep public class com.baker.engrave.lib.callback.ContentTextCallback{*;}
 -keep public class com.baker.engrave.lib.callback.BaseMouldCallback{*;}
--keep public class com.baker.engrave.lib.configuration.*{*;}
+-keep public class com.baker.engrave.lib.configuration.EngraverType{*;}
