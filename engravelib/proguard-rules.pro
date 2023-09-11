@@ -121,7 +121,7 @@
 -keepattributes Exceptions,InnerClasses,...
 
 -keep public class com.baker.engrave.lib.BakerVoiceEngraver{*;}
-#-keep public class com.baker.engrave.lib.util.*{*;}
+-keep public class com.baker.engrave.lib.util.*{*;}
 -keep public class com.baker.engrave.lib.net.WebSocketClient{*;}
 -keep public class com.baker.engrave.lib.callback.DetectCallback{*;}
 -keep public class com.baker.engrave.lib.callback.PlayListener{*;}
@@ -131,3 +131,4 @@
 -keep public class com.baker.engrave.lib.callback.UploadRecordsCallback{*;}
 -keep public class com.baker.engrave.lib.callback.ContentTextCallback{*;}
 -keep public class com.baker.engrave.lib.callback.BaseMouldCallback{*;}
+-keep public class com.baker.engrave.lib.configuration.*{*;}

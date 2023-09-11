@@ -11,7 +11,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2800e6e8-73dc-48e3-baec-1fd69cb0c0e1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/AuthorizationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/AuthorizationActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/RecordUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -401,12 +407,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java</url>
-          <line>149</line>
+          <line>150</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java</url>
-          <line>154</line>
+          <line>155</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">

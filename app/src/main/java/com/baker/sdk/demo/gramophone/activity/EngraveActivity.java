@@ -346,7 +346,6 @@ public class EngraveActivity extends BakerBaseActivity {
             if (isStart) {
                 imgRecording.setVisibility(View.VISIBLE);
                 tvTips.setVisibility(View.INVISIBLE);
-
             } else {
                 BakerVoiceEngraver.getInstance().endRecord();
             }

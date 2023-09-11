@@ -16,14 +16,11 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
-
 import com.baker.engrave.lib.BakerVoiceEngraver;
-import com.baker.engrave.lib.BuildConfig;
 import com.baker.engrave.lib.VoiceEngraveConstants;
 import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.bean.RecordingCheckDto;
 import com.baker.engrave.lib.bean.RecordingSocketBean;
-import com.baker.engrave.lib.callback.BaseNetCallback;
 import com.baker.engrave.lib.callback.innner.RecordUtilCallback;
 import com.baker.engrave.lib.net.NetConstants;
 import com.baker.engrave.lib.net.NetUtil;
@@ -95,7 +92,8 @@ public class RecordUtil {
             if (recordUtilCallback != null) {
                 recordUtilCallback.recordVolume((int) audioChunk.maxAmplitude());
             }
-            try {
+            setData(bytes);
+         /*   try {
                 if (isFirst) {
                     isFirst = false;
                     linkedBlockingDeque.put(new PcmBean(0, bytes));
@@ -105,7 +103,7 @@ public class RecordUtil {
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 LogUtil.e("linkedBlockingDeque.put ERROR!!" + e.getMessage());
-            }
+            }*/
         }), file());
 
         getAudioFocus();
@@ -122,6 +120,7 @@ public class RecordUtil {
             recordUtilCallback.recordsResult(1, "0");
         }
     }
+
 
     private static void endRecord(int typeCode) {
         try {
@@ -463,6 +462,46 @@ public class RecordUtil {
     private static void reset() {
         if (mTelephonyManager != null) {
             mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+        }
+    }
+
+    private static byte[] remaining;
+
+    private static void setData(byte[] data) {
+        try {
+            int oneSecLength = 4096;
+            if (data != null && data.length > 0) {
+                byte[] temp;
+                //若之前有剩余的，先将剩余数据copy至temp数组。
+                if (remaining != null && remaining.length > 0) {
+                    int remainingLen = remaining.length;
+                    temp = new byte[remainingLen + data.length];
+                    System.arraycopy(remaining, 0, temp, 0, remainingLen);
+                    System.arraycopy(data, 0, temp, remainingLen, data.length);
+                    remaining = null;
+                } else {
+                    //若之前没有剩余的，直接将data数据copy至temp数组。
+                    temp = new byte[data.length];
+                    System.arraycopy(data, 0, temp, 0, data.length);
+                }
+                int size = temp.length / oneSecLength;
+
+                //先处理整数倍的秒数数据。
+                for (int i = 0; i < size; i++) {
+                    byte[] tempBytes;
+                    System.arraycopy(temp, i * oneSecLength, tempBytes = new byte[oneSecLength], 0, oneSecLength);
+                    linkedBlockingDeque.put(new PcmBean(isFirst ? 0 : 1, tempBytes));
+                    if (isFirst) isFirst = false;
+
+                }
+                int remainder = temp.length % oneSecLength;
+                if (remainder > 0) {
+                    //将余数部分copy至remaining数组，给下批数据回来后一起处理。
+                    System.arraycopy(temp, temp.length - remainder, remaining = new byte[remainder], 0, remainder);
+                }
+            }
+        } catch (Exception e) {
+            LogUtil.e(e.getMessage() + " ");
         }
     }
 }
