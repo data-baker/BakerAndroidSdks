@@ -11,29 +11,23 @@
   <component name="ChangeListManager">
     <list default="true" id="2800e6e8-73dc-48e3-baec-1fd69cb0c0e1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/base/BakerBaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/base/BakerBaseActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/GramophoneActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/GramophoneActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ConfirmActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ConfirmActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/DbDetectionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/DbDetectionActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/ContinueDialogFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/ContinueDialogFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/ExperienceFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/ExperienceFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/fragment/HomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/util/PreferenceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/util/PreferenceUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_engrave.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_experience.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_experience.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/BakerOkHttpClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/net/NetUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_continue.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_continue.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/callback/ContentTextCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/callback/ContentTextCallback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/callback/innner/NetCallbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/callback/innner/NetCallbackImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/DetectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/DetectUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/versions.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/versions.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[1ad06898550d7ece]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[MGF4C19726009158]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -63,6 +57,24 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="BakerAndroidSdks" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BakerAndroidSdks" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BakerAndroidSdks" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BakerAndroidSdks" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -108,7 +120,7 @@
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="memory.settings.postsync.last.time.stamp" value="1694141398106" />
+    <property name="memory.settings.postsync.last.time.stamp" value="1694412565744" />
     <property name="settings.editor.selected.configurable" value="cn.yiiguxing.plugin.translate" />
   </component>
   <component name="RecentsManager">
@@ -118,6 +130,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.baker.sdk.demo.gramophone.fragment" />
       <recent name="com.baker.engrave.lib.util" />
       <recent name="com.baker.engrave.lib" />
       <recent name="com.baker.sdk.demo.gramophone.util" />
@@ -349,10 +362,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.BakerAndroidSdks:app [assembleDebug]" />
         <item itemvalue="Gradle.BakerAndroidSdks:synthesizer [assembleDebug]" />
         <item itemvalue="Gradle.BakerAndroidSdks:bakerhttp [assembleDebug]" />
         <item itemvalue="Gradle.BakerAndroidSdks:bakerbasecomponent [assembleDebug]" />
-        <item itemvalue="Gradle.BakerAndroidSdks:app [assembleDebug]" />
         <item itemvalue="Gradle.BakerAndroidSdks:bakerasr [assembleDebug]" />
       </list>
     </recent_temporary>
@@ -384,12 +397,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java</url>
-          <line>281</line>
+          <line>311</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/EngraveActivity.java</url>
-          <line>282</line>
+          <line>312</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
@@ -401,6 +414,11 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/com/baker/sdk/demo/gramophone/activity/ExperienceActivity.java</url>
           <line>155</line>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/engravelib/src/main/java/com/baker/engrave/lib/util/DetectUtil.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

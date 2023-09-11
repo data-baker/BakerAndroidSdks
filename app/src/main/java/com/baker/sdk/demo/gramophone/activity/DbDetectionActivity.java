@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.DialogFragment;
+
 import com.baker.engrave.lib.BakerVoiceEngraver;
 import com.baker.engrave.lib.bean.RecordResult;
 import com.baker.engrave.lib.callback.ContentTextCallback;
@@ -16,6 +18,8 @@ import com.baker.engrave.lib.callback.DetectCallback;
 import com.baker.engrave.lib.configuration.EngraverType;
 import com.baker.sdk.demo.R;
 import com.baker.sdk.demo.base.BakerBaseActivity;
+import com.baker.sdk.demo.gramophone.fragment.ContinueDialogFragment;
+import com.baker.sdk.demo.gramophone.fragment.TipDialogFragment;
 import com.baker.sdk.demo.gramophone.util.PreferenceUtil;
 import com.baker.sdk.demo.gramophone.util.SharedPreferencesUtil;
 import com.blankj.utilcode.util.ToastUtils;
@@ -47,6 +51,12 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
         btnStartEngrave.setOnClickListener(this);
         tvDetectValue = findViewById(R.id.tv_db_value);
         tvDetectTip = findViewById(R.id.tv_result);
+
+
+        //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
+        BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), ""));
+        BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(this));//如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
+        BakerVoiceEngraver.getInstance().getSessionIdAndTexts(); //获取，不知道获取的啥
     }
 
     @Override
@@ -63,27 +73,49 @@ public class DbDetectionActivity extends BakerBaseActivity implements DetectCall
                     tvDetectTip.setText("环境噪音检测中，请稍候...");
                 }
             } else {
-                //QueryId的作用是xxx，非常建议设置，如果在初始化时已经填写了QueryId，此方法不必重复设置。
-                BakerVoiceEngraver.getInstance().setQueryId(SharedPreferencesUtil.getQueryId(this));//如果要上传QueryID，请务必在调用getVoiceMouldId()方法之前调用。
-               // BakerVoiceEngraver.getInstance().setType(EngraverType.Common);
-                BakerVoiceEngraver.getInstance().getSessionIdAndTexts(); //获取，不知道获取的啥
+                if (currentIndex == 0) {
+                    startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
+                    finish();
+                } else {
+                    ContinueDialogFragment dialog = new ContinueDialogFragment();
+                    dialog.setCancelListener(() -> {
+                        BakerVoiceEngraver.getInstance().recordInterrupt();
+                        PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), "");
+                        BakerVoiceEngraver.getInstance().setRecordSessionId("");
+                        BakerVoiceEngraver.getInstance().getSessionIdAndTexts();
+                    });
+                    dialog.show(getSupportFragmentManager(), "");
+                }
+
             }
         }
     }
+
+    int currentIndex;
+    boolean isFirst = false;
+
     public void initCallBack() {
         //获取文本内容
         BakerVoiceEngraver.getInstance().setContentTextCallback(new ContentTextCallback() {
             @Override
-            public void contentTextList(List<RecordResult> mRecordList, String sessionId) {
+            public void contentTextList(List<RecordResult> mRecordList, String sessionId, int index) {
+                currentIndex = index;
                 runOnUiThread(() -> {
+                    isFirst = !isFirst;
                     if (!TextUtils.isEmpty(sessionId)) {
-                        if (!sessionId.equals(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(),""))){
-                            Toast.makeText(DbDetectionActivity.this,"", Toast.LENGTH_LONG).show();
+                        if (!isFirst) {
+                            startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
+                            finish();
+                        } else {
+                            String originSessionId = PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), "");
+                            if (!TextUtils.isEmpty(originSessionId) && !sessionId.equals(originSessionId)) {
+                                TipDialogFragment dialog = new TipDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "");
+                            }
                         }
                         PreferenceUtil.putString(PreferenceUtil.getEngraverKey(), sessionId);
                     }
-                    startActivity(new Intent(DbDetectionActivity.this, EngraveActivity.class));
-                    finish();
+
                 });
             }
 

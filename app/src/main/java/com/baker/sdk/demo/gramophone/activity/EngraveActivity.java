@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,7 @@ public class EngraveActivity extends BakerBaseActivity {
     private boolean startOrEnd = true;
     private ProgressDialog progressDialog;
     private List<RecordResult> dataList = new ArrayList<>();
+    private TextView tvDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,38 @@ public class EngraveActivity extends BakerBaseActivity {
 
     }
 
+    int count;
+    private final CountDownTimer timer = new CountDownTimer(2000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+            runOnUiThread(() -> {
+                tvDownTimer.setText(String.valueOf(count));
+                count--;
+            });
+        }
+
+        @Override
+        public void onFinish() {
+            isButtonEnable = true;
+            if (isStart) {
+                imgRecording.setVisibility(View.VISIBLE);
+                tvTips.setVisibility(View.INVISIBLE);
+                tvDownTimer.setVisibility(View.GONE);
+            } else {
+                BakerVoiceEngraver.getInstance().endRecord();
+                tvDownTimer.setVisibility(View.GONE);
+            }
+        }
+    };
+
 
     private void initView() {
         btnRecordStart = findViewById(R.id.record_start);
         Button btnPre = findViewById(R.id.btnPre);
         Button btnNext = findViewById(R.id.btnNext);
         Button btnPlay = findViewById(R.id.btnPlay);
+        tvDownTimer = (TextView) findViewById(R.id.tv_down_timer);
+
         btnPre.setOnClickListener(this);
         btnNext.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
@@ -69,7 +97,8 @@ public class EngraveActivity extends BakerBaseActivity {
         tvTips = findViewById(R.id.tv_recognize_result);
         tvTips.setVisibility(View.INVISIBLE);
         imgRecording = findViewById(R.id.img_recording);
-        imgRecording.setVisibility(View.INVISIBLE);
+        imgRecording.setVisibility(View.GONE);
+        tvDownTimer.setVisibility(View.INVISIBLE);
     }
 
     private void initData() {
@@ -108,9 +137,9 @@ public class EngraveActivity extends BakerBaseActivity {
                 runOnUiThread(() -> {
                     log("---6");
                     if (typeCode == 1) {
-                        imgRecording.setVisibility(View.VISIBLE);
-                        tvTips.setVisibility(View.INVISIBLE);
+                        timerStart(true);
                         startOrEnd = false;
+                        tvTips.setVisibility(View.INVISIBLE);
                         tvTips.setText("录音中...");
                         btnRecordStart.setEnabled(true);
                         btnRecordStart.setText("上传识别");
@@ -167,6 +196,7 @@ public class EngraveActivity extends BakerBaseActivity {
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.record_start) {
+            if (!isButtonEnable) return;
             if (startOrEnd) {
                 //开始录音 0=mouldId为空，1=无权限，2=开启成功
                 BakerVoiceEngraver instance = BakerVoiceEngraver.getInstance();
@@ -174,7 +204,7 @@ public class EngraveActivity extends BakerBaseActivity {
                 Log.d(TAG, result + "");
             } else {
                 //结束录音上传  0=mouldId为空, 1=结束成功，开始上传识别。
-                BakerVoiceEngraver.getInstance().endRecord();
+                timerStart(false);
             }
         } else if (id == R.id.btnPre) {//上一句
             toPre();
@@ -324,4 +354,16 @@ public class EngraveActivity extends BakerBaseActivity {
     private void log(String msg) {
         Log.d(EngraveActivity.class.getName(), msg);
     }
+
+    private boolean isStart, isButtonEnable = true;
+
+    public void timerStart(boolean isStart) {
+        isButtonEnable = false;
+        count = 2;
+        this.isStart = isStart;
+        tvDownTimer.setVisibility(View.VISIBLE);
+        imgRecording.setVisibility(View.GONE);
+        timer.start();
+    }
+
 }

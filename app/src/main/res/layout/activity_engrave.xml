@@ -76,10 +76,22 @@
 
         <ImageView
             android:id="@+id/img_recording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginTop="10dp"
             android:background="@mipmap/volume_1"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_down_timer"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:textColor="@color/white"
+            android:text="2"
+            android:gravity="center"
+            android:textSize="26dp"
+            android:layout_marginTop="10dp"
+            android:background="#555"
             android:visibility="visible" />
 
 
@@ -95,7 +107,6 @@
             android:enabled="true"
             android:text="点击开始录制"
             android:textColor="@drawable/selector_text_button"
-
             android:textSize="18sp" />
 
         <LinearLayout

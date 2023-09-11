@@ -49,6 +49,7 @@ public class NetCallbackImpl implements NetCallback {
 
     //录音结果总条数
     private final List<RecordResult> mRecordList = new ArrayList<>();
+    private int index;
     private ConfigBean bean;
 
 
@@ -64,11 +65,18 @@ public class NetCallbackImpl implements NetCallback {
     public void callBackRecordList(ArrayList<RecordTextData> dataList, String sessionId) {
         if (dataList != null) {
             mRecordList.clear();
-            for (RecordTextData data : dataList) {
-                RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioUrl), data.audioUrl);
-                mRecordList.add(recordResult);
+            index =0;
+            for (int i = 0; i < dataList.size(); i++) {
+                RecordTextData data = dataList.get(i);
+                if (data != null) {
+                    RecordResult recordResult = new RecordResult(data.text, 0, !TextUtils.isEmpty(data.audioUrl), data.audioUrl);
+                    mRecordList.add(recordResult);
+                    if (recordResult.isPass()) {
+                        index = (i + 1);
+                    }
+                }
             }
-            contentTextCallback.contentTextList(mRecordList, sessionId);
+            contentTextCallback.contentTextList(mRecordList, sessionId, index);
         }
     }
 

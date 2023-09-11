@@ -82,7 +82,7 @@ public class DetectUtil {
             List<Integer> highList = new ArrayList<>();
             List<Integer> lowList = new ArrayList<>();
             for (Integer i : decibelsList) {
-                if (i > (mNoise)) {
+                if (i > mNoise) {
                     highList.add(i);
                 } else {
                     lowList.add(i);

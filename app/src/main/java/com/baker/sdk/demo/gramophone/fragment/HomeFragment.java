@@ -25,7 +25,7 @@ public class HomeFragment extends BaseFragment {
 
         view.findViewById(R.id.experience_start).setOnClickListener(view -> {
 
-            if (!TextUtils.isEmpty(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), ""))){
+          /*  if (!TextUtils.isEmpty(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), ""))){
                 getActivity().runOnUiThread(() -> {
                     DialogFragment dialog = new ContinueDialogFragment();
                     dialog.show(getParentFragmentManager(), "");
@@ -34,7 +34,11 @@ public class HomeFragment extends BaseFragment {
                 BakerVoiceEngraver.getInstance().setRecordSessionId("");
                 BakerVoiceEngraver.getInstance().requestConfig();
                 startActivity(new Intent(getActivity(), DbDetectionActivity.class));
-            }
+            }*/
+
+            BakerVoiceEngraver.getInstance().setRecordSessionId(PreferenceUtil.getString(PreferenceUtil.getEngraverKey(), ""));
+            BakerVoiceEngraver.getInstance().requestConfig();
+            startActivity(new Intent(getActivity(), DbDetectionActivity.class));
 
         });
 

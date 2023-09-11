@@ -15,7 +15,7 @@ public interface ContentTextCallback {
      *
      * @param strList
      */
-    void contentTextList(List<RecordResult> mRecordList,String sessionId);
+    void contentTextList(List<RecordResult> mRecordList,String sessionId,int index);
 
     /**
      * 错误信息回调
