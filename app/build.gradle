@@ -80,7 +80,7 @@ dependencies {
     implementation project(path: ":bakerasr")
     implementation project(path: ":bakerlongtimeasr")
     implementation project(path: ':voiceconvert')
-    implementation project(path: ':engravelib')
+   // implementation project(path: ':engravelib')
 
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"

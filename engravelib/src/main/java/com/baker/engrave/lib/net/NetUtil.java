@@ -122,7 +122,7 @@ public class NetUtil {
         });
     }
 
-  /*  *//**
+    /*  *//**
      * 获取录音文本
      *//*
     public static void getTextList() {
@@ -213,12 +213,13 @@ public class NetUtil {
                                 onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_DATA_NULL, "getVoiceMouldId, mouldId request failed, sessionId is null。");
                             }
                             String sentenceListString = jsonData.getString("sentenceList");
-                            ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString, new TypeToken<ArrayList<RecordTextData>>() {}.getType());
+                            ArrayList<RecordTextData> dataList = gson.fromJson(sentenceListString, new TypeToken<ArrayList<RecordTextData>>() {
+                            }.getType());
                             if (netCallback != null) {
-                                netCallback.callBackRecordList(dataList,sessionId);
+                                netCallback.callBackRecordList(dataList, sessionId);
                             }
                         }
-                    }else if ("10008".equals(resultCode)){
+                    } else if ("10008".equals(resultCode)) {
                         BakerVoiceEngraver.getInstance().setRecordSessionId("");
                         onFault(TYPE_CONTENT_TEXT, VoiceEngraveConstants.ERROR_CODE_SESSION, "getVoiceMouldId, response code：" + resultCode + ", errorMessage: " + jsonObject.getString("message"));
                     } else {
@@ -362,6 +363,7 @@ public class NetUtil {
         } else {
             params.put("page", page);
         }
+        params.put("type", BakerVoiceEngraver.getInstance().getType() == EngraverType.Boutique ? "2" : "1");
         if (TextUtils.isEmpty(queryId)) {
             onFault(TYPE_MOULD, VoiceEngraveConstants.ERROR_CODE_PARAM_NULL, "getMouldList, queryId is null.");
             return;
@@ -433,7 +435,7 @@ public class NetUtil {
         String nounce, timestamp, signature;
         ConcurrentHashMap<String, String> headers = new ConcurrentHashMap<>();
         headers.put("Content-Type", "application/json; charset=utf-8");
-        headers.put("clientId", TextUtils.isEmpty(BakerVoiceEngraver.getInstance().getClientId())?"":BakerVoiceEngraver.getInstance().getClientId());
+        headers.put("clientId", TextUtils.isEmpty(BakerVoiceEngraver.getInstance().getClientId()) ? "" : BakerVoiceEngraver.getInstance().getClientId());
         headers.put("token", mToken);
         headers.put("modelType", BakerVoiceEngraver.getInstance().getType() == EngraverType.Common ? "1" : "2");
         nounce = String.valueOf(NetUtil.random6num());
