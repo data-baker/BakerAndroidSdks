@@ -42,7 +42,7 @@ public class GramophoneActivity extends BakerBaseActivity {
         initView();
 
         //初始化复刻SDK
-        BakerVoiceEngraver.getInstance().setLog(false);
+        BakerVoiceEngraver.getInstance().setLog(true);
         BakerVoiceEngraver.getInstance().initSDK(GramophoneActivity.this, sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_ID),
                 sharedPreferencesGet(Constants.GRAMOPHONE_CLIENT_SECRET), SharedPreferencesUtil.getQueryId(GramophoneActivity.this), new InitListener() {
                     @Override

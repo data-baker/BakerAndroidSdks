@@ -126,4 +126,6 @@
 
 -keeppackagenames com.baker.engrave.lib
 -keep class com.baker.engrave.lib.** { *; }
+-keep public class com.baker.engrave.lib.configuration.EngraverType{*;}
+
 

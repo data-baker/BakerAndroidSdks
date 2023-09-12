@@ -87,7 +87,6 @@ public class RecordUtil {
         isFirst = true;
         linkedBlockingDeque.clear();
         mRecorder = OmRecorder.pcm(new PullTransport.Default(mic(), audioChunk -> {
-            LogUtil.v("正在录音...");
             byte[] bytes = audioChunk.toBytes();
             if (recordUtilCallback != null) {
                 recordUtilCallback.recordVolume((int) audioChunk.maxAmplitude());
@@ -263,7 +262,6 @@ public class RecordUtil {
                 super.run();
                 //不停止录音，并且队列有数据就持续发送
                 while (true) {
-                    LogUtil.d("-----上传音频的子线程-----");
                     try {
                         PcmBean pcmBean = linkedBlockingDeque.take();
                         if (pcmBean.state == 2) {
@@ -284,13 +282,12 @@ public class RecordUtil {
     private static int countUploadAudioIndex = 0;//上传音频buffer的计数
 
     private static void sendPcm(byte[] pcm, int state) {
-        LogUtil.i("发送中--1--" + pcm.length + "state" + state + "\n" + Base64.encodeToString(pcm, Base64.NO_WRAP));
+
         String data = "";
         audioBean.setStatus(state);
         audioBean.setInfo(Base64.encodeToString(pcm, Base64.NO_WRAP));
         audioBean.setSequence(countUploadAudioIndex);
         data = new Gson().toJson((WebSocketUtil.formatParameters(new RecordingSocketBean.ParamBean(mSessionId, mContentText, BakerVoiceEngraver.getInstance().getCurrentIndex()), audioBean)));
-        LogUtil.d("wsReq: " + data);
         countUploadAudioIndex++;
         mWebSocket.send((data));
     }
