@@ -79,8 +79,6 @@
 -keep class sun.misc.Unsafe { *; }
 #-keep class com.google.gson.stream.** { *; }
 
-# Application classes that will be serialized/deserialized over Gson
--keep class com.baker.engrave.lib.bean.** { *; } ##这里包名需要改成自己的java bean包
 
 ##---------------End: proguard configuration for Gson  ----------
 
@@ -117,7 +115,6 @@
  -keepclasseswithmembers class * {
      public <init>(android.content.Context, android.util.AttributeSet, int);
  }
- -keeppackagenames com.baker.engrave.lib
 
  # 枚举类不能被混淆
  -keepclassmembers enum * {
@@ -127,17 +124,6 @@
 
 -keepattributes Exceptions,InnerClasses,...
 
+-keeppackagenames com.baker.engrave.lib
 -keep class com.baker.engrave.lib.** { *; }
--keep public class com.baker.engrave.lib.BakerVoiceEngraver{*;}
--keep public class com.baker.engrave.lib.util.*{*;}
--keep public class com.baker.engrave.lib.net.WebSocketClient{*;}
--keep public class com.baker.engrave.lib.callback.DetectCallback{*;}
--keep public class com.baker.engrave.lib.callback.PlayListener{*;}
--keep public class com.baker.engrave.lib.callback.InitListener{*;}
--keep public class com.baker.engrave.lib.callback.MouldCallback{*;}
--keep public class com.baker.engrave.lib.callback.RecordCallback{*;}
--keep public class com.baker.engrave.lib.callback.UploadRecordsCallback{*;}
--keep public class com.baker.engrave.lib.callback.ContentTextCallback{*;}
--keep public class com.baker.engrave.lib.callback.BaseMouldCallback{*;}
--keep public class com.baker.engrave.lib.configuration.EngraverType{*;}
 
