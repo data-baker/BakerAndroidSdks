@@ -127,10 +127,8 @@ public class EventManagerMultiNet implements EventManager {
             }
             if (data == null || data.length < bufferSizeForUpload) {
                 longAsrParams.put("req_idx", mIdx.get() * -1);
-                Log.e("TAG--->WS", "Idx::" + mIdx.get() * -1);
             } else {
                 longAsrParams.put("req_idx", mIdx.get());
-                Log.e("TAG--->WS", "Idx::" + mIdx.get());
             }
 
             if (webSocketClient != null) {
@@ -150,7 +148,6 @@ public class EventManagerMultiNet implements EventManager {
                 String params = GsonConverter.toJson(hashMapParams);
                 if (webSocketClient.getWebSocket() != null) {
                     if (!isCloseSocket) {
-                        Log.e("TAG--->WS", "isCloseSocket::" + isCloseSocket);
                         webSocketClient.getWebSocket().send(params);
                     }
                 }
@@ -177,7 +174,7 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
             super.onFailure(webSocket, t, response);
-            Log.e("TAG--->WS", "onFailure::" + t + "message:" + t.getMessage());
+
             if (webSocketClient != null && webSocketClient.getCancelSocket() != null && !webSocket.equals(webSocketClient.getCancelSocket())) {
                 onFault(BakerLongTimeAsrConstants.ERROR_CODE_WEBSOCKET_ONFAILURE, t.getMessage());
             }
@@ -186,7 +183,7 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
             super.onMessage(webSocket, text);
-            Log.e("TAG--->WS", "onMessage::" + text);
+            if (TextUtils.isEmpty(text)) return;
             if (!TextUtils.isEmpty(text)) {
                 LongTimeAsrResponse response = GsonConverter.fromJson(text, LongTimeAsrResponse.class);
                 if (response != null) {
@@ -214,14 +211,14 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
             super.onClosing(webSocket, code, reason);
-            Log.e("TAG--->WS", "onClosing");
+
         }
 
         @Override
         public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
             super.onClosed(webSocket, code, reason);
             isCloseSocket = true;
-            Log.e("TAG--->WS", "onClosed");
+
         }
     };
 
