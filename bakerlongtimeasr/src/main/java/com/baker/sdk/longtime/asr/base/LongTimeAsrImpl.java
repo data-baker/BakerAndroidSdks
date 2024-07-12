@@ -7,6 +7,8 @@ import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -56,6 +58,7 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
     private String hotwordid = "";
     //asr个性化模型的id
     private String diylmid = "";
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public LongTimeAsrImpl() {
     }
@@ -226,6 +229,9 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
     @Override
     public void stopAsr() {
         EventManagerMessagePool.offer(mic, "mic.stop");
+      /*  mHandler.postDelayed(()->{
+            EventManagerMessagePool.offer(mic, "mic.record");
+        },3000);*/
         reset();
     }
 
@@ -298,7 +304,9 @@ public class LongTimeAsrImpl implements EventManager, LongTimeAsrInterface {
                 if (!TextUtils.isEmpty(params) && mCallBack != null) {
                     LongTimeAsrResponse response = GsonConverter.fromJson(params, LongTimeAsrResponse.class);
                     mCallBack.onRecording(response);
-//                    mCallBack.onRecording(response.getAsr_text(), "true".equals(response.getSentence_end()), response.getEnd_flag() == 1);
+                    if (response.getEnd_flag() == 1) {
+                        EventManagerMessagePool.offer(net, "net.disconnect");
+                    }
                 }
                 break;
             case "net.error":

@@ -62,24 +62,18 @@ public class AsrMicActivity extends BakerBaseActivity {
         mSharedPreferences = getSharedPreferences(Constants.SP_TABLE_NAME, Context.MODE_PRIVATE);
 
         traceTv = findViewById(R.id.tv_trace);
-        traceTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                cm.setText(mTraceId);
-                toast("TraceId已复制至粘贴版");
-            }
+        traceTv.setOnClickListener(v -> {
+            ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            cm.setText(mTraceId);
+            toast("TraceId已复制至粘贴版");
         });
 
         resultTv = findViewById(R.id.tv_Result);
-        resultTv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                cm.setText(resultTv.getText().toString());
-                toast("文本内容已复制至粘贴版");
-                return false;
-            }
+        resultTv.setOnLongClickListener(v -> {
+            ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            cm.setText(resultTv.getText().toString());
+            toast("文本内容已复制至粘贴版");
+            return false;
         });
 
         btn = findViewById(R.id.startRecognize);
@@ -104,45 +98,17 @@ public class AsrMicActivity extends BakerBaseActivity {
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bakerRecognizer != null) {
-                    setParams();
-                    //返回0启动成功，返回1=callback为空，未启动成功
-                    bakerRecognizer.startAsr();
-                }
-                resultTv.setText("");
-                traceTv.setText("");
+        btn.setOnClickListener(v -> {
+            if (bakerRecognizer != null) {
+                setParams();
+                //返回0启动成功，返回1=callback为空，未启动成功
+                bakerRecognizer.startAsr();
             }
+            resultTv.setText("");
+            traceTv.setText("");
+            btn.setEnabled(false);
         });
-//        btn.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (bakerRecognizer != null) {
-//                    setParams();
-//                    //返回0启动成功，返回1=callback为空，未启动成功
-//                    bakerRecognizer.startAsr();
-//                }
-//                resultTv.setText("");
-//                traceTv.setText("");
-//                return true;
-//            }
-//        });
-//        btn.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    Log.e("hsj", "MotionEvent.ACTION_UP");
-//                    if (bakerRecognizer != null) {
-//                        bakerRecognizer.stopAsr();
-//                    }
-//                    btn.setText("点击开启识别");
-//                    imgRecording.setVisibility(View.INVISIBLE);
-//                }
-//                return false;
-//            }
-//        });
+
 
         bakerRecognizer = new BakerRecognizer();
         bakerRecognizer.initSdk(AsrMicActivity.this, sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_ID),
@@ -163,6 +129,7 @@ public class AsrMicActivity extends BakerBaseActivity {
                 case 0:
                     //onError
                     btn.setText("点击开启识别");
+                    btn.setEnabled(true);
                     imgRecording.setVisibility(View.INVISIBLE);
                     break;
                 case 1:
@@ -216,8 +183,6 @@ public class AsrMicActivity extends BakerBaseActivity {
 
         @Override
         public void onEndOfSpeech() {
-//            appendResult("\n识别结束");
-
             if (bakerRecognizer != null) {
                 bakerRecognizer.stopAsr();
             }

@@ -30,6 +30,8 @@ public class MediaPlayerActivity extends BakerBaseActivity {
     private TextView resultTv;
     private SharedPreferences mSharedPreferences;
 
+    //1715841752114
+    //1715841750141
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,6 @@ public class MediaPlayerActivity extends BakerBaseActivity {
         //初始化sdk
         bakerSynthesizer = new BakerSynthesizer(this, sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID),
                 sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
-//        bakerSynthesizer = new BakerSynthesizer(this);
         bakerSynthesizer.setDebug(MediaPlayerActivity.this, true);
     }
 
@@ -97,7 +98,7 @@ public class MediaPlayerActivity extends BakerBaseActivity {
         //设置返回数据的callback
         bakerSynthesizer.setBakerCallback(bakerMediaCallback);
         //设置发音人声音名称，默认：Lingling
-        bakerSynthesizer.setVoice("Lingling");
+        bakerSynthesizer.setVoice("Jiaojiao");
         //私有化部署时设置以下参数
 //        bakerSynthesizer.setUrl("ws://192.168.1.19:19009");
 //        bakerSynthesizer.setTtsToken("default");

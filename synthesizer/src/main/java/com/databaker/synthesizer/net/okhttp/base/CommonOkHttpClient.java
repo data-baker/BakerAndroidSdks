@@ -1,6 +1,7 @@
 package com.databaker.synthesizer.net.okhttp.base;
 
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.databaker.synthesizer.bean.Token;
 import com.databaker.synthesizer.net.okhttp.interceptor.HttpLoggingInterceptor;
 import com.databaker.synthesizer.net.okhttp.interceptor.Logger;
 import com.databaker.synthesizer.util.Util;
@@ -56,10 +57,9 @@ public class CommonOkHttpClient {
         return mClient;
     }
 
-    public static Call sendRequest(Request request, CallbackListener listener) {
+    public static <T> void sendRequest(Request request, CallbackListener<T> listener) {
         Call call = init().newCall(request);
-        call.enqueue(new CommonJSONCallBack(listener));
-        return call;
+        call.enqueue(new CommonJSONCallBack<>(listener));
     }
 
     private static final HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new Logger() {
@@ -71,31 +71,28 @@ public class CommonOkHttpClient {
     /**
      * 设置头信息
      */
-    private static final Interceptor headerInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
+    private static final Interceptor headerInterceptor = chain -> {
+        Request originalRequest = chain.request();
 
-            String nounce, timestamp, signature;
+        String nounce, timestamp, signature;
 
-            nounce = String.valueOf(Util.random6num());
-            timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+        nounce = String.valueOf(Util.random6num());
+        timestamp = String.valueOf(System.currentTimeMillis() / 1000);
 
-            Map<String, String> params = new HashMap<>();
-            params.put("nounce", nounce);
-            params.put("timestamp", timestamp);
-            signature = Util.genSignature("", nounce, params);
+        Map<String, String> params = new HashMap<>();
+        params.put("nounce", nounce);
+        params.put("timestamp", timestamp);
+        signature = Util.genSignature("", nounce, params);
 
-            Request.Builder requestBuilder = originalRequest.newBuilder()
-                    .addHeader("Content-Type", "application/json; charset=utf-8")
-                    //所有header不能传null
-                    .addHeader("nounce", nounce)
-                    .addHeader("timestamp", timestamp)
-                    .addHeader("signature", signature)
-                    .method(originalRequest.method(), originalRequest.body());
+        Request.Builder requestBuilder = originalRequest.newBuilder()
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                //所有header不能传null
+                .addHeader("nounce", nounce)
+                .addHeader("timestamp", timestamp)
+                .addHeader("signature", signature)
+                .method(originalRequest.method(), originalRequest.body());
 
-            Request request = requestBuilder.build();
-            return chain.proceed(request);
-        }
+        Request request = requestBuilder.build();
+        return chain.proceed(request);
     };
 }

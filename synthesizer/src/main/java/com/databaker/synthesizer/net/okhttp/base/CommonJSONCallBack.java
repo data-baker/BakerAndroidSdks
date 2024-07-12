@@ -3,6 +3,8 @@ package com.databaker.synthesizer.net.okhttp.base;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+
 import com.baker.sdk.basecomponent.util.GsonConverter;
 
 import java.io.IOException;
@@ -18,11 +20,11 @@ import okhttp3.Response;
  * @Email 1019395018@qq.com
  */
 
-public class CommonJSONCallBack<Tt> implements Callback {
+public class CommonJSONCallBack<T> implements Callback {
     private final Handler handler;
-    private final CallbackListener listener;
+    private final CallbackListener<T> listener;
 
-    public CommonJSONCallBack(CallbackListener listener) {
+    public CommonJSONCallBack(CallbackListener<T> listener) {
         // 创建主线程的handler
         handler = new Handler(Looper.getMainLooper());
 
@@ -30,7 +32,7 @@ public class CommonJSONCallBack<Tt> implements Callback {
     }
 
     @Override
-    public void onFailure(Call call, final IOException e) {
+    public void onFailure(@NonNull Call call, @NonNull final IOException e) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -40,7 +42,7 @@ public class CommonJSONCallBack<Tt> implements Callback {
     }
 
     @Override
-    public void onResponse(final Call call, final Response response) throws IOException {
+    public void onResponse(@NonNull final Call call, @NonNull final Response response) throws IOException {
         handler.post(new Runnable() {
             @Override
             public void run() {

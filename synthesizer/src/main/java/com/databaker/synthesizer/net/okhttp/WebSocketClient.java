@@ -4,6 +4,7 @@ package com.databaker.synthesizer.net.okhttp;
 import android.util.Log;
 
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.baker.sdk.basecomponent.util.LogUtils;
 import com.baker.sdk.basecomponent.writelog.WriteLog;
 
 import java.util.concurrent.TimeUnit;
@@ -22,10 +23,7 @@ public class WebSocketClient {
     private final OkHttpClient client;
     private WebSocket webSocket;
     private int connectTimeOut = 10;
-    //    private final String baseUrl = "ws://echo.websocket.org";
-//    private final String baseUrl = "ws://192.168.1.21:9003";
-//    private final String baseUrl = "wss://openapitest.data-baker.com/wss";
-    private final String baseUrl = "wss://openapi.data-baker.com/wss";
+    private final String baseUrl = "wss://openapi.data-baker.com/tts/wsapi";
 
     public WebSocketClient() {
         client = new OkHttpClient().newBuilder().retryOnConnectionFailure(true)
@@ -34,7 +32,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(baseUrl)
                 .build();
-        Log.e("TAG--->url", "url:" + baseUrl);
+        LogUtils.getInstance().e("url:" + baseUrl);
     }
 
     public WebSocketClient(int timeOut) {
@@ -45,7 +43,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(baseUrl)
                 .build();
-        Log.e("TAG--->url", "url:" + baseUrl);
+        LogUtils.getInstance().e("url:" + baseUrl);
     }
 
     public WebSocketClient(String url) {
@@ -55,7 +53,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(url)
                 .build();
-        Log.e("TAG--->url", "url:" + url);
+        LogUtils.getInstance().e("url:" + baseUrl);
     }
 
     public WebSocketClient(int timeOut, String url) {
@@ -66,7 +64,7 @@ public class WebSocketClient {
         request = new Request.Builder()
                 .url(url)
                 .build();
-        Log.e("TAG--->url", "url:" + url);
+        LogUtils.getInstance().e("url:" + baseUrl);
     }
 
     public WebSocket getWebSocket() {
@@ -90,9 +88,9 @@ public class WebSocketClient {
         cancelSocket = webSocket;
         client.dispatcher().cancelAll();
         webSocket = client.newWebSocket(request, listener);
-        HLogger.d("webSocket.id==" + webSocket);
+        LogUtils.getInstance().e("webSocket.id==" + webSocket);
         if (cancelSocket != null) {
-            HLogger.d("webSocket.id==" + webSocket.toString() + "cancelSocket==" + cancelSocket.toString());
+            LogUtils.getInstance().e("webSocket.id==" + webSocket.toString() + "cancelSocket==" + cancelSocket.toString());
         }
     }
 

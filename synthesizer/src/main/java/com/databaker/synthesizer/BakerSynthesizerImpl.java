@@ -3,13 +3,12 @@ package com.databaker.synthesizer;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import com.baker.sdk.basecomponent.BakerBaseConstants;
-import com.baker.sdk.basecomponent.BakerSdkBaseComponent;
 import com.baker.sdk.basecomponent.bean.BakerError;
 import com.baker.sdk.basecomponent.util.GsonConverter;
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.baker.sdk.basecomponent.util.LogUtils;
 import com.baker.sdk.basecomponent.writelog.WriteLog;
 import com.databaker.synthesizer.bean.BaseResponse;
 import com.databaker.synthesizer.net.okhttp.WebSocketClient;
@@ -21,8 +20,6 @@ import com.databaker.synthesizer.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +29,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 /**
  * Create by hsj55
@@ -107,7 +103,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
     private class HsjWebSocketListener extends WebSocketListener {
         @Override
         public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
-            WriteLog.writeLogs("webSocket onOpen：" + response);
+            LogUtils.getInstance().d("webSocket onOpen：" + response);
             if (isFirst && callback != null) {
                 callback.onSynthesisStarted();
                 if (callback instanceof BakerMediaCallback) {
@@ -122,7 +118,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
 
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-            WriteLog.writeLogs("返回合成结果：" + text);
+            LogUtils.getInstance().d("返回合成结果：" + text);
             if (webSocketClient != null && webSocket.equals(webSocketClient.getWebSocket())) {
                 if (!TextUtils.isEmpty(text)) {
                     try {
@@ -130,8 +126,6 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
                         if (response.getCode() == 90000) {
                             if (callback != null) {
                                 if (isFirst && response.getData().getIdx() == 1) {
-//                                    ((BakerMediaCallback) callback).log(String.valueOf(System.currentTimeMillis() - time));
-//                                    time = System.currentTimeMillis();
                                     isFirst = false;
                                     callback.onPrepared();
                                 }
@@ -154,22 +148,16 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
                         } else if (response.getCode() == 30000) {
                             webSocket.close(1001, null);
                             getTtsToken(2);
-//                            handler.sendEmptyMessageDelayed(102, 2000);
                         } else {
                             onFault(SynthesizerErrorUtils.formatErrorBean(response.getCode(), response.getMessage(), response.getTrace_id()));
-//                            HLogger.d("webSocket.id==" + webSocket.toString());
                             webSocket.close(1001, null);
                         }
                     } catch (Exception e) {
-//                        CrashNetUtils.net(Log.getStackTraceString(e));
                         onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_RESPONSE_NOT_AVAILABLE_ANALYSIS_FAULT, e.getMessage()));
-//                        HLogger.d("webSocket.id==" + webSocket.toString());
                         webSocket.close(1001, null);
-//                        WriteLog.writeLogs("onMessage==" + e.getMessage());
                     }
                 } else {
                     onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_RESPONSE_NOT_AVAILABLE_ISNULL_FAULT));
-//                    HLogger.d("webSocket.id==" + webSocket.toString());
                     webSocket.close(1001, null);
                 }
             }
@@ -178,18 +166,18 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         @Override
         public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
             try {
-                WriteLog.writeLogs("onFailure==" + t.getMessage());
+                LogUtils.getInstance().d("错误信息::" + t + "message::" + t.getMessage() + "response::" + response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             if (webSocketClient != null && webSocketClient.getCancelSocket() != null && !webSocket.equals(webSocketClient.getCancelSocket())) {
+                LogUtils.getInstance().e("error-错误信息::" + t + "message::" + t.getMessage() + "response::" + response);
                 onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_ERROR_INFO, t.getMessage()));
                 webSocket.close(1001, null);
                 try {
                     t.printStackTrace();
                 } catch (Exception e) {
-                    WriteLog.writeLogs("onFailure==" + e.getMessage());
+                    LogUtils.getInstance().e("onFailure==" + e.getMessage());
                 }
             }
         }
@@ -233,8 +221,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
 
         String s = GsonConverter.toJson(params);
         HLogger.d(s);
-        WriteLog.writeLogs("webSocket 申请合成开始，参数：" + s);
-//        time = System.currentTimeMillis();
+        LogUtils.getInstance().e("webSocket 申请合成开始，参数：" + s);
         if (webSocketClient != null) {
             webSocketClient.getWebSocket().send(s);
         }
@@ -280,23 +267,22 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         authenticationUtils.authentication(true);
     }
 
-    private final CallbackListener mAuthenticationUtilsListener = new AuthenticationUtilsListener();
+    private final CallbackListener<String> mAuthenticationUtilsListener = new AuthenticationUtilsListener();
 
     private class AuthenticationUtilsListener implements CallbackListener<String> {
 
         @Override
         public void onSuccess(String response) {
             SynthesizerConstants.ttsToken = response;
-            WriteLog.writeLogs("获取成功ttsToken：" + SynthesizerConstants.ttsToken);
-            HLogger.d("获取成功ttsToken：" + SynthesizerConstants.ttsToken);
+            LogUtils.getInstance().d("获取成功ttsToken：" + SynthesizerConstants.ttsToken);
             if (isInit == 1) {
-                HLogger.d("BakerSynthesizerImpl.this.start()");
+                LogUtils.getInstance().d("BakerSynthesizerImpl.this.start()");
                 BakerSynthesizerImpl.this.start();
             } else if (isInit == 2) {
-                HLogger.d("webSocketClient.start(listener)");
+                LogUtils.getInstance().d("webSocketClient.start(listener)");
                 webSocketClient.start(listener);
             } else if (isInit == 0) {
-                HLogger.d("webSocketClient.start(listener)=0");
+                LogUtils.getInstance().d("webSocketClient.start(listener)=0");
             }
         }
 
@@ -329,7 +315,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
 
     @Override
     public void start() {
-        WriteLog.writeLogs("start() synthesizer start");
+        LogUtils.getInstance().d("start() synthesizer start");
         if (TextUtils.isEmpty(SynthesizerConstants.ttsToken)) {
             if (TextUtils.isEmpty(SynthesizerConstants.mClientId)) {
                 onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_INIT_FAILED_CLIENT_ID_FAULT));
@@ -359,9 +345,8 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
         }
         isFirst = true;
         contentStr = textQueue.poll();
-
         webSocketClient.start(listener);
-        WriteLog.writeLogs("start() synthesizer end");
+        LogUtils.getInstance().d("start() synthesizer end");
     }
 
     private void closeSocket() {
@@ -422,13 +407,12 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
                 }
                 List<String> resList = Util.splitText(text);
                 for (String str : resList) {
-                    String s = URLEncoder.encode(str, BakerBaseConstants.UTF_8);
-                    textQueue.offer(Base64.encodeToString(s.getBytes(), Base64.NO_WRAP));
+                    textQueue.offer(Base64.encodeToString(str.getBytes(), Base64.NO_WRAP));
                 }
             }
         } catch (Exception e) {
             onFault(SynthesizerErrorUtils.formatErrorBean(BakerSynthesizerErrorConstants.ERROR_CODE_PARAMS_NOT_AVAILABLE_TXT_TRANSCODING_FAULT, e.getMessage()));
-            WriteLog.writeLogs("setText==" + e.getMessage());
+            LogUtils.getInstance().d("setText==" + e.getMessage());
         }
     }
 
@@ -562,7 +546,7 @@ class BakerSynthesizerImpl implements SynthesizerInterface {
 
     private void onFault(BakerError errorBean) {
         String errorMes = String.format("发生错误：errorCode= %s, errorMsg= %s, traceId= %s.", errorBean.getCode(), errorBean.getMessage(), errorBean.getTrace_id());
-        Log.e("BakerSynthesizer", errorMes);
+        LogUtils.getInstance().e("onFault::" + errorMes);
         WriteLog.writeLogs(errorMes);
         if (callback != null) {
             callback.onTaskFailed(errorBean);

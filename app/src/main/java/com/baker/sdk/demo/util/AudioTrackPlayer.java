@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AudioTrackPlayer {
@@ -22,17 +24,16 @@ public class AudioTrackPlayer {
             AudioFormat.CHANNEL_OUT_MONO
             , AudioFormat.ENCODING_PCM_16BIT,
             iMinBufSize * 10, AudioTrack.MODE_STREAM);
+
     private byte[] tempData;
 
-    private final Thread ttsPlayerThread;
+    private Executor workService = Executors.newSingleThreadExecutor();
 
-    public AudioTrackPlayer() {
-//        Log.i(TAG, "init");
-        if (tempData != null) {
+    private final Runnable mTTSPlayerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
             tempData = null;
-        }
-        playing = true;
-        ttsPlayerThread = new Thread(() -> {
             while (playing) {
                 tempData = audioQueue.poll();
                 if (tempData == null) {
@@ -43,16 +44,16 @@ public class AudioTrackPlayer {
                     }
                 } else {
                     if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
-//                            Log.d(TAG, "audioTrack.play");
                         audioTrack.play();
                     }
-//                        Log.d(TAG, "audioTrack.write");
                     audioTrack.write(tempData, 0, tempData.length);
                 }
             }
-//                Log.d(TAG, "playing thread end");
-        });
-        ttsPlayerThread.start();
+        }
+    };
+
+    public AudioTrackPlayer() {
+
     }
 
     public void cleanAudioData() {
@@ -64,7 +65,9 @@ public class AudioTrackPlayer {
     }
 
     public void play() {
-        if (audioTrack != null && audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
+        setPlaying(true);
+        workService.execute(mTTSPlayerRunnable);
+        if (audioTrack.getPlayState() != AudioTrack.PLAYSTATE_PLAYING) {
             audioTrack.play();
         }
     }
@@ -74,11 +77,9 @@ public class AudioTrackPlayer {
     }
 
     public void stop() {
-//        playing = false;
+        setPlaying(false);
         audioTrack.pause();
         audioTrack.flush();
         audioQueue.clear();
-//        audioTrack.onDestroy();
-//        Log.d(TAG, "stopped");
     }
 }

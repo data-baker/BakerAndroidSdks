@@ -2,6 +2,7 @@ package com.databaker.synthesizer;
 
 import com.baker.sdk.basecomponent.bean.BakerError;
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.baker.sdk.basecomponent.util.LogUtils;
 import com.baker.sdk.basecomponent.writelog.WriteLog;
 import com.databaker.synthesizer.bean.OneSecPcmBlock;
 
@@ -15,33 +16,16 @@ public abstract class BakerMediaCallback implements SynthesizerCallback, BaseMed
 
     @Override
     public void onSynthesisStarted() {
-        HLogger.d("--onSynthesisStarted--");
+        LogUtils.getInstance().d("tts::onSynthesisStarted");
     }
 
     @Override
     public void onSynthesisCompleted() {
-        HLogger.d("--onSynthesisCompleted--");
+        LogUtils.getInstance().d("tts::onSynthesisCompleted");
     }
 
     @Override
-    public void onBinaryReceived(byte[] data, String audioType, String interval,  String interval_x, boolean endFlag) {
-//        if (endFlag) {
-//            //是最后一帧
-//            if (data != null && data.length > 0) {
-//                //如果此次数据不为空
-//            } else {
-//                //此次数据为空
-//                if (remaining != null && remaining.length > 0) {
-//                    //剩余数据不为空
-//
-//                }
-//            }
-//        } else {
-//            //这不是最后一帧
-//            if (data != null && data.length > 0) {
-//                //如果此次数据不为空
-//            }
-//        }
+    public void onBinaryReceived(byte[] data, String audioType, String interval, String interval_x, boolean endFlag) {
         try {
             int oneSecLength = BakerMediaPlayer.getInstance().get8KOr16K() ? 3200 : 1600;
             if (data != null && data.length > 0) {
@@ -83,19 +67,8 @@ public abstract class BakerMediaCallback implements SynthesizerCallback, BaseMed
                         System.arraycopy(temp, temp.length - remainder, remaining = new byte[remainder], 0, remainder);
                     }
                 }
-//                if (remainder > 0) {
-//                    if (endFlag) {
-//                        HLogger.d("这是最后一片数据.");
-//                        //若当前是合成的最后一段返回数据，直接拼成最后一秒数据给播放器
-//                        System.arraycopy(temp, temp.length - remainder, tempBytes = new byte[oneSecLength], 0, remainder);
-//                        BakerMediaPlayer.getInstance().setAudioData(new OneSecPcmBlock(tempBytes), true);
-//                    } else {
-//                        //将余数部分copy至remaining数组，给下批数据回来后一起处理。
-//                        System.arraycopy(temp, temp.length - remainder, remaining = new byte[remainder], 0, remainder);
-//                    }
-//                }
             } else if (endFlag) {
-                HLogger.d("这是最后一片数据, 且数据为空.");
+                LogUtils.getInstance().d("tts::这是最后一片数据, 且数据为空.");
                 if (remaining != null && remaining.length > 0) {
                     System.arraycopy(remaining, 0, tempBytes = new byte[oneSecLength], 0, remaining.length);
                     BakerMediaPlayer.getInstance().setAudioData(new OneSecPcmBlock(tempBytes), true);
@@ -104,14 +77,12 @@ public abstract class BakerMediaCallback implements SynthesizerCallback, BaseMed
                 }
                 remaining = null;
             } else {
-                WriteLog.writeLogs("errorCode=90005, errorMsg=接收数据为空");
+                LogUtils.getInstance().d("errorCode=90005, errorMsg=接收数据为空");
             }
             //通知播放器更新缓存进度
             BakerMediaPlayer.getInstance().onCacheAvailable();
         } catch (Exception e) {
-//            CrashNetUtils.net(Log.getStackTraceString(e));
-            WriteLog.writeLogs("errorCode=90005, errorMsg=" + e.getMessage());
-//            onError(BakerConstants.ERROR_CODE_ERROR_INFO, "接收数据后分发出错", null);
+            LogUtils.getInstance().d("errorCode=90005, errorMsg=" + e.getMessage());
         }
     }
 
@@ -119,6 +90,6 @@ public abstract class BakerMediaCallback implements SynthesizerCallback, BaseMed
     public void onTaskFailed(BakerError errorBean) {
         HLogger.d("--onTaskFailed--");
         onError(errorBean);
-        WriteLog.writeLogs("errorCode=" + errorBean.getCode() + ", errorMsg=" + errorBean.getMessage() + ", traceId=" + errorBean.getTrace_id());
+        LogUtils.getInstance().e("errorCode=" + errorBean.getCode() + ", errorMsg=" + errorBean.getMessage() + ", traceId=" + errorBean.getTrace_id());
     }
 }

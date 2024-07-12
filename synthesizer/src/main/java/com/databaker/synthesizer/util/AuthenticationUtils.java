@@ -1,7 +1,9 @@
 package com.databaker.synthesizer.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.baker.sdk.basecomponent.util.LogUtils;
 import com.baker.sdk.basecomponent.writelog.WriteLog;
 import com.databaker.synthesizer.SynthesizerConstants;
 import com.databaker.synthesizer.bean.Token;
@@ -22,11 +24,12 @@ import java.util.Map;
 public class AuthenticationUtils {
 
     private int retryCount = 0;
-    private final CallbackListener listener;
+    private final CallbackListener<String> listener;
 
-    public AuthenticationUtils(CallbackListener listener) {
+    public AuthenticationUtils(CallbackListener<String> listener) {
         this.listener = listener;
     }
+
     /**
      * 鉴权获取token
      *
@@ -43,14 +46,13 @@ public class AuthenticationUtils {
             @Override
             public void onSuccess(Token response) {
                 if (response != null && !TextUtils.isEmpty(response.getAccess_token())) {
-//                    SynthesizerConstants.ttsToken = response.getAccess_token();
-                    WriteLog.writeLogs("authentication==ttsToken==" + response.getAccess_token());
+                    LogUtils.getInstance().e("authentication-ttsToken::" + response.getAccess_token());
                     retryCount = 2;
                     if (listener != null) {
                         listener.onSuccess(response.getAccess_token());
                     }
                 } else {
-                    WriteLog.writeLogs("authentication==ttsToken==失败重试");
+                    LogUtils.getInstance().e("authentication-ttsToken::失败重试");
                     if (retryCount > 0) {
                         retryCount = retryCount - 1;
                         authentication(false);
@@ -65,7 +67,7 @@ public class AuthenticationUtils {
             @Override
             public void onFailure(Exception e) {
                 e.printStackTrace();
-                WriteLog.writeLogs("authentication==ttsToken==" + e.getMessage());
+                LogUtils.getInstance().e("authentication-ttsToken::" + e.getMessage());
                 if (retryCount > 0) {
                     retryCount = retryCount - 1;
                     authentication(false);

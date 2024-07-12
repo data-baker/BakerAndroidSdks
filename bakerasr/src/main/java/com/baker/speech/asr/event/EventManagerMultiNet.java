@@ -101,8 +101,6 @@ public class EventManagerMultiNet implements EventManager {
                 }
                 if (webSocketClient == null) {
                     webSocketClient = new WebSocketClient(url);
-//                    Log.e("hsj", "url request = " + url);
-//                    webSocketClient = new WebSocketClient("ws://192.168.1.21:9002");
                 }
                 webSocketClient.start(listener);
                 mIdx.set(-1);
@@ -147,11 +145,7 @@ public class EventManagerMultiNet implements EventManager {
 
             //------以下是非必须字段-----
             //识别类型  0：一句话识别，sdk做vad   1：长语音识别，服务端做vad  默认为0
-//            asrParams.put("speech_type", 0);
-            //是否在短静音处添加标点，默认false
             asrParams.put("add_pct", addPct);
-            //是否在后处理中执⾏ITN，默认false
-//            asrParams.put("enable_itn", false);
             //模型名称
             asrParams.put("domain", domain);
             //配置的热词组的id
@@ -172,10 +166,6 @@ public class EventManagerMultiNet implements EventManager {
 
             hashMapParams.put("asr_params", asrParams);
             String s = GsonConverter.toJson(hashMapParams);
-            HLogger.longError("发送的数据：" + s);
-//            Log.e("hsjreadsize", "发送的数据：" + s);
-            WriteLog.writeLogs("EventManagerMultiNet:sendData2Net:" + s);
-
             if (webSocketClient != null) {
                 if (webSocketClient.getWebSocket() != null) {
                     webSocketClient.getWebSocket().send(s);
@@ -218,33 +208,28 @@ public class EventManagerMultiNet implements EventManager {
                     && !webSocket.equals(webSocketClient.getCancelSocket()) && !isFinish) {
                 onFault(BakerAsrConstants.ERROR_CODE_WEBSOCKET_ONFAILURE, t.getMessage());
             }
-            HLogger.d("onClosing, error message = " + t.getMessage());
             Log.e("onFailure", "onFailure, error message = " + t.getMessage() + ", webSocket = " + webSocket);
         }
 
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
             super.onMessage(webSocket, text);
-            Log.d("hsj", "onMessage, text = " + text);
-            HLogger.d("onMessage, text = " + text);
             if (webSocketClient != null && webSocket.equals(webSocketClient.getWebSocket())) {
                 if (!TextUtils.isEmpty(text)) {
                     try {
                         BaseResponse response = GsonConverter.fromJson(text, BaseResponse.class);
                         if (response.getCode() == 90000) {
                             //将外层的traceId给data对象，一起传回上层。
-//                            response.getData().setTraceId(response.getTrace_id());
                             if (response.getData().getEnd_flag() == 1) {
                                 //最后确定的结果
                                 EventManagerMessagePool.clean();
                                 EventManagerMessagePool.offer(mOwner, "asr.finish", GsonConverter.toJson(response.getData()));
-//                                Log.e("hsj", "finish webSocket id = " + webSocket.toString());
                                 isFinish = true;
                                 webSocket.close(1001, null);
                             } else {
                                 EventManagerMessagePool.offer(mOwner, "asr.partial", GsonConverter.toJson(response.getData()));
                             }
-                        } else if (response.getCode() == 90001){
+                        } else if (response.getCode() == 90001) {
                             //检测到音频输入，忽略，只是一个状态回调
                             EventManagerMessagePool.offer(mOwner, "asr.start", "{}");
                         } else if (response.getCode() == 40008) {
@@ -287,7 +272,6 @@ public class EventManagerMultiNet implements EventManager {
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull ByteString bytes) {
             super.onMessage(webSocket, bytes);
-            HLogger.d("onMessage, bytes return.");
         }
 
     };

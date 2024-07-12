@@ -3,6 +3,7 @@ package com.databaker.synthesizer.util;
 import android.text.TextUtils;
 
 import com.baker.sdk.basecomponent.util.HLogger;
+import com.baker.sdk.basecomponent.util.LogUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +25,7 @@ public class Util {
         if (!TextUtils.isEmpty(text) && !"null".equals(text)) {
             List<String> resultList = new ArrayList<>();
             split(resultList, text, 200);
-            HLogger.d("resultList.size()==" + resultList.size());
+            LogUtils.getInstance().e("resultList.size()==" + resultList.size());
             return resultList;
         }
         return null;

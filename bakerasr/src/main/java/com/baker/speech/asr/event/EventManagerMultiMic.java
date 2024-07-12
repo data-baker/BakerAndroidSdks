@@ -73,7 +73,6 @@ public class EventManagerMultiMic implements EventManager {
                 if (audioRecord != null) {
                     audioRecord.stop();
                 }
-//                EventManagerMessagePool.offer(mNet, "net.disconnect");
                 break;
             case "mic.error":
                 stopRecord();
@@ -141,15 +140,13 @@ public class EventManagerMultiMic implements EventManager {
             while (status == Status.STATUS_START) {
                 audiodata = new byte[BakerPrivateConstants.bufferSizeForUpload];
                 readsize = audioRecord.read(audiodata, 0, BakerPrivateConstants.bufferSizeForUpload);
-//                Log.e("hsjreadsize", "readsize = " + readsize);
                 if (AudioRecord.ERROR_INVALID_OPERATION != readsize && readsize > 0) {
-//                    if (readsize == bufferSizeForUpload) {
                     BakerPrivateConstants.dataQueue.offer(audiodata);
                     EventManagerMessagePool.offer(mNet, "net.upload");
                     calculateVolume(audiodata);
                 } else {
                     status = Status.STATUS_STOP;
-//                    EventManagerMessagePool.offer(mNet, "net.disconnect");
+                    BakerPrivateConstants.dataQueue.offer(new byte[]{0,0});
                     EventManagerMessagePool.offer(mNet, "net.upload");
                 }
             }

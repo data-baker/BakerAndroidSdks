@@ -245,6 +245,7 @@ public class LongAsrFileActivity extends BakerBaseActivity {
                         if (readSize < 5120) {
                             longTimeAsr.send(new byte[]{});
                         }
+                        Thread.sleep(160);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -274,7 +275,7 @@ public class LongAsrFileActivity extends BakerBaseActivity {
 
             Message message = Message.obtain();
             message.what = 3;
-            message.obj = stringBuilder.toString() + response.getAsr_text();
+            message.obj = stringBuilder + response.getAsr_text();
             handler.sendMessage(message);
             if ("true".equals(response.getSentence_end())) {
                 stringBuilder.append(response.getAsr_text());

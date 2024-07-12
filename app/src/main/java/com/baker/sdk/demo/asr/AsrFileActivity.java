@@ -245,7 +245,6 @@ public class AsrFileActivity extends BakerBaseActivity {
                         while ((readSize = in.read(buffer = new byte[5120])) != -1) {
                             recognizer.send(buffer);
                         }
-
                         //追加一片空数据，表示完成传输。
                         if (readSize < 5120) {
                             recognizer.send(new byte[]{});

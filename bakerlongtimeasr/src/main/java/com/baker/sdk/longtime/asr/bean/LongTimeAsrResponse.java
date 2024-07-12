@@ -21,8 +21,16 @@ public class LongTimeAsrResponse {
     private String speed_label;
     private int volume;
     private String volume_label;
+    private String info;
     private List<BakerLongAsrWord> words;
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public int getCode() {
         return code;

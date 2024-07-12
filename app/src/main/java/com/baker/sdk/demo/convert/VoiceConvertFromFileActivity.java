@@ -76,28 +76,14 @@ public class VoiceConvertFromFileActivity extends BakerBaseActivity {
 
         MaterialSpinner spinner = findViewById(R.id.spinner);
         spinner.setItems(voiceDescArray);
-        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                currentVoiceName = voiceNameArray[position];
-                tvVoiceName.setText("当前音色：" + voiceDescArray[position]);
-                convertManager.setVoiceName(currentVoiceName);
-            }
+        spinner.setOnItemSelectedListener((view, position, id, item) -> {
+            currentVoiceName = voiceNameArray[position];
+            tvVoiceName.setText("当前音色：" + voiceDescArray[position]);
+            convertManager.setVoiceName(currentVoiceName);
         });
-        btnFileRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fileConvert();
-            }
-        });
+        btnFileRecord.setOnClickListener(v -> fileConvert());
 
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playResultPcm();
-            }
-        });
+        btnPlay.setOnClickListener(v -> playResultPcm());
     }
 
     private final VoiceConvertCallBack callBack = new VoiceConvertCallBack() {
@@ -223,6 +209,7 @@ public class VoiceConvertFromFileActivity extends BakerBaseActivity {
         } else {
             //播放
             audioTrackPlayer.cleanAudioData();
+            audioTrackPlayer.play();
             startPlay();
         }
     }
@@ -233,19 +220,16 @@ public class VoiceConvertFromFileActivity extends BakerBaseActivity {
     private void startPlay() {
         try {
             File file = new File(filePath);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (!file.exists()) {
-                        Toast.makeText(VoiceConvertFromFileActivity.this, "无音频文件可播放", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    btnFileRecord.setEnabled(false);
-                    btnFileRecord.setText("根据文件转换声音");
-                    btnPlay.setText("停止播放");
-                    btnPlay.setEnabled(true);
+            runOnUiThread(() -> {
+                if (!file.exists()) {
+                    Toast.makeText(VoiceConvertFromFileActivity.this, "无音频文件可播放", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                btnFileRecord.setEnabled(false);
+                btnFileRecord.setText("根据文件转换声音");
+                btnPlay.setText("停止播放");
+                btnPlay.setEnabled(true);
             });
 
             // 读取转换之后存储的目标文件，进行播放。

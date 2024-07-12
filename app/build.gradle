@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    //implementation fileTree(dir: 'libs', include: ['*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -64,23 +64,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerbasecomponent:2.0.15'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerhttp:2.0.15'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerasr:2.0.15'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:bakerlongtimeasr:2.0.15'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:synthesizer:2.0.15'
-//    implementation 'com.github.data-baker.BakerAndroidSdks:voiceconvert:2.0.13'
-    implementation 'com.github.data-baker.BakerAndroidSdks:engravelib:2.1.1'
     implementation 'com.github.kailash09dabhi:OmRecorder:1.1.5'
-
-
-    implementation project(path: ':synthesizer')
+ /*   implementation project(path: ':synthesizer')
     implementation project(path: ":bakerbasecomponent")
     implementation project(path: ":bakerhttp")
     implementation project(path: ":bakerasr")
     implementation project(path: ":bakerlongtimeasr")
-    implementation project(path: ':voiceconvert')
-  //  implementation project(path: ':engravelib')
+    implementation project(path: ':voiceconvert')*/
 
     implementation "com.google.code.gson:gson:2.8.6"
     implementation "com.squareup.okhttp3:okhttp:4.2.2"

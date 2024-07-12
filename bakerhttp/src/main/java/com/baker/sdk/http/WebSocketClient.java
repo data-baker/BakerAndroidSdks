@@ -16,9 +16,6 @@ public class WebSocketClient {
     private final OkHttpClient client;
     private WebSocket webSocket;
     private int connectTimeOut = 10;
-    //    private final String baseUrl = "ws://echo.websocket.org";
-//    private final String baseUrl = "ws://192.168.1.21:9003";
-//    private final String baseUrl = "wss://openapitest.data-baker.com/wss";
     private final String baseUrl = "wss://openapi.data-baker.com/wss";
 
     public WebSocketClient() {
@@ -43,6 +40,7 @@ public class WebSocketClient {
     public WebSocketClient(String url) {
         client = new OkHttpClient().newBuilder().retryOnConnectionFailure(true)
                 .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
+                .pingInterval(10,TimeUnit.SECONDS)
                 .build();
         request = new Request.Builder()
                 .url(url)

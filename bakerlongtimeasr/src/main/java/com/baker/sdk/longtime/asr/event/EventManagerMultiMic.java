@@ -3,6 +3,8 @@ package com.baker.sdk.longtime.asr.event;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.baker.sdk.basecomponent.util.GsonConverter;
@@ -67,7 +69,6 @@ public class EventManagerMultiMic implements EventManager {
                 break;
             case "mic.stop":
                 stopRecord();
-//                EventManagerMessagePool.offer(mNet, "net.disconnect");
                 break;
             default:
                 break;
@@ -109,8 +110,6 @@ public class EventManagerMultiMic implements EventManager {
             return;
         }
         if (audioRecord != null) {
-//            time_start_record = System.currentTimeMillis();
-//            show = true;
             audioRecord.startRecording();
             //将录音状态设置成正在录音状态
             status = Status.STATUS_START;
@@ -125,8 +124,6 @@ public class EventManagerMultiMic implements EventManager {
         status = Status.STATUS_STOP;
     }
 
-//    private long time_start_record;
-//    private boolean show = true;
 
     private final Runnable runnable = new Runnable() {
         @Override
@@ -137,29 +134,15 @@ public class EventManagerMultiMic implements EventManager {
             while (status == Status.STATUS_START) {
                 audiodata = new byte[bufferSizeForUpload];
                 readsize = audioRecord.read(audiodata, 0, bufferSizeForUpload);
-//                Log.e("hsjreadsize", "readsize = " + readsize);
-                if (readsize > 0) {
-//                if (AudioRecord.ERROR_INVALID_OPERATION != readsize) {
-//                    if (readsize == bufferSizeForUpload) {
-//                    if (show) {
-//                        Log.d("waste_time", "启动录音读取第一包耗时 ：" + (System.currentTimeMillis() - time_start_record));
-//                        show = false;
-//                    }
+                if (AudioRecord.ERROR_INVALID_OPERATION != readsize && readsize > 0) {
                     dataQueue.offer(audiodata);
                     EventManagerMessagePool.offer(mNet, "net.upload");
                     calculateVolume(audiodata);
-//                    } else if (readsize > 0 && readsize < bufferSizeForUpload) {
-//                        dataQueue.offer(new PcmBlock(audiodata, mIdx.get() * -1));
-//                    } else {
-//                    }
-                } else {
-                    status = Status.STATUS_STOP;
-
-                    dataQueue.offer(new byte[]{});
-                    EventManagerMessagePool.offer(mNet, "net.upload");
-
-//                    EventManagerMessagePool.offer(mNet, "net.disconnect");
                 }
+            }
+            if (status == Status.STATUS_STOP) {
+                dataQueue.offer(new byte[]{0,0});
+                EventManagerMessagePool.offer(mNet, "net.upload");
             }
         }
     };
@@ -184,7 +167,6 @@ public class EventManagerMultiMic implements EventManager {
                     nMaxAmp = shorts[peakIndex];
                 }
             }
-//            int volume = (int) (20 * Math.log10(nMaxAmp / 0.6));
             int volume = (int) (20 * Math.log10(nMaxAmp));
 
             EventManagerMessagePool.offer(mOwner, "mic.volume", String.valueOf(volume));

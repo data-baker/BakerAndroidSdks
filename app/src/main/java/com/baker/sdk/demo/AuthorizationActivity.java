@@ -47,13 +47,16 @@ public class AuthorizationActivity extends BakerBaseActivity {
                 case "tts_online":
                     //体验tts,授权tts获取token
                     setTitle("tts授权");
+
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID))) {
                         etClientId.setText(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_ID));
                     }
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.TTS_ONLINE_CLIENT_SECRET));
                     }
-
+                    //一句话合成
+                    etClientId.setText("8e42cc26044b4dac9dd6ab0eb9249510");
+                    etClientSecret.setText("df4751ca95a84d199dfbb7f4164a58b1");
                     break;
                 case "asr_online":
                     setTitle("语音识别授权");
@@ -63,7 +66,8 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.ASR_ONLINE_CLIENT_SECRET));
                     }
-
+                    etClientId.setText("0db2b34e21b942e68f14420d21bcddfe");
+                    etClientSecret.setText("325eb5ca07bf4b1c87dfa6192b8ccaa5");
                     break;
                 case "long_time_asr_online":
                     //体验长语音asr,授权tts获取token
@@ -74,7 +78,8 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.LONG_TIME_ASR_ONLINE_CLIENT_SECRET));
                     }
-
+                    etClientId.setText("16a4fca77a774da99086be973a707863");
+                    etClientSecret.setText("2b253a98ee9746509e1753f5876706ef");
                     break;
                 case "voice_convert":
                     //声音转换 获取token
@@ -85,7 +90,8 @@ public class AuthorizationActivity extends BakerBaseActivity {
                     if (!TextUtils.isEmpty(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET))) {
                         etClientSecret.setText(sharedPreferencesGet(Constants.VOICE_CONVERT_CLIENT_SECRET));
                     }
-
+                    etClientId.setText("124c18404c7c47cbb4ceca5d92eb2c72");
+                    etClientSecret.setText("711d81016f6f4f0ba094ee96b5ce03d6");
                     break;
                 case "gramophone":
                     //声音转换 获取token
@@ -106,7 +112,6 @@ public class AuthorizationActivity extends BakerBaseActivity {
     }
 
     public void jump(View view) {
-        //TODO 校验token有效后进行存储，体验者第二次进来不再需要输入
         if (TextUtils.isEmpty(etClientSecret.getText().toString().trim())) {
             Toast.makeText(this, "请输入ClientSecret", Toast.LENGTH_SHORT).show();
             return;
